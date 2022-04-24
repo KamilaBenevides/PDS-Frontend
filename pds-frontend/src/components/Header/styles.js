@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { Layout } from 'antd';
-const { Header, Content, Footer, Sider } = Layout;
+const { Header} = Layout;
 
 export const StyledHeader = styled(Header)`
+    background:  #071D41;
     height: 15%;
     padding: 0px;
     border-bottom: 1px solid #646d82 !important;

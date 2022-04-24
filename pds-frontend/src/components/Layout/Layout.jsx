@@ -1,6 +1,7 @@
 import Header from '../Header/Header';
 import SideMenu from '../SideMenu/SideMenu';
-import { StyledLayout } from './styles';
+import { StyledLayout, StyledContent } from './styles';
+import { Outlet } from 'react-router-dom';
 
 
 const Layout = () => {
@@ -9,6 +10,10 @@ const Layout = () => {
             <Header ></Header>
                 <StyledLayout>
                     <SideMenu></SideMenu>
+                    <StyledContent>
+                        <h1>testando aqui</h1>
+                        <Outlet/>
+                    </StyledContent>
                 </StyledLayout>
         </StyledLayout>
     </>)
