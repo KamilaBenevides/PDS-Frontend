@@ -1,9 +1,8 @@
 import react from 'react';
 
 const Login = () => {
-    console.log("testando se chega nessa tela aqui login");
     return (
-            
+            <h1>Login screen</h1>
     )
 }
 
