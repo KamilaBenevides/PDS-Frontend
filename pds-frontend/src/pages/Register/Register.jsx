@@ -1,15 +1,19 @@
-
+import {Form, Row, Col, Input} from 'antd';
 
 const Register = () => {
     console.log("register?")
     return (
         <>
-            <h1>tela de cadastr sçfg, d
-                fl, dfl,gdf~,g sdf~g
-                ç,sfd ~
-                sf, g~d, d~
-                f,g sd~fg
-                ,çfg,sgsldfg~sldfg~sdflg~çsldfg~dsçlgd~çldfdfgo</h1>
+            <Form>
+                <Row gutter={16}>
+                    <Col span={24}>
+                        <Form.Item
+                        label="Nome" >
+                            <Input/>
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form>
         </>
     )
 }

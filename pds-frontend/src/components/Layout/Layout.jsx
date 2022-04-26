@@ -11,7 +11,6 @@ const Layout = () => {
                 <StyledLayout>
                     <SideMenu></SideMenu>
                     <StyledContent>
-                        <h1>testando aqui</h1>
                         <Outlet/>
                     </StyledContent>
                 </StyledLayout>
