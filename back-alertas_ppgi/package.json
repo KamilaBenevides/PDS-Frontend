@@ -34,6 +34,7 @@
   "scripts": {
     "start:local": "(yarn prisma:migrate) & (yarn prisma:generate) & (yarn graphql:start)",
     "start": "pm2-runtime ./dist/index.js",
+    "start:prod": "pm2-runtime ./dist/index.js",
     "graphql:start": "ts-node-dev --respawn --transpile-only --no-notify index.ts",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:migrate:dev": "prisma migrate dev --create-only",
