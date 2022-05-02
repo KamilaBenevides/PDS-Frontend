@@ -13,6 +13,7 @@
     "graphql": "15.3.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.17.0",
+    "pm2": "^5.2.0",
     "reflect-metadata": "^0.1.13",
     "tslib": "^2.4.0",
     "typegraphql-prisma": "^0.20.1"
@@ -26,9 +27,14 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only --no-notify index.ts",
+    "start": "(yarn prisma:migrate) & (yarn prisma:generate) & (yarn graphql:start)",
+    "start:prod": "pm2-runtime ./dist/index.js",
+    "graphql:start": "ts-node-dev --respawn --transpile-only --no-notify index.ts",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:migrate:dev": "prisma migrate dev --create-only",
-    "prisma:generate": "npx prisma generate"
+    "prisma:migrate:prod": "npx prisma migrate deploy",
+    "prisma:generate": "npx prisma generate",
+    "build": "yarn run prisma:migrate:prod && yarn run prisma:generate && tsc -p tsconfig.production.json"
+
   }
 }
