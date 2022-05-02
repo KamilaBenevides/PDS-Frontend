@@ -5,6 +5,11 @@
   "main": "index.js",
   "author": "Alunos Instituto de Computação",
   "license": "MIT",
+  "engines": {
+    "node": "16.x",
+    "npm": "6.x",
+    "yarn": "1.x"
+  },
   "dependencies": {
     "@prisma/client": "^3.12.0",
     "@types/graphql-fields": "^1.3.4",
@@ -27,8 +32,8 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "start": "(yarn prisma:migrate) & (yarn prisma:generate) & (yarn graphql:start)",
-    "start:prod": "pm2-runtime ./dist/index.js",
+    "start:local": "(yarn prisma:migrate) & (yarn prisma:generate) & (yarn graphql:start)",
+    "start": "pm2-runtime ./dist/index.js",
     "graphql:start": "ts-node-dev --respawn --transpile-only --no-notify index.ts",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:migrate:dev": "prisma migrate dev --create-only",

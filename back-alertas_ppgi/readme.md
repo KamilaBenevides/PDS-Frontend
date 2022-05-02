@@ -12,6 +12,6 @@
 - `yarn` para instalar as dependências
 - `yarn prisma:migrate`
 - `yarn prisma:generate`
-- `yarn start` para iniciar o APP.
+- `yarn start:local` para iniciar o APP.
 
 Você poderá fazer queries pro server em `http://localhost:4000/`
