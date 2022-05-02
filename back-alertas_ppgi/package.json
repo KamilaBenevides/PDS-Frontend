@@ -35,6 +35,5 @@
     "prisma:migrate:prod": "npx prisma migrate deploy",
     "prisma:generate": "npx prisma generate",
     "build": "yarn run prisma:migrate:prod && yarn run prisma:generate && tsc -p tsconfig.production.json"
-
   }
 }
