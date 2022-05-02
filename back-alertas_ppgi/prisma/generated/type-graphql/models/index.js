@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Docente = exports.Aluno = exports.AlertaAluno = exports.Alerta = void 0;
+var Alerta_1 = require("./Alerta");
+Object.defineProperty(exports, "Alerta", { enumerable: true, get: function () { return Alerta_1.Alerta; } });
+var AlertaAluno_1 = require("./AlertaAluno");
+Object.defineProperty(exports, "AlertaAluno", { enumerable: true, get: function () { return AlertaAluno_1.AlertaAluno; } });
+var Aluno_1 = require("./Aluno");
+Object.defineProperty(exports, "Aluno", { enumerable: true, get: function () { return Aluno_1.Aluno; } });
+var Docente_1 = require("./Docente");
+Object.defineProperty(exports, "Docente", { enumerable: true, get: function () { return Docente_1.Docente; } });

@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typegraphql {
+  provider           = "typegraphql-prisma"
+  output             = "../prisma/generated/type-graphql"
+  emitTranspiledCode = true
+}
+
+model Aluno {
+  id                 Int           @id @default(autoincrement())
+  nomeCompleto       String
+  matricula          String        @unique
+  dataIngresso       DateTime
+  dataLimite         DateTime
+  cpf                String
+  emailInstitucional String?       @unique
+  emailPessoal       String?       @unique
+  ativo              Boolean       @default(true)
+  orientador         Docente       @relation(name: "orientador", fields: [orientadorId], references: [id])
+  orientadorId       Int
+  coorientador       Docente?      @relation(name: "coorientador", fields: [coorientadorId], references: [id])
+  coorientadorId     Int?
+  AlertaAluno        AlertaAluno[]
+}
+
+model Docente {
+  id               Int     @id @default(autoincrement())
+  nomeCompleto     String
+  email            String?
+  AlunoOrientado   Aluno[] @relation(name: "orientador")
+  AlunoCoorientado Aluno[] @relation(name: "coorientador")
+}
+
+model Alerta {
+  id            Int           @id @default(autoincrement())
+  diasIntervalo Int
+  nome          String
+  corpoEmail    String?
+  AlertaAluno   AlertaAluno[]
+}
+
+model AlertaAluno {
+  id             Int      @id @default(autoincrement())
+  aluno          Aluno    @relation(fields: [alunoId], references: [id])
+  alunoId        Int
+  Alerta         Alerta   @relation(fields: [alertaId], references: [id])
+  alertaId       Int
+  enviado        Boolean  @default(false)
+  resolvido      Boolean  @default(false)
+  ativo          Boolean  @default(true)
+  dataEnvioEmail DateTime
+}

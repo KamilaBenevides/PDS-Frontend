@@ -1,0 +1,31 @@
+import { GraphQLResolveInfo } from "graphql";
+import { AggregateAlertaAlunoArgs } from "./args/AggregateAlertaAlunoArgs";
+import { CreateAlertaAlunoArgs } from "./args/CreateAlertaAlunoArgs";
+import { CreateManyAlertaAlunoArgs } from "./args/CreateManyAlertaAlunoArgs";
+import { DeleteAlertaAlunoArgs } from "./args/DeleteAlertaAlunoArgs";
+import { DeleteManyAlertaAlunoArgs } from "./args/DeleteManyAlertaAlunoArgs";
+import { FindFirstAlertaAlunoArgs } from "./args/FindFirstAlertaAlunoArgs";
+import { FindManyAlertaAlunoArgs } from "./args/FindManyAlertaAlunoArgs";
+import { FindUniqueAlertaAlunoArgs } from "./args/FindUniqueAlertaAlunoArgs";
+import { GroupByAlertaAlunoArgs } from "./args/GroupByAlertaAlunoArgs";
+import { UpdateAlertaAlunoArgs } from "./args/UpdateAlertaAlunoArgs";
+import { UpdateManyAlertaAlunoArgs } from "./args/UpdateManyAlertaAlunoArgs";
+import { UpsertAlertaAlunoArgs } from "./args/UpsertAlertaAlunoArgs";
+import { AlertaAluno } from "../../../models/AlertaAluno";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateAlertaAluno } from "../../outputs/AggregateAlertaAluno";
+import { AlertaAlunoGroupBy } from "../../outputs/AlertaAlunoGroupBy";
+export declare class AlertaAlunoCrudResolver {
+    alertaAluno(ctx: any, info: GraphQLResolveInfo, args: FindUniqueAlertaAlunoArgs): Promise<AlertaAluno | null>;
+    findFirstAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: FindFirstAlertaAlunoArgs): Promise<AlertaAluno | null>;
+    alertaAlunos(ctx: any, info: GraphQLResolveInfo, args: FindManyAlertaAlunoArgs): Promise<AlertaAluno[]>;
+    createAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: CreateAlertaAlunoArgs): Promise<AlertaAluno>;
+    createManyAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: CreateManyAlertaAlunoArgs): Promise<AffectedRowsOutput>;
+    deleteAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: DeleteAlertaAlunoArgs): Promise<AlertaAluno | null>;
+    updateAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: UpdateAlertaAlunoArgs): Promise<AlertaAluno | null>;
+    deleteManyAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: DeleteManyAlertaAlunoArgs): Promise<AffectedRowsOutput>;
+    updateManyAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: UpdateManyAlertaAlunoArgs): Promise<AffectedRowsOutput>;
+    upsertAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: UpsertAlertaAlunoArgs): Promise<AlertaAluno>;
+    aggregateAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: AggregateAlertaAlunoArgs): Promise<AggregateAlertaAluno>;
+    groupByAlertaAluno(ctx: any, info: GraphQLResolveInfo, args: GroupByAlertaAlunoArgs): Promise<AlertaAlunoGroupBy[]>;
+}
