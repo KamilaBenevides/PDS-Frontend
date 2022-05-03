@@ -1,6 +1,7 @@
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 import DatePicker from '../../components/DatePicker/DatePicker';
-import { StyledForm } from './styles';
+import { StyledForm, StyledButton } from './styles';
+import { Form , Button} from 'antd';
 
 const Register = () => {
 
@@ -41,14 +42,21 @@ const Register = () => {
             col: 12,
             required: true,
             formComponent: <DatePicker/>
-        },
+        }
     ];
+
+    const submitButton = <Form.Item >
+        <StyledButton type="primary" htmlType="submit">
+          Cadastrar
+        </StyledButton>
+    </Form.Item>
 
 
     return (
         <>
             <StyledForm layout="vertical">
                 <FormGroupContainer items={formItems}/>
+                {submitButton}
             </StyledForm>
         </>
     )
