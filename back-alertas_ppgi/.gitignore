@@ -1,0 +1,12 @@
+/bin/
+/dist/
+/node_modules/
+.env
+/datasets/
+/key_value_stores/
+/src/graphql-api/prisma/generated/
+.vscode
+
+yarn-error.log
+/prisma/generated/
+.DS_Store
