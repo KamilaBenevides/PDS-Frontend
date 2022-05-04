@@ -1,1 +1,0 @@
-export { AlunoAlertaAlunoArgs } from "./AlunoAlertaAlunoArgs";

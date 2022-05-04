@@ -8,5 +8,5 @@
 .vscode
 
 yarn-error.log
-/src/graphql-api/prisma/generated/
+/prisma/generated/
 .DS_Store

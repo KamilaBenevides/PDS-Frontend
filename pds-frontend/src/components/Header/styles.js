@@ -22,7 +22,6 @@ export const StyledText = styled.span`
     font-style: normal;
     font-weight: 900;
     font-size: 35px;
-    line-height: 52px;
+    line-height: 35px;
     color: #FFFFFF;
-    
 `;

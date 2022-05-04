@@ -1,15 +1,37 @@
 import React from 'react';
 import {StyledSideMenu, StyledMenu} from './styles';
-
+import { useNavigate } from "react-router-dom";
+import * as path from '../../routes/paths'
 const SideMenu = () => {
 
-    const handleNavigation = () => {}
+    let navigate = useNavigate();
 
+    const handleNavigation = (item) => {
+        let key = item.key;
+        menuItens.forEach(obj => {
+            if(obj.key && obj.key === key) {
+                navigate(obj.path);
+                return;
+            }
+            if(obj.children) {
+                obj.children.forEach(el => {
+                    if(el.key && el.key === key) {
+                        navigate(el.path)
+                        return;
+                    }
+                })
+            } 
+                
+        })
+    }
 
+    
+    
     const menuItens = [
         {
             key: '0',
-            label: 'Meu Perfil'
+            label: 'Meu Perfil',
+            path: path.DASHBOARD
         },
         {
             key: '1',
@@ -17,15 +39,18 @@ const SideMenu = () => {
             children: [
                 {
                     key: '2',
-                    label: 'Discentes'
+                    label: 'Discentes',
+                    path: path.REGISTER,
                 },
                 {
                     key: '3',
-                    label: 'Doscentes'
+                    label: 'Docentes',
+                    path: path.PROFESSOR
                 },
                 {
                     key: '4',
-                    label: 'Ver todos'
+                    label: 'Ver todos',
+                    path: path.LIST_REGISTER
                 },
             ]
         },
@@ -35,15 +60,18 @@ const SideMenu = () => {
             children: [
                 {
                     key: '6',
-                    label: 'Proficiência'
+                    label: 'Proficiência',
+                    path: path.DASHBOARD
                 },
                 {
                     key: '7',
-                    label: 'Qualificação'
+                    label: 'Qualificação',
+                    path: path.DASHBOARD
                 },
                 {
                     key: '8',
-                    label: 'Defesa dissertação'
+                    label: 'Defesa dissertação',
+                    path: path.DASHBOARD
                 },
             ]
         },
@@ -51,12 +79,12 @@ const SideMenu = () => {
             key: '9',
             label: 'Documentos'
         },
-    ]
+    ];
 
     console.log("sidemenu");
     return (
         <StyledSideMenu width={250}>
-            <StyledMenu mode="inline" items={menuItens}/>
+            <StyledMenu mode="inline" items={menuItens} onClick={item => handleNavigation(item)}/>
         </StyledSideMenu>
     );
 }

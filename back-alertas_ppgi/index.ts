@@ -45,7 +45,7 @@ const main = async () => {
     console.warn("DB iniciado!");
   };
 
-  server.listen().then(({ url }) => {
+  server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
     fastInitDB();
     console.log(`🚀  Server ready at ${url}`);
   });
