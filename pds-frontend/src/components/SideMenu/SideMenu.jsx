@@ -53,7 +53,6 @@ const SideMenu = () => {
         },
     ]
 
-    console.log("sidemenu");
     return (
         <StyledSideMenu width={250}>
             <StyledMenu mode="inline" items={menuItens}/>
