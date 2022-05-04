@@ -1,7 +1,7 @@
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import { StyledForm, StyledButton } from './styles';
-import { Form , Button} from 'antd';
+import { Form } from 'antd';
 
 const Register = () => {
 
