@@ -3,10 +3,11 @@ import {StyledDatePicker} from "./styles";
 import BrazilianLocale from 'antd/es/date-picker/locale/pt_BR';
 
 
-const DatePicker = ({ props }) => {
+const DatePicker = ( props ) => {
   return (
     <StyledDatePicker
       {...props}
+      // onChange={onChange}
       format={"DD/MM/YYYY"}
       placeholder={"DD/MM/YYYY"}
       locale={BrazilianLocale}
