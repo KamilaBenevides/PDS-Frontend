@@ -2,9 +2,10 @@ import FormGroupContainer from '../../components/FormGroupContainer/FormGroupCon
 import DatePicker from '../../components/DatePicker/DatePicker';
 import Select from '../../components/Select/Select';
 import { StyledForm, StyledButton } from './styles';
-import { Form } from 'antd';
+import { Form, Alert } from 'antd';
 import { useMutation, gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
 
@@ -122,6 +123,8 @@ const Register = () => {
         return e;
     }
 
+    const navigate = useNavigate();
+
     const onFinish = (e) => {
         e = formatValues(e);
         console.log("e -> ", e);
@@ -129,12 +132,31 @@ const Register = () => {
             variables: {
                 data: e
               }
+        }).then(() => {
+            setSucesso(true);
+            setTimeout(() => navigate('/dashboard/geral'), 3000);
         });
+    }
+
+    const [sucesso, setSucesso] = useState(false);
+
+    let alertSucesso = <></>;
+    if (sucesso) {
+        alertSucesso = <Alert
+            message="Sucesso"
+            description="Discente cadastrado com sucesso."
+            type="success"
+            showIcon
+            closable
+        />
+    } else {
+        alertSucesso = <></>
     }
 
     return (
         <>
             <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
+                {alertSucesso}
                 <FormGroupContainer items={formItems}/>
                 {submitButton}
             </StyledForm>

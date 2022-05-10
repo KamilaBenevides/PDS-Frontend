@@ -1,6 +1,8 @@
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 import { StyledForm, StyledButton } from '../Register/styles';
-import { Form } from 'antd';
+import { Form, Alert } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useMutation, gql } from '@apollo/client';
 
 
@@ -39,18 +41,39 @@ const ProfessorForms = () => {
         </StyledButton>
     </Form.Item>
 
+    const navigate = useNavigate();
+
     const onFinish = (e) => {
         console.log("e -> ", e);
         createDocente({
             variables: {
                 data: e
             }
+        }).then(() => {
+            setSucesso(true);
+            setTimeout(() => navigate('/dashboard/geral'), 3000);
         });
+    }
+
+    const [sucesso, setSucesso] = useState(false);
+
+    let alertSucesso = <></>;
+    if (sucesso) {
+        alertSucesso = <Alert
+            message="Sucesso"
+            description="Docente cadastrado com sucesso."
+            type="success"
+            showIcon
+            closable
+        />
+    } else {
+        alertSucesso = <></>
     }
 
     return (
         <>
             <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
+                {alertSucesso}
                 <FormGroupContainer items={formItems}/>
                 {submitButton}
             </StyledForm>
