@@ -34,6 +34,9 @@ const Register = () => {
             orientador {
               id
             }
+            coorientador {
+                id
+            }
         }
       }
     `;
@@ -86,9 +89,10 @@ const Register = () => {
         },
         {
             label: "Co-orientador",
-            name: "coori",
+            name: "coorientador",
             col: 24,
-            required: false
+            required: false,
+            formComponent: <Select options={docentes}/>
         },
         {
             label: "Data de ingresso",
@@ -111,6 +115,9 @@ const Register = () => {
         e["dataLimite"] = "2024-12-04"
         e["orientador"] = {
             "connect": {"id": e["orientador"]}
+        }
+        e["coorientador"] = {
+            "connect": {"id": e["coorientador"]}
         }
         return e;
     }
