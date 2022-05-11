@@ -8,6 +8,7 @@ const FormGroupContainer = ({ items, children }) => {
       {items.map((item, key) => (
           <Col span={item.col} key={key}>
               <StyledFormItem 
+              name={item.name}
               labelCol={{ span: 24 }}
               label={item.label}
               required={item.required}

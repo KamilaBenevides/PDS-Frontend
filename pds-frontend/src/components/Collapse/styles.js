@@ -32,4 +32,5 @@ export const StyledContent = styled.div`
 export const StyledButton = styled(Button)`
     width: 100%;
     border: none;
+    marging-top: 5px;
 `;
