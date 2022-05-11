@@ -7,7 +7,7 @@ import { useQuery, gql } from '@apollo/client';
 
 const ListRegister = () => {
 
-    const { loading, error, data } = useQuery(gql`
+    const queryAlunos = useQuery(gql`
     query GetAlunos {
         alunos {
             nomeCompleto
@@ -42,15 +42,14 @@ const ListRegister = () => {
   const [itemsDoc, setItemsDoc] = useState([]);
 
     useEffect(() => {
-        console.log("use effect client", client);
-        console.log("data -> ", data);
-        let items = data?.alunos ? data.alunos : []
+        let items = queryAlunos.data?.alunos ? queryAlunos.data.alunos : []
         setItems(items); 
-    }, [data])
+    }, [queryAlunos.data])
     
     useEffect(() => {
-      console.log("use effect client", client);
-      console.log("data -> ", queryDocentes.data);
+      // console.log("use effect client", client);
+      // console.log("data -> ", queryDocentes.data);
+      queryDocentes.refetch();
       let itemsDoc = queryDocentes.data?.docentes ? queryDocentes.data.docentes : []
       setItemsDoc(itemsDoc); 
   }, [queryDocentes.data])

@@ -5,45 +5,47 @@ import { Col, Row } from 'antd';
 
 const Collapse = ({ items }) => {
 
-    const Content = item => <StyledContent>
-        <Row gutter={16}>
-            <Col span={24}>
-                <StyledText><strong>E-mail:</strong> {item.emailInstitucional}</StyledText>
-            </Col>
-            <Col span={24}>
-                <StyledText><strong>Prazo máximo para agendamento:</strong> {item.dataLimite}</StyledText>
-            </Col>
-            <Col span={24}>
-                <StyledText><strong>Status:</strong> {item.ativo}</StyledText>
-            </Col>
-            <Col span={3}>
-            <StyledButton type="primary" danger 
-            style={{
-                color: '#FFFFFF'
-              }}>
-            ALERTAR
-            </StyledButton>
-            </Col>
-            <Col span={4}>
-            <StyledButton type="primary" 
-            style={{
-                background: '#2EC615',
-                color: '#FFFFFF'
-              }}>
-            AGENDAMENTO FEITO
-            </StyledButton>
-            </Col>
-        </Row>
-    </StyledContent>
+    const Content = item => {
+        return (<StyledContent>
+            <Row gutter={16}>
+                <Col span={24}>
+                    <StyledText><strong>E-mail:</strong> {item.emailInstitucional}</StyledText>
+                </Col>
+                <Col span={24}>
+                    <StyledText><strong>Prazo máximo para agendamento:</strong> {item.dataLimite}</StyledText>
+                </Col>
+                {/* <Col span={24}>
+                    <StyledText><strong>Status:</strong> {item.ativo}</StyledText>
+                </Col> */}
+                <Col span={3}>
+                <StyledButton type="primary" danger 
+                style={{
+                    color: '#FFFFFF'
+                  }}>
+                ALERTAR
+                </StyledButton>
+                </Col>
+                <Col span={4}>
+                <StyledButton type="primary" 
+                style={{
+                    background: '#2EC615',
+                    color: '#FFFFFF'
+                  }}>
+                AGENDAMENTO FEITO
+                </StyledButton>
+                </Col>
+            </Row>
+        </StyledContent>)
+    }
     
     const header = item => {
         return <>
-        <Col span={20}>
+        <Col span={24}>
             <StyledNameText>{item.nomeCompleto}</StyledNameText>
         </Col>
-        <Col span={4}>
+        {/* <Col span={4}>
             <StyledStatusName>STATUS: {item.ativo}</StyledStatusName>
-        </Col>
+        </Col> */}
     </>
     }
     
