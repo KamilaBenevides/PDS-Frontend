@@ -14,9 +14,9 @@ const Collapse = ({ items }) => {
                 <Col span={24}>
                     <StyledText><strong>Prazo máximo para agendamento:</strong> {item.dataLimite}</StyledText>
                 </Col>
-                {/* <Col span={24}>
-                    <StyledText><strong>Status:</strong> {item.ativo}</StyledText>
-                </Col> */}
+                <Col span={24}>
+                    <StyledText><strong>Status:</strong> em aberto</StyledText>
+                </Col>
                 <Col span={3}>
                 <StyledButton type="primary" danger 
                 style={{
@@ -40,18 +40,22 @@ const Collapse = ({ items }) => {
     
     const header = item => {
         return <>
-        <Col span={24}>
+        <Col span={!item.matricula ? 24: 20}>
             <StyledNameText>{item.nomeCompleto}</StyledNameText>
         </Col>
-        {/* <Col span={4}>
-            <StyledStatusName>STATUS: {item.ativo}</StyledStatusName>
-        </Col> */}
+        {!item.matricula ? null: <Col span={4}>
+            <StyledStatusName>STATUS: em aberto</StyledStatusName>
+        </Col>}
     </>
     }
     
     return <StyledCollapse >
         {items.map((element, idx) => {
-            return <StyledPanel header={header(element)} key={idx}>
+            return <StyledPanel
+             header={header(element)} 
+             key={idx}
+             collapsible={!element.matricula ? "disabled": undefined}
+             >
                 {Content(element)}
             </StyledPanel>
         })}

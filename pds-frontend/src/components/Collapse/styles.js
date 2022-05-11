@@ -3,7 +3,9 @@ import styled from 'styled-components';
 const { Panel } = Collapse;
 
 export const StyledCollapse = styled(Collapse)`
-
+    .ant-collapse-item-disabled > .ant-collapse-header {
+        cursor: pointer!important;
+    }
 `;
 
 export const StyledPanel = styled(Panel)`
@@ -22,7 +24,7 @@ export const StyledText = styled.span`
     letter-spacing: -0.21px;
 `;
 export const StyledStatusName = styled.span`
-
+    color: #2EC615
 `;
 
 export const StyledContent = styled.div`
