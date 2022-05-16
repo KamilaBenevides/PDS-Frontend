@@ -6,6 +6,8 @@ import DocumentProduction from '../pages/DocProduction/DocumentProduction'
 import ListRegister from '../pages/ListRegister/ListRegister';
 import * as path from './paths'
 import ProfessorForms from '../pages/DocProfessor/ProfessorForms';
+import EditProfessor from '../pages/DocProfessor/EditProfessor';
+import EditRegister from '../pages/Register/Edit';
 
 
 const MainRoutes = () => {
@@ -18,6 +20,8 @@ const MainRoutes = () => {
                     <Route path={path.DOCUMENT_PRODUCTION} element={<DocumentProduction/>}/>
                     <Route path={path.LIST_REGISTER} element={<ListRegister/>}/>
                     <Route path={path.PROFESSOR} element={<ProfessorForms />}/>
+                    <Route path={path.EDIT_PROFESSOR} element={<EditProfessor />}/>
+                    <Route path={path.EDIT_REGISTER} element={<EditRegister/>}/>
                 </Route>
             </Routes>
     );
