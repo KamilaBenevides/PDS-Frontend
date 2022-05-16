@@ -8,6 +8,7 @@ import * as path from './paths'
 import ProfessorForms from '../pages/DocProfessor/ProfessorForms';
 import EditProfessor from '../pages/DocProfessor/EditProfessor';
 import EditRegister from '../pages/Register/Edit';
+import ProficiencyAlerts from '../pages/Alerts/Proficiency/Proficiency';
 
 
 const MainRoutes = () => {
@@ -22,6 +23,7 @@ const MainRoutes = () => {
                     <Route path={path.PROFESSOR} element={<ProfessorForms />}/>
                     <Route path={path.EDIT_PROFESSOR} element={<EditProfessor />}/>
                     <Route path={path.EDIT_REGISTER} element={<EditRegister/>}/>
+                    <Route path={path.PROFICIENCY_ALERTS} element={<ProficiencyAlerts/>}/>
                 </Route>
             </Routes>
     );
