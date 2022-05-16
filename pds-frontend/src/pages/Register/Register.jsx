@@ -22,8 +22,8 @@ const Register = () => {
     `)
 
     const CA = gql`
-    mutation CreateAluno($data: AlunoCreateInput!) {
-        createAluno(data: $data) {
+    mutation CustomCreateAluno($customCreateAlunoData2: FieldsCreateAluno!) {
+        customCreateAluno(data: $customCreateAlunoData2) {
             nomeCompleto
             matricula
             dataIngresso
@@ -58,7 +58,7 @@ const Register = () => {
 
     const formItems = [
         {
-            label: "Name completo",
+            label: "Nome completo",
             name: "nomeCompleto",
             col: 24,
             required: true
@@ -76,21 +76,27 @@ const Register = () => {
             required: true
         },
         {
-            label: "E-mail",
-            name: "emailPessoal",
+            label: "E-mail Institucional",
+            name: "emailInstitucional",
             col: 24,
             required: true
         },
         {
+            label: "E-mail Pessoal",
+            name: "emailPessoal",
+            col: 24,
+            required: false
+        },
+        {
             label: "Orientador",
-            name: "orientador",
+            name: "orientadorId",
             col: 24,
             required: true,
             formComponent: <Select options={docentes}/>
         },
         {
             label: "Co-orientador",
-            name: "coorientador",
+            name: "coorientadorId",
             col: 24,
             required: false,
             formComponent: <Select options={docentes}/>
@@ -112,14 +118,6 @@ const Register = () => {
 
     const formatValues = e => {
         e["dataIngresso"] = e["dataIngresso"] ? e["dataIngresso"].format() : "";
-        e["ativo"] = true;
-        e["dataLimite"] = "2024-12-04"
-        e["orientador"] = {
-            "connect": {"id": e["orientador"]}
-        }
-        e["coorientador"] = {
-            "connect": {"id": e["coorientador"]}
-        }
         return e;
     }
 
@@ -130,7 +128,7 @@ const Register = () => {
         console.log("e -> ", e);
         createAluno({
             variables: {
-                data: e
+                customCreateAlunoData2: e
               }
         }).then(() => {
             setSucesso(true);

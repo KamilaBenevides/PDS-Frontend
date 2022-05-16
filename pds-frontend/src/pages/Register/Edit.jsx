@@ -64,8 +64,8 @@ const EditRegister = () => {
     );
     
     const UA = gql`
-    mutation UpdateAluno($data: AlunoUpdateInput!, $where: AlunoWhereUniqueInput!) {
-        updateAluno(data: $data, where: $where) {
+    mutation CustomUpdateAluno($data: FieldsUpdateAluno!, $alunoId: Int!) {
+        customUpdateAluno(data: $data, alunoId: $alunoId) {
             nomeCompleto
             matricula
             dataIngresso
@@ -90,15 +90,16 @@ const EditRegister = () => {
     const [form] = Form.useForm();
 
     useEffect(() => {
-        let doc = alunoQuery.data?.aluno ? alunoQuery.data.aluno : {matricula: "", emailPessoal: "", nomeCompleto:"", cpf:"", orientadorId:"", coorientadorId:"", dataIngresso:""};
+        let doc = alunoQuery.data?.aluno ? alunoQuery.data.aluno : {matricula: "", emailInstitucional: "", emailPessoal: "", nomeCompleto:"", cpf:"", orientadorId:"", coorientadorId:"", dataIngresso:""};
         form.setFieldsValue({
             nomeCompleto: doc.nomeCompleto,
+            emailInstitucional: doc.emailInstitucional,
             emailPessoal: doc.emailPessoal,
             matricula: doc.matricula,
             cpf: doc.cpf,
             dataIngresso: moment(doc.dataIngresso),
-            orientador: doc.orientadorId,
-            coorientador: doc.coorientadorId
+            orientadorId: doc.orientadorId,
+            coorientadorId: doc.coorientadorId
         });
     }, [alunoQuery]);
 
@@ -122,21 +123,27 @@ const EditRegister = () => {
             required: true
         },
         {
-            label: "E-mail",
+            label: "E-mail Institucional",
+            name: "emailInstitucional",
+            col: 24,
+            required: false
+        },
+        {
+            label: "E-mail Pessoal",
             name: "emailPessoal",
             col: 24,
-            required: true
+            required: false
         },
         {
             label: "Orientador",
-            name: "orientador",
+            name: "orientadorId",
             col: 24,
             required: true,
             formComponent: <Select options={docentes}/>
         },
         {
             label: "Co-orientador",
-            name: "coorientador",
+            name: "coorientadorId",
             col: 24,
             required: false,
             formComponent: <Select options={[{ value: 0, label: "..."}].concat(docentes)}/>
@@ -158,20 +165,19 @@ const EditRegister = () => {
 
     const navigate = useNavigate();
 
+    const formatValues = e => {
+        e["dataIngresso"] = e["dataIngresso"] ? e["dataIngresso"].format() : "";
+        e["coorientadorId"] = e["coorientadorId"] ? e["coorientadorId"] : null;
+        return e;
+    }
+
     const onFinish = (e) => {
+        e = formatValues(e);
         console.log("e -> ", e);
         updateAluno({
             variables: {
-                data: {
-                    nomeCompleto: { set: e['nomeCompleto'] },
-                    emailPessoal: { set: e['emailPessoal'] },
-                    matricula: { set: e['matricula'] },
-                    cpf: { set: e['cpf'] },
-                    dataIngresso: { set: e['dataIngresso'].format() },
-                    orientador: { connect: { id: e['orientador'] } },
-                    coorientador: e['coorientador'] ? { connect: { id: e['coorientador'] } } : { disconnect: true },
-                },
-                where: { id: alunoQuery.data.aluno.id }
+                data: e,
+                alunoId: alunoQuery.data.aluno.id
             }
         }).then(() => {
             setSucesso(true);
