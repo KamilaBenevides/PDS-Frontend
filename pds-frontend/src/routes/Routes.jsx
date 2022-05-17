@@ -9,6 +9,8 @@ import ProfessorForms from '../pages/DocProfessor/ProfessorForms';
 import EditProfessor from '../pages/DocProfessor/EditProfessor';
 import EditRegister from '../pages/Register/Edit';
 import ProficiencyAlerts from '../pages/Alerts/Proficiency/Proficiency';
+import QualificationAlerts from '../pages/Alerts/Qualification/Qualification';
+import DefenseAlerts from '../pages/Alerts/Defense/Defense';
 
 
 const MainRoutes = () => {
@@ -24,6 +26,8 @@ const MainRoutes = () => {
                     <Route path={path.EDIT_PROFESSOR} element={<EditProfessor />}/>
                     <Route path={path.EDIT_REGISTER} element={<EditRegister/>}/>
                     <Route path={path.PROFICIENCY_ALERTS} element={<ProficiencyAlerts/>}/>
+                    <Route path={path.QUALIFICATION_ALERTS} element={<QualificationAlerts/>}/>
+                    <Route path={path.DEFENSE_ALERTS} element={<DefenseAlerts/>}/>
                 </Route>
             </Routes>
     );

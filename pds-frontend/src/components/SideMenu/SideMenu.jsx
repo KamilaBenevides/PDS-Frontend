@@ -61,17 +61,17 @@ const SideMenu = () => {
                 {
                     key: '6',
                     label: 'Proficiência',
-                    path: path.DASHBOARD
+                    path: path.PROFICIENCY_ALERTS
                 },
                 {
                     key: '7',
                     label: 'Qualificação',
-                    path: path.DASHBOARD
+                    path: path.QUALIFICATION_ALERTS
                 },
                 {
                     key: '8',
                     label: 'Defesa dissertação',
-                    path: path.DASHBOARD
+                    path: path.DEFENSE_ALERTS
                 },
             ]
         },

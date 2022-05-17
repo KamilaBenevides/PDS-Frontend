@@ -8,3 +8,5 @@ export const PROFESSOR = '/dashboard/professor';
 export const EDIT_PROFESSOR = '/dashboard/professor/:id';
 export const EDIT_REGISTER = '/dashboard/register/:id';
 export const PROFICIENCY_ALERTS = '/dashboard/proficiency';
+export const QUALIFICATION_ALERTS = '/dashboard/qualification';
+export const DEFENSE_ALERTS = '/dashboard/defense';
