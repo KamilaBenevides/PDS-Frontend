@@ -159,14 +159,20 @@ const collapseContent = item =>
   (<StyledContent>
       <Row gutter={16}>
           <Col span={24}>
-              <StyledText><strong>E-mail:</strong> {item.aluno?.emailPessoal}</StyledText>
+              <StyledText><strong>E-mail:</strong> {item.aluno?.emailInstitucional}</StyledText>
           </Col>
           <Col span={24}>
-              <StyledText><strong>Prazo máximo:</strong> {dataFormater(item.aluno.dataLimite)}</StyledText>
+              <StyledText><strong>Ingresso do aluno:</strong> {dataFormater(item.aluno.dataIngresso)}</StyledText>
           </Col>
           <Col span={24}>
+              <StyledText><strong>Alerta aberto em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days'))}</StyledText>
+          </Col>
+          <Col span={24}>
+              <StyledText><strong>Alerta vencido em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days').add(30, 'days'))}</StyledText>
+          </Col>
+          {/* <Col span={24}>
               <StyledText><strong>Status:</strong> {item.ativo ? "Ativo" : "Inativo"}</StyledText>
-          </Col>
+          </Col> */}
           <Col span={3}>
           <StyledButton type="primary" danger 
           style={{
@@ -193,7 +199,7 @@ const collapseContent = item =>
       {!vencidos.length ? null : 
       <>
         <h4>Vencidos</h4>
-        <Collapse items={vencidos} header={collapseHeader} content={collapseVencidosContent}/>
+        <Collapse items={vencidos} header={collapseHeader} content={collapseContent}/>
       </>}
       {!enviados.length ? null : 
       <>
@@ -218,7 +224,7 @@ const collapseContent = item =>
       {!inativos.length ? null : 
       <>
         <h4>Inativos</h4>
-        <Collapse items={inativos} header={collapseHeader} content={collapseVencidosContent}/>
+        <Collapse items={inativos} header={collapseHeader} content={collapseContent}/>
       </>}
       {/* <h4>Vencidos</h4> */}
       {/* <ul>
