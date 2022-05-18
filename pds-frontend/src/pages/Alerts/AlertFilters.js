@@ -12,7 +12,9 @@ export const baseQuery = gql`
         dataEnvioEmail
         aluno {
             id
+            matricula
             nomeCompleto
+            dataIngresso
             dataLimite
             emailInstitucional
             emailPessoal
@@ -37,7 +39,7 @@ export function filterVencidos(aa) {
         let limiteFinal = moment(a.aluno.dataLimite);
         let inicioAlerta = limiteFinal.subtract(a.alerta.diasIntervalo, 'days');
         let hoje = moment();
-        return (inicioAlerta <= hoje) && (inicioAlerta.add(30) <= hoje)
+        return (inicioAlerta <= hoje) && (inicioAlerta.add(30, 'days') <= hoje)
     });
 }
 
@@ -46,7 +48,7 @@ export function filterEnviados(aa) {
         let limiteFinal = moment(a.aluno.dataLimite);
         let inicioAlerta = limiteFinal.subtract(a.alerta.diasIntervalo, 'days');
         let hoje = moment();
-        return a.enviado && !(inicioAlerta.add(30) <= hoje);
+        return a.enviado && !(inicioAlerta.add(30, 'days') <= hoje);
     });
 }
 
@@ -55,7 +57,7 @@ export function filterAbertos(aa) {
         let limiteFinal = moment(a.aluno.dataLimite);
         let inicioAlerta = limiteFinal.subtract(a.alerta.diasIntervalo, 'days');
         let hoje = moment();
-        return (inicioAlerta <= hoje) && !(inicioAlerta.add(30) <= hoje) && !a.enviado;
+        return (inicioAlerta <= hoje) && !(inicioAlerta.add(30, 'days') <= hoje) && !a.enviado;
     });
 }
 
