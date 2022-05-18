@@ -1015,7 +1015,7 @@ export type AlunoRelationFilter = {
   isNot?: InputMaybe<AlunoWhereInput>;
 };
 
-export enum AlunoScalarFieldEnum {          //aqui aluno1
+export enum AlunoScalarFieldEnum {
   Ativo = 'ativo',
   CoorientadorId = 'coorientadorId',
   Cpf = 'cpf',

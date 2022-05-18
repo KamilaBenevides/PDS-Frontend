@@ -31,13 +31,8 @@ const Register = () => {
             cpf
             emailInstitucional
             emailPessoal
-            ativo
-            orientador {
-              id
-            }
-            coorientador {
-                id
-            }
+            orientadorId
+            coorientadorId
         }
       }
     `;
