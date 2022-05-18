@@ -1,7 +1,7 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
-import { Container, StyledNameText, StyledText, StyledButton, StyledContent } from './styles';
+import { Container, StyledNameText, StyledText, StyledButton, StyledContent, StyledStatusName} from './styles';
 import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import {Col, Row } from 'antd';
@@ -45,6 +45,7 @@ const ListRegister = () => {
 
     useEffect(() => {
         let items = queryAlunos.data?.alunos ? queryAlunos.data.alunos : [];
+        console.log("items ", items);
         setItems(items); 
     }, [queryAlunos.data])
     
@@ -58,10 +59,15 @@ const ListRegister = () => {
     const onSearch = value => console.log(value); 
     const header = <InputSearch placeholder={"Buscar"} onSearch={onSearch}/>
 
-    const discentesHeader = item => 
-      <Col span={24}>
-          <StyledNameText>{item.nomeCompleto}</StyledNameText>
-      </Col>
+    const discentesHeader = item =>
+        <>
+            <Col span={!item.matricula ? 24: 20}>
+                <StyledNameText>{item.nomeCompleto}</StyledNameText>
+            </Col>
+            {!item.matricula ? null: <Col span={4}>
+                <StyledStatusName>STATUS: em aberto</StyledStatusName>
+            </Col>}
+        </>
 
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
@@ -84,7 +90,15 @@ const content = item =>
           <Col span={24}>
               <StyledText><strong>Orientador: </strong> {item.orientador?.nomeCompleto}</StyledText>
           </Col> : null}
-
+          <Col span={3}>
+        <StyledButton type="primary" danger 
+        style={{
+          background: '#838EA0',
+            color: '#FFFFFF'
+          }}>
+        INATIVAR
+        </StyledButton>
+        </Col>
       </Row>
   </StyledContent>)
     

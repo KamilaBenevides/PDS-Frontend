@@ -1,7 +1,7 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
-import { Container, StyledNameText, StyledText, StyledButton, StyledContent } from './styles';
+import { Container, StyledNameText, StyledText, StyledButton, StyledContent , StyledStatusName} from './styles';
 import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import moment from 'moment';
@@ -107,9 +107,18 @@ const BaseAlert = ({alertType}) => {
   const header = <InputSearch placeholder={"Buscar"} onSearch={onSearch} />
 
   const collapseHeader = item => 
-  <Col span={24}>
+  // <Col span={24}>
+  //     <StyledNameText>{item.aluno.nomeCompleto}</StyledNameText>
+  // </Col>
+
+<>
+  <Col span={!item.aluno.matricula ? 24: 20}>
       <StyledNameText>{item.aluno.nomeCompleto}</StyledNameText>
   </Col>
+  {!item.aluno.matricula ? null: <Col span={4}>
+      <StyledStatusName>STATUS: Ativo</StyledStatusName>
+  </Col>}
+</>
   
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
@@ -127,31 +136,22 @@ const collapseVencidosContent = item =>
             <StyledText><strong>Status:</strong> {item.ativo ? "Ativo" : "Inativo"}</StyledText>
         </Col>
         <Col span={3}>
-        <StyledButton type="primary" danger 
-        style={{
-          background: '#838EA0',
-            color: '#FFFFFF'
-          }}>
-        INATIVAR
-        </StyledButton>
-        </Col>
-        {/* <Col span={3}>
-        <StyledButton type="primary" danger 
-        style={{
-            color: '#FFFFFF'
-          }}>
-        ALERTAR
-        </StyledButton>
-        </Col>
-        <Col span={4}>
-        <StyledButton type="primary" 
-        style={{
-            background: '#2EC615',
-            color: '#FFFFFF'
-          }}>
-        AGENDAMENTO FEITO
-        </StyledButton>
-        </Col> */}
+          <StyledButton type="primary" danger 
+          style={{
+              color: '#FFFFFF'
+            }}>
+          ALERTAR
+          </StyledButton>
+          </Col>
+          <Col span={4}>
+          <StyledButton type="primary" 
+          style={{
+              background: '#2EC615',
+              color: '#FFFFFF'
+            }}>
+          REALIZADO
+          </StyledButton>
+          </Col>
     </Row>
 </StyledContent>)
 
@@ -181,7 +181,7 @@ const collapseContent = item =>
               background: '#2EC615',
               color: '#FFFFFF'
             }}>
-          AGENDAMENTO FEITO
+          REALIZADO
           </StyledButton>
           </Col>
       </Row>
