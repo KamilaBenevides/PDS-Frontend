@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import moment from 'moment';
 import * as af from './AlertFilters.js';
-import { Col, Row } from 'antd';
+import { Col, Row, Typography } from 'antd';
+const {Text} = Typography;
 
 const BaseAlert = ({alertType}) => {
 
@@ -95,30 +96,47 @@ const BaseAlert = ({alertType}) => {
 
   useEffect(() => {
     let aa = queryResolvidos.data?.alertaAlunos ? queryResolvidos.data.alertaAlunos : [];
-    setResolvidos(aa);
+    let aa_status = aa.map(e => ({...e, status: "Resolvido"}));
+    setResolvidos(aa_status);
   }, [queryResolvidos.data]);
   
   useEffect(() => {
     let aa = queryInativos.data?.alertaAlunos ? queryInativos.data.alertaAlunos : [];
-    setInativos(aa);
+    let aa_status = aa.map(e => ({...e, status: "Inativo"}));
+    setInativos(aa_status);
   }, [queryInativos.data]);
 
   const onSearch = value => console.log(value);
   const header = <InputSearch placeholder={"Buscar"} onSearch={onSearch} />
+  
+  const getStatusType = status => {
+    switch (status) {
+      case "Vencido":
+        return "danger";
+      case "Em Aberto":
+        return "warning";
+      case "Enviado":
+        return "warning";
+      case "Inativo":
+        return "secondary";
+      case "Não Iniciado":
+        return "secondary";
+      case "Resolvido":
+        return "success";
+      default:
+        break;
+    }
+  }
 
-  const collapseHeader = item => 
-  // <Col span={24}>
-  //     <StyledNameText>{item.aluno.nomeCompleto}</StyledNameText>
-  // </Col>
-
-<>
-  <Col span={!item.aluno.matricula ? 24: 20}>
-      <StyledNameText>{item.aluno.nomeCompleto}</StyledNameText>
-  </Col>
-  {!item.aluno.matricula ? null: <Col span={4}>
-      <StyledStatusName>STATUS: Ativo</StyledStatusName>
-  </Col>}
-</>
+  const collapseHeader = (item, status) => 
+    <>
+      <Col span={20}>
+          <StyledNameText>{item.aluno.nomeCompleto}</StyledNameText>
+      </Col>
+      <Col span={4}>
+          <Text type={getStatusType(item.status)}>STATUS: {item.status}</Text>
+      </Col>
+    </>
   
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
@@ -136,21 +154,21 @@ const collapseVencidosContent = item =>
             <StyledText><strong>Status:</strong> {item.ativo ? "Ativo" : "Inativo"}</StyledText>
         </Col>
         <Col span={3}>
-          <StyledButton type="primary" danger 
-          style={{
-              color: '#FFFFFF'
-            }}>
-          ALERTAR
-          </StyledButton>
+            <StyledButton type="primary" danger 
+              style={{
+                  color: '#FFFFFF'
+                }}>
+              ALERTAR
+            </StyledButton>
           </Col>
           <Col span={4}>
-          <StyledButton type="primary" 
-          style={{
-              background: '#2EC615',
-              color: '#FFFFFF'
-            }}>
-          REALIZADO
-          </StyledButton>
+            <StyledButton type="primary" 
+              style={{
+                  background: '#2EC615',
+                  color: '#FFFFFF'
+                }}>
+              REALIZADO
+            </StyledButton>
           </Col>
     </Row>
 </StyledContent>)
@@ -226,55 +244,6 @@ const collapseContent = item =>
         <h4>Inativos</h4>
         <Collapse items={inativos} header={collapseHeader} content={collapseContent}/>
       </>}
-      {/* <h4>Vencidos</h4> */}
-      {/* <ul>
-        {
-          
-          vencidos.map((alerta) =>
-            <li key={alerta.id}>{alerta.aluno.nomeCompleto}</li>
-          )
-        }
-      </ul> */}
-      {/* <h4>Enviados</h4>
-      <ul>
-        {
-          enviados.map((alerta) =>
-            <li key={alerta.id}>{alerta.aluno.nomeCompleto}</li>
-          )
-        }
-      </ul> */}
-      {/* <h4>Abertos</h4>
-      <ul>
-        {
-          abertos.map((alerta) =>
-            <li key={alerta.id}>{alerta.aluno.nomeCompleto}</li>
-          )
-        }
-      </ul> */}
-      {/* <h4>Nao Iniciados</h4>
-      <ul>
-        {
-          naoIniciados.map((alerta) =>
-            <li key={alerta.id}>{alerta.aluno.nomeCompleto}</li>
-          )
-        }
-      </ul> */}
-      {/* <h4>Resolvidos</h4>
-      <ul>
-        {
-          resolvidos.map((alerta) =>
-            <li key={alerta.id}>{alerta.aluno.nomeCompleto}</li>
-          )
-        }
-      </ul> */}
-      {/* <h4>Inativos</h4>
-      <ul>
-        {
-          inativos.map((alerta) =>
-            <li key={alerta.id}>{alerta.aluno.nomeCompleto}</li>
-          )
-        }
-      </ul> */}
     </Container>
   </>
 }
