@@ -8,6 +8,11 @@ const SideMenu = () => {
 
     const handleNavigation = (item) => {
         let key = item.key;
+        if (key == 9) {
+            // provisório até integrar documentos ao app principal
+            window.open('https://documentos-ppgi.vercel.app/', '_blank');
+            return;
+        }
         menuItens.forEach(obj => {
             if(obj.key && obj.key === key) {
                 navigate(obj.path);
@@ -28,11 +33,12 @@ const SideMenu = () => {
     
     
     const menuItens = [
-        {
-            key: '0',
-            label: 'Meu Perfil',
-            path: path.DASHBOARD
-        },
+        // removendo provisoriamente para professores nao reclamarem de tela "vazia"
+        // {
+        //     key: '0',
+        //     label: 'Meu Perfil',
+        //     path: path.DASHBOARD
+        // },
         {
             key: '1',
             label: 'Cadastros',
