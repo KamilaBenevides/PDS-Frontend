@@ -1,6 +1,19 @@
 import { gql } from "@apollo/client";
 import moment from 'moment';
 
+export const solveAlertMutation = gql`
+    mutation UpdateAlertaAluno($data: AlertaAlunoUpdateInput!,
+        $updateAlertaAlunoWhere2: AlertaAlunoWhereUniqueInput!) {
+        updateAlertaAluno(data: $data, where: $updateAlertaAlunoWhere2) {
+        id
+        aluno {
+            nomeCompleto
+        }
+        alerta {
+            tipo
+        }
+    }
+  }`
 
 export const baseQuery = gql`
     query AlertaAlunos($where: AlertaAlunoWhereInput) {

@@ -3,13 +3,31 @@ import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
 import { Container, StyledNameText, StyledText, StyledButton, StyledContent , StyledStatusName} from './styles';
 import { useEffect, useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
 import * as af from './AlertFilters.js';
 import { Col, Row, Typography } from 'antd';
 const {Text} = Typography;
 
 const BaseAlert = ({alertType}) => {
+
+  const [solveAlert] = useMutation(af.solveAlertMutation);
+
+  const handleSolve = (aaId, resolv) => {
+    solveAlert({
+      variables: {
+          data: {
+            resolvido: {
+              set: resolv
+            }
+          },
+          updateAlertaAlunoWhere2: {
+            id: aaId
+          }
+      }}).then(() => {
+          window.location.reload();
+      });
+  }
 
   const queryAlertaAlunos = useQuery(af.baseQuery, {
     variables: {
@@ -140,39 +158,6 @@ const BaseAlert = ({alertType}) => {
   
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
-const collapseVencidosContent = item =>
-(<StyledContent>
-    <Row gutter={16}>
-        <Col span={24}>
-            <StyledText><strong>E-mail:</strong> {item.aluno?.emailPessoal}</StyledText>
-        </Col>
-        <Col span={24}>
-            <StyledText><strong>Prazo máximo:</strong> {dataFormater(item.aluno.dataLimite)}</StyledText>
-            {/* <StyledText><strong>Prazo máximo:</strong> {item.dataLimite}</StyledText> */}
-        </Col>
-        <Col span={24}>
-            <StyledText><strong>Status:</strong> {item.ativo ? "Ativo" : "Inativo"}</StyledText>
-        </Col>
-        <Col span={3}>
-            <StyledButton type="primary" danger 
-              style={{
-                  color: '#FFFFFF'
-                }}>
-              ALERTAR
-            </StyledButton>
-          </Col>
-          <Col span={4}>
-            <StyledButton type="primary" 
-              style={{
-                  background: '#2EC615',
-                  color: '#FFFFFF'
-                }}>
-              REALIZADO
-            </StyledButton>
-          </Col>
-    </Row>
-</StyledContent>)
-
 const collapseContent = item =>
   (<StyledContent>
       <Row gutter={16}>
@@ -192,22 +177,33 @@ const collapseContent = item =>
               <StyledText><strong>Status:</strong> {item.ativo ? "Ativo" : "Inativo"}</StyledText>
           </Col> */}
           <Col span={3}>
-          <StyledButton type="primary" danger 
-          style={{
-              color: '#FFFFFF'
-            }}>
-          ALERTAR
-          </StyledButton>
+            <StyledButton type="primary" danger 
+              style={{
+                  color: '#FFFFFF'
+                }}>
+              ALERTAR
+            </StyledButton>
           </Col>
-          <Col span={4}>
-          <StyledButton type="primary" 
-          style={{
-              background: '#2EC615',
-              color: '#FFFFFF'
-            }}>
-          REALIZADO
-          </StyledButton>
-          </Col>
+          {!item.resolvido ?
+            <Col span={4}>
+              <StyledButton onClick={() => handleSolve(item.id, true)}
+                style={{
+                    background: '#2EC615',
+                    color: '#FFFFFF'
+                  }}>
+                REALIZADO
+              </StyledButton>
+            </Col>
+            :
+            <Col span={4}>
+              <StyledButton onClick={() => handleSolve(item.id, false)}
+                style={{
+                    background: '#AAAAAA',
+                    color: '#FFFFFF'
+                  }}>
+                DESFAZER RESOLVIDO
+              </StyledButton>
+            </Col>}
       </Row>
   </StyledContent>)
 
