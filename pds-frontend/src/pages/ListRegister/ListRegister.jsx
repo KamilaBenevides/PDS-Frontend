@@ -60,9 +60,18 @@ const ListRegister = () => {
       setItemsDoc(itemsDoc); 
   }, [queryDocentes.data])
   
+  const [search, setSearch] = useState("");
+  const [searchAlunos, setSearchAlunos] = useState([]);
+  const [searchDoc, setSearchDoc] = useState([]);
 
-    const onSearch = value => console.log(value); 
-    const header = <InputSearch placeholder={"Buscar"} onSearch={onSearch}/>
+  const onSearch = value => {
+    setSearch(value);
+    let sa = items.filter(i => {return i.nomeCompleto.toLowerCase().includes(value.toLowerCase())});
+    let sd = itemsDoc.filter(i => {return i.nomeCompleto.toLowerCase().includes(value.toLowerCase())})
+    setSearchAlunos(sa);
+    setSearchDoc(sd);
+  }; 
+  const header = <InputSearch placeholder={"Buscar"} onSearch={onSearch}/>
 
     const docentesHeader = item =>
         <>
@@ -162,9 +171,9 @@ const content = item =>
         <Container>
             {header}
             <h4>Discentes</h4>
-            <Collapse items={items} header={discentesHeader} content={content} />
+            <Collapse items={search.length ? searchAlunos : items} header={discentesHeader} content={content} />
             <h4>Docentes</h4>
-            <Collapse items={itemsDoc} header={docentesHeader} content={docContent} />
+            <Collapse items={search.length ? searchDoc : itemsDoc} header={docentesHeader} content={docContent} />
         </Container>
     </> 
 }

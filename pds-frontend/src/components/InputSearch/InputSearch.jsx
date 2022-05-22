@@ -6,7 +6,7 @@ const InputSearch = ({
     onSearch
 }) => {
 
-    return <StyledSearch placeholder={placeholder} onSearch={onSearch}/>
+    return <StyledSearch placeholder={placeholder} onSearch={onSearch} allowClear />
 }
 
 export default InputSearch;

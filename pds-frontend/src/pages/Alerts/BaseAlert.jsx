@@ -124,7 +124,21 @@ const BaseAlert = ({alertType}) => {
     setInativos(aa_status);
   }, [queryInativos.data]);
 
-  const onSearch = value => console.log(value);
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    setSearch("");
+    setSearchResults([]);
+  }, [alertType]);
+
+  const onSearch = value => {
+    setSearch(value);
+    let aa = [].concat(vencidos, enviados, abertos, naoIniciados, inativos, resolvidos);
+    let results = aa.filter(a => { return a.aluno.nomeCompleto.toLowerCase().includes(value.toLowerCase()) });
+    setSearchResults(results);
+    console.log(value, results, aa);
+  }
   const header = <InputSearch placeholder={"Buscar"} onSearch={onSearch} />
   
   const getStatusType = status => {
@@ -173,9 +187,10 @@ const collapseContent = item =>
           <Col span={24}>
               <StyledText><strong>Alerta vencido em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days').add(30, 'days'))}</StyledText>
           </Col>
-          {/* <Col span={24}>
-              <StyledText><strong>Status:</strong> {item.ativo ? "Ativo" : "Inativo"}</StyledText>
-          </Col> */}
+          {item.dataEnvioEmail ?
+            <Col span={24}>
+                <StyledText><strong>Data de envio do Email:</strong> {dataFormater(item.dataEnvioEmail)}</StyledText>
+            </Col> : null}
           <Col span={3}>
             <StyledButton type="primary" danger 
               style={{
@@ -206,40 +221,48 @@ const collapseContent = item =>
             </Col>}
       </Row>
   </StyledContent>)
+  
+  const resultadosPesquisa = (<>
+      <h4>Resultados</h4>
+      <Collapse items={searchResults} header={collapseHeader} content={collapseContent}/>
+    </>)
 
+  const listaPadrao = (<>
+    {!vencidos.length ? null : 
+    <>
+      <h4>Vencidos</h4>
+      <Collapse items={vencidos} header={collapseHeader} content={collapseContent}/>
+    </>}
+    {!enviados.length ? null : 
+    <>
+      <h4>Enviados</h4>
+      <Collapse items={enviados} header={collapseHeader} content={collapseContent}/>
+    </>}
+    {!abertos.length ? null : 
+    <>
+      <h4>Abertos</h4>
+      <Collapse items={abertos} header={collapseHeader} content={collapseContent}/>
+    </>}
+    {!naoIniciados.length ? null : 
+    <>
+      <h4>Não Iniciados</h4>
+      <Collapse items={naoIniciados} header={collapseHeader} content={collapseContent}/>
+    </>}
+    {!resolvidos.length ? null : 
+    <>
+      <h4>Resolvidos</h4>
+      <Collapse items={resolvidos} header={collapseHeader} content={collapseContent}/>
+    </>}
+    {!inativos.length ? null : 
+    <>
+      <h4>Inativos</h4>
+      <Collapse items={inativos} header={collapseHeader} content={collapseContent}/>
+    </>}</>)
+  
   return <>
     <Container>
       {header}
-      {!vencidos.length ? null : 
-      <>
-        <h4>Vencidos</h4>
-        <Collapse items={vencidos} header={collapseHeader} content={collapseContent}/>
-      </>}
-      {!enviados.length ? null : 
-      <>
-        <h4>Enviados</h4>
-        <Collapse items={enviados} header={collapseHeader} content={collapseContent}/>
-      </>}
-      {!abertos.length ? null : 
-      <>
-        <h4>Abertos</h4>
-        <Collapse items={abertos} header={collapseHeader} content={collapseContent}/>
-      </>}
-      {!naoIniciados.length ? null : 
-      <>
-        <h4>Não Iniciados</h4>
-        <Collapse items={naoIniciados} header={collapseHeader} content={collapseContent}/>
-      </>}
-      {!resolvidos.length ? null : 
-      <>
-        <h4>Resolvidos</h4>
-        <Collapse items={resolvidos} header={collapseHeader} content={collapseContent}/>
-      </>}
-      {!inativos.length ? null : 
-      <>
-        <h4>Inativos</h4>
-        <Collapse items={inativos} header={collapseHeader} content={collapseContent}/>
-      </>}
+      {search.length ? resultadosPesquisa : listaPadrao}
     </Container>
   </>
 }
