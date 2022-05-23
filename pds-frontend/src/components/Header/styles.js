@@ -15,13 +15,15 @@ export const StyledLogo = styled.div`
     display: flex;
     flex-direction: column;
     padding-top: 20px;
+    min-height: 150px;
 `;
 
 export const StyledText = styled.span`
     font-family: Poppins;
     font-style: normal;
     font-weight: 900;
-    font-size: 35px;
+    // font-size: 2vw;
+    font-size: 4vh;
     line-height: 35px;
     color: #FFFFFF;
 `;

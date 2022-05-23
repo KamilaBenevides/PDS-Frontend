@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -28,4 +28,8 @@ export const StyledButton = styled(Button)`
     width: 100%;
     border: none;
     marging-top: 5px;
+`;
+
+export const StyledSelect = styled(Select)`
+    width: 100%;
 `;

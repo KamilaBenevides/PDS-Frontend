@@ -1,6 +1,6 @@
 import Header from '../Header/Header';
 import SideMenu from '../SideMenu/SideMenu';
-import { StyledLayout, StyledContent } from './styles';
+import { StyledLayout, StyledContent, StyledCard } from './styles';
 import { Outlet } from 'react-router-dom';
 
 
