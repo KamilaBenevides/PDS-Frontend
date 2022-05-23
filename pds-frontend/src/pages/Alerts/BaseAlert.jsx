@@ -176,37 +176,37 @@ const BaseAlert = ({alertType}) => {
     if (state.showVencidos) {
       console.log("vencidos", vencidos);
       const filteredAlunos = vencidos.filter(entry =>
-        entry?.aluno?.nomeCompleto.includes(value)
+        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
       );
       setVencidosItems(filteredAlunos);
     }
     if (state.showAbertos) {
       const filteredAlunos = abertos.filter(entry =>
-        entry?.aluno?.nomeCompleto.includes(value)
+        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
       );
       setAbertosItems(filteredAlunos);
     }
     if(state.showEnviados) {
       const filteredAlunos = enviados.filter(entry =>
-        entry?.aluno?.nomeCompleto.includes(value)
+        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
       );
       setEnviadosItems(filteredAlunos);
     }
     if (state.showInativos) {
       const filteredAlunos = inativos.filter(entry =>
-        entry?.aluno?.nomeCompleto.includes(value)
+        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
       );
       setInativosItems(filteredAlunos);
     }
     if (state.showNaoIniciados) {
       const filteredAlunos = naoIniciados.filter(entry =>
-        entry?.aluno?.nomeCompleto.includes(value)
+        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
       );
       setNaoIniciadosItems(filteredAlunos);
     }
     if (state.showResolvidos) {
       const filteredAlunos = resolvidos.filter(entry =>
-        entry?.aluno?.nomeCompleto.includes(value)
+        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
       );
       setResolvidosItems(filteredAlunos);
     }

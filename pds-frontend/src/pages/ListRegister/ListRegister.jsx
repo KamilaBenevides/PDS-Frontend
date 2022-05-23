@@ -72,12 +72,12 @@ const ListRegister = () => {
     const onSearch = value => {
       const currValue = value;
       const filteredAlunos = discentes.filter(entry =>
-        entry.nomeCompleto.includes(currValue)
+        entry.nomeCompleto.toLowerCase().includes(currValue.toLowerCase())
       );
       setItems(filteredAlunos);
 
       const filteredDocs = docs.filter(entry =>
-        entry.nomeCompleto.includes(currValue)
+        entry.nomeCompleto.toLowerCase().includes(currValue.toLowerCase())
       );
       setItemsDoc(filteredDocs);
     }
