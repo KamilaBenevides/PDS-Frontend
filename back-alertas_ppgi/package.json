@@ -34,12 +34,13 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
+    "func:test": "ts-node-dev --respawn --transpile-only --no-notify runanything.ts",
     "start:local": "(yarn prisma:migrate) & (yarn prisma:generate) & (yarn graphql:start)",
     "start": "pm2-runtime ./dist/index.js",
     "start:prod": "pm2-runtime ./dist/index.js",
     "graphql:start": "ts-node-dev --respawn --transpile-only --no-notify index.ts",
     "prisma:migrate": "npx prisma migrate dev",
-    "prisma:migrate:dev": "prisma migrate dev --create-only",
+    "prisma:migrate:draft": "prisma migrate dev --create-only",
     "prisma:migrate:prod": "npx prisma migrate deploy",
     "prisma:generate": "npx prisma generate",
     "build": "yarn run prisma:migrate:prod && yarn run prisma:generate && tsc -p tsconfig.production.json"

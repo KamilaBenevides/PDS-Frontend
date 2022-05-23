@@ -25,8 +25,8 @@ model Aluno {
   emailInstitucional String?       @unique
   emailPessoal       String?       @unique
   ativo              Boolean       @default(true)
-  orientador         Docente       @relation(name: "orientador", fields: [orientadorId], references: [id])
-  orientadorId       Int
+  orientador         Docente?      @relation(name: "orientador", fields: [orientadorId], references: [id])
+  orientadorId       Int?
   coorientador       Docente?      @relation(name: "coorientador", fields: [coorientadorId], references: [id])
   coorientadorId     Int?
   AlertaAluno        AlertaAluno[]
@@ -40,8 +40,17 @@ model Docente {
   AlunoCoorientado Aluno[] @relation(name: "coorientador")
 }
 
+enum AlertaType {
+  DEFESA
+  AGENDAMENTO_DEFESA
+  QUALIFICACAO
+  AGENDAMENTO_QUALIFICACAO
+  PROFICIENCIA
+}
+
 model Alerta {
   id            Int           @id @default(autoincrement())
+  tipo          AlertaType    @unique
   diasIntervalo Int
   nome          String
   corpoEmail    String?
@@ -49,13 +58,13 @@ model Alerta {
 }
 
 model AlertaAluno {
-  id             Int      @id @default(autoincrement())
-  aluno          Aluno    @relation(fields: [alunoId], references: [id])
+  id             Int       @id @default(autoincrement())
+  aluno          Aluno     @relation(fields: [alunoId], references: [id])
   alunoId        Int
-  Alerta         Alerta   @relation(fields: [alertaId], references: [id])
+  alerta         Alerta    @relation(fields: [alertaId], references: [id])
   alertaId       Int
-  enviado        Boolean  @default(false)
-  resolvido      Boolean  @default(false)
-  ativo          Boolean  @default(true)
-  dataEnvioEmail DateTime
+  enviado        Boolean   @default(false)
+  resolvido      Boolean   @default(false)
+  ativo          Boolean   @default(true)
+  dataEnvioEmail DateTime?
 }

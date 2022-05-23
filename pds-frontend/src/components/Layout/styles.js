@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Layout } from 'antd';
+import { Layout, Card } from 'antd';
 
 const { Content } = Layout;
 
@@ -9,5 +9,5 @@ export const StyledLayout = styled(Layout)`
 `;
 
 export const StyledContent = styled(Content)`
-
+    overflow-y: scroll
 `;
