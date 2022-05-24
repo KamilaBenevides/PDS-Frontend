@@ -14,6 +14,18 @@ const {Text} = Typography;
 
 const BaseAlert = ({alertType}) => {
 
+  const [sendAlert] = useMutation(af.sendAlertaAlunoMutation);
+
+  const handleSend = (aaId) => {
+    sendAlert({
+      variables: {
+        alertaAlunoId: aaId
+      }
+    }).then(() => {
+      queryAlertaAlunos.refetch();
+    });
+  }
+
   const [solveAlert] = useMutation(af.solveAlertMutation);
 
   const handleSolve = (aaId, resolv) => {
@@ -370,7 +382,7 @@ const collapseContent = item =>
                 <StyledText><strong>Data de envio do Email:</strong> {dataFormater(item.dataEnvioEmail)}</StyledText>
             </Col> : null}
           <Col span={3}>
-            <StyledButton type="primary" danger 
+            <StyledButton onClick={() => handleSend(item.id)} type="primary" danger 
               style={{
                   color: '#FFFFFF'
                 }}>

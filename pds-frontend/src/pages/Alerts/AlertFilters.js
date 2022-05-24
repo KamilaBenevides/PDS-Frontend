@@ -47,6 +47,18 @@ export const baseQuery = gql`
         }
     }`
 
+export const sendAlertaAlunoMutation = gql`
+    mutation SendAlertaAluno($alertaAlunoId: Int!) {
+        sendAlertaAluno(alertaAlunoId: $alertaAlunoId) {
+            id
+            enviado
+            dataEnvioEmail
+            aluno {
+                emailInstitucional
+            }
+        }
+    }`
+
 export function filterVencidos(aa) {
     let filtered = aa.filter(a => {
         let limiteFinal = moment(a.aluno.dataLimite);
