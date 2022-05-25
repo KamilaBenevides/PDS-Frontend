@@ -16,7 +16,11 @@ const transporter = NodeMailer.createTransport({
 const main = async () => {
   const job = NodeCron.schedule("30 30 13 * * *", async () => {
     const prisma = new PrismaClient();
-    const getAlertas = await prisma.alertaAluno.findMany({include: {alerta: true, aluno: true}, where: {ativo: true, enviado: false, resolvido: false}});
+    const getAlertas = await prisma.alertaAluno.findMany({include: {alerta: true, aluno: true}, where: {
+      AND: [
+      {ativo: true}, {enviado: false}, {resolvido: false}
+      ],
+    }});
     const today = new Date();
 
     getAlertas.forEach(async (current) => {
