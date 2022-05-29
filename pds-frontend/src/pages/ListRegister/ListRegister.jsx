@@ -1,10 +1,10 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
-import { Container, StyledNameText, StyledText, StyledButton, StyledContent } from './styles';
+import { Container, StyledNameText, StyledText, StyledButton, StyledContent, StyledSelect } from './styles';
 import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import {Col, Row, Typography, Button } from 'antd';
+import {Col, Row, Typography, Button, Select } from 'antd';
 import moment from 'moment';
 import { useNavigate } from "react-router-dom";
 
@@ -48,30 +48,89 @@ const ListRegister = () => {
   const [items, setItems] = useState([]);
   const [itemsDoc, setItemsDoc] = useState([]);
 
+  const [discentes, setDiscentes] = useState([]);
+  const [docs, setDocs] = useState([]);
+
+  const [showDiscentes, setShowDiscentes] = useState(true);
+  const [showDocs, setShowDocs] = useState(true);
+
     useEffect(() => {
         let items = queryAlunos.data?.alunos ? queryAlunos.data.alunos : [];
         console.log("items ", items);
         setItems(items); 
+        setDiscentes(items);
     }, [queryAlunos.data])
     
     useEffect(() => {
       queryDocentes.refetch();
       let itemsDoc = queryDocentes.data?.docentes ? queryDocentes.data.docentes : []
       setItemsDoc(itemsDoc); 
+      setDocs(itemsDoc);
   }, [queryDocentes.data])
   
-  const [search, setSearch] = useState("");
-  const [searchAlunos, setSearchAlunos] = useState([]);
-  const [searchDoc, setSearchDoc] = useState([]);
 
-  const onSearch = value => {
-    setSearch(value);
-    let sa = items.filter(i => {return i.nomeCompleto.toLowerCase().includes(value.toLowerCase())});
-    let sd = itemsDoc.filter(i => {return i.nomeCompleto.toLowerCase().includes(value.toLowerCase())})
-    setSearchAlunos(sa);
-    setSearchDoc(sd);
-  }; 
-  const header = <InputSearch placeholder={"Buscar"} onSearch={onSearch}/>
+    const onSearch = value => {
+      const currValue = value;
+      const filteredAlunos = discentes.filter(entry =>
+        entry.nomeCompleto.toLowerCase().includes(currValue.toLowerCase())
+      );
+      setItems(filteredAlunos);
+
+      const filteredDocs = docs.filter(entry =>
+        entry.nomeCompleto.toLowerCase().includes(currValue.toLowerCase())
+      );
+      setItemsDoc(filteredDocs);
+    }
+
+    const filterOptions = [{
+      label: "Discentes",
+      value: "discentes"
+    },
+    {
+      label: "Doscentes",
+      value: "doscentes"
+    },
+    {
+      label: "Todos",
+      value: "todos"
+    }
+  ];
+
+  const onFilterSelectChange = value => {
+      if (value === "discentes") {
+        setShowDiscentes(true);
+        setShowDocs(false);
+      } else if (value === "doscentes") {
+        setShowDiscentes(false);
+        setShowDocs(true);
+      } else {
+        setShowDiscentes(true);
+        setShowDocs(true);
+      }
+  }
+    
+    const header = 
+      (<Row >
+        <Col span={18}>
+          <InputSearch placeholder={"Buscar"} onSearch={onSearch}/>
+        </Col>
+        <Col span={6}>
+          <StyledSelect 
+          options={filterOptions} 
+          onChange={onFilterSelectChange}
+          defaultValue="todos"/>
+        </Col>
+      </Row>)
+
+  const filterSelectInitialState = () => {
+    setShowDiscentes(true);
+    setShowDocs(true);
+  }
+
+  useEffect(() => {
+    filterSelectInitialState();
+  }, [])
+      
 
     const docentesHeader = item =>
         <>
@@ -94,6 +153,7 @@ const ListRegister = () => {
               </Col>
             }
         </>
+
 
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
@@ -170,10 +230,22 @@ const content = item =>
     return <>
         <Container>
             {header}
-            <h4>Discentes</h4>
-            <Collapse items={search.length ? searchAlunos : items} header={discentesHeader} content={content} />
-            <h4>Docentes</h4>
-            <Collapse items={search.length ? searchDoc : itemsDoc} header={docentesHeader} content={docContent} />
+            <br>
+            </br>
+            {showDiscentes ? 
+            <>
+              {/* <h4>Discentes</h4> */}
+              <Collapse items={items} header={discentesHeader} content={content} />
+            </> : null}
+            <br>
+            </br>
+            {showDocs ? 
+            <>
+              {/* <h4>Docentes</h4> */}
+              <Collapse items={itemsDoc} header={docentesHeader} content={docContent} />
+            </> : null}
+
+
         </Container>
     </> 
 }
