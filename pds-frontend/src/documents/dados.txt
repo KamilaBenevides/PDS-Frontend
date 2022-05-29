@@ -1,0 +1,47 @@
+anoDeclaracao: string/numero
+​
+anoDefesa: string/numero
+​
+anoIngresso: string/numero
+​
+coorientador: string
+​
+cpf: string
+​
+dataDefesa: string
+​
+dataIngresso: string
+​
+diaDeclaracao: string/numero
+​
+diaDefesa: string/numero
+​
+diaIngresso: string/numero
+​
+examinadoresExternosInst: Array [ { nome: string, instituicao: string } ]
+​
+examinadoresExternosProg: Array [ { nome: string, unidade: string } ]
+​
+examinadoresInternos: Array [ { nome: string } ]
+​​
+horaDefesa: string (ex: "10:30")
+​
+linhaPesquisa: string
+​
+matricula: string
+​
+mesDeclaracao: string
+​
+mesDefesa: string
+​
+mesIngresso: string
+​
+nAta: string
+​
+nomeAluno: string
+​
+orientador: string
+​
+tituloTrabalho: string
+​
+videoconferencia: boolean
