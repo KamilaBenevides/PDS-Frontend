@@ -26,6 +26,7 @@ export const sendMail = async (to: string, alert: string, text: string) => {
         const info = await transport.sendMail(message);
         return info;
     } catch (err) {
+        console.log(err);
         throw new Error("Erro ao enviar email");
     }
 }

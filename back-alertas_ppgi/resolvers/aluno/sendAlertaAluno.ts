@@ -14,18 +14,19 @@ export class sendAlertaAlunoResolver {
     @Ctx() { prisma }: Context,
     @Args() { alertaAlunoId }: SendAlertaAluno
   ) {
-    const aa = await prisma.alertaAluno.findUnique({
+    const alertaAluno = await prisma.alertaAluno.findUnique({
       where: { id: alertaAlunoId },
       include: { aluno: true, alerta: true }
     });
 
-    if (!aa) {
+    if (!alertaAluno) {
       throw new UserInputError("Não existe um alerta aluno com esse ID.");
     }
 
     try {
-      await sendMail(aa.aluno.emailInstitucional!, aa.alerta.tipo, aa.alerta.corpoEmail!);
+      await sendMail(alertaAluno.aluno.emailInstitucional!, alertaAluno.alerta.tipo, alertaAluno.alerta.corpoEmail!);
     } catch (err) {
+      console.log(err);
       throw new ApolloError("Erro ao enviar email");
     }
 

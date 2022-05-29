@@ -60,13 +60,12 @@ const ListRegister = () => {
         setItems(items); 
         setDiscentes(items);
     }, [queryAlunos.data])
-    
+
     useEffect(() => {
-      queryDocentes.refetch();
-      let itemsDoc = queryDocentes.data?.docentes ? queryDocentes.data.docentes : []
-      setItemsDoc(itemsDoc); 
+      let itemsDoc = queryDocentes.data?.docentes ? queryDocentes.data.docentes : [];
+      setItemsDoc(itemsDoc);
       setDocs(itemsDoc);
-  }, [queryDocentes.data])
+    }, [queryDocentes.data])
   
 
     const onSearch = value => {
@@ -87,8 +86,8 @@ const ListRegister = () => {
       value: "discentes"
     },
     {
-      label: "Doscentes",
-      value: "doscentes"
+      label: "Docentes",
+      value: "docentes"
     },
     {
       label: "Todos",
@@ -100,7 +99,7 @@ const ListRegister = () => {
       if (value === "discentes") {
         setShowDiscentes(true);
         setShowDocs(false);
-      } else if (value === "doscentes") {
+      } else if (value === "docentes") {
         setShowDiscentes(false);
         setShowDocs(true);
       } else {
