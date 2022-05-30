@@ -115,3 +115,11 @@ export class CustomUpdateAluno {
   })
   alunoId!: number;
 }
+
+@ArgsType()
+export class SendAlertaAluno {
+  @Field((_type) => Int, {
+    nullable: false,
+  })
+  alertaAlunoId!: number;
+}

@@ -5,6 +5,7 @@ import { resolvers } from "./prisma/generated/type-graphql";
 import { buildSchema } from "type-graphql";
 
 import { customAlunoResolver } from "./resolvers/aluno/customAlunoResolver";
+import { sendAlertaAlunoResolver } from "./resolvers/aluno/sendAlertaAluno";
 
 const main = async () => {
   const prisma = new PrismaClient();
@@ -15,7 +16,7 @@ const main = async () => {
   };
 
   const schema = await buildSchema({
-    resolvers: [...resolvers, customAlunoResolver],
+    resolvers: [...resolvers, customAlunoResolver, sendAlertaAlunoResolver],
     validate: false,
   });
 
