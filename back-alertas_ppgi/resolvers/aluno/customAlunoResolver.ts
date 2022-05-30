@@ -1,10 +1,13 @@
 import { UserInputError, ApolloError } from "apollo-server";
 import { DateTime } from "luxon";
-import { Args, Ctx, Mutation, Resolver } from "type-graphql";
+import { Arg, Args, Ctx, Mutation, Resolver } from "type-graphql";
 import { Aluno, CreateAlunoArgs } from "../../prisma/generated/type-graphql";
 import { Context } from "../utils/context";
 import { CustomCreateAlunoInput, CustomUpdateAluno } from "./customArgs";
-import { processAlertasAluno } from "./processNewAluno";
+import {
+  processAlertasAluno,
+  processChangeDataLimite,
+} from "./processNewAluno";
 
 @Resolver()
 export class customAlunoResolver {
@@ -136,6 +139,85 @@ export class customAlunoResolver {
         throw new ApolloError(err?.message);
       }
     }
+
+    return updatedAluno;
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  async customDeleteAluno(
+    @Ctx() { prisma }: Context,
+    @Arg("alunoId") alunoId: number
+  ) {
+    const aluno = await prisma.aluno.findUnique({
+      where: { id: alunoId },
+      include: { AlertaAluno: true },
+    });
+
+    if (!aluno) {
+      throw new UserInputError("Não existe aluno com esse id");
+    }
+
+    await prisma.alertaAluno.deleteMany({
+      where: { id: { in: aluno.AlertaAluno.map((a) => a.id) } },
+    });
+
+    await prisma.aluno.delete({ where: { id: aluno.id } });
+
+    return true;
+  }
+
+  @Mutation(() => Aluno)
+  async customSetAlunoAtivo(
+    @Ctx() { prisma }: Context,
+    @Arg("alunoId") alunoId: number,
+    @Arg("ativo") ativo: boolean
+  ) {
+    const aluno = await prisma.aluno.findUnique({
+      where: { id: alunoId },
+      include: { AlertaAluno: true },
+    });
+
+    if (!aluno) {
+      throw new UserInputError("Não existe aluno com esse id");
+    }
+
+    await prisma.alertaAluno.updateMany({
+      where: { id: { in: aluno.AlertaAluno.map((a) => a.id) } },
+      data: {
+        ativo: { set: ativo },
+      },
+    });
+
+    const updatedAluno = await prisma.aluno.update({
+      where: { id: alunoId },
+      data: {
+        ativo: { set: ativo },
+      },
+    });
+
+    return updatedAluno;
+  }
+
+  @Mutation(() => Aluno)
+  async customNewDataLimite(
+    @Ctx() { prisma }: Context,
+    @Arg("alunoId") alunoId: number,
+    @Arg("dataLimite") dataLimite: Date
+  ) {
+    const aluno = await prisma.aluno.findUnique({
+      where: { id: alunoId },
+      include: { AlertaAluno: true },
+    });
+
+    if (!aluno) {
+      throw new UserInputError("Não existe aluno com esse id");
+    }
+
+    const updatedAluno = await processChangeDataLimite(
+      prisma,
+      aluno,
+      dataLimite
+    );
 
     return updatedAluno;
   }

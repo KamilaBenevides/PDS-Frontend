@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Aluno } from "../../prisma/generated/type-graphql";
 import { DateTime } from "luxon";
+import { UserInputError } from "apollo-server";
 
 export const processAlertasAluno = async (
   prisma: PrismaClient,
@@ -42,16 +43,39 @@ export const processAlertasAluno = async (
 export const processChangeDataLimite = async (
   prisma: PrismaClient,
   aluno: Aluno,
-  newDataLimite: string | Date
+  newDataLimite: Date
 ) => {
-  await prisma.aluno.update({
+  if (
+    DateTime.fromJSDate(aluno.dataLimite) >= DateTime.fromJSDate(newDataLimite)
+  ) {
+    throw new UserInputError("Nova data limite anterior à atual");
+  }
+
+  const updatedAluno = await prisma.aluno.update({
     where: { id: aluno.id },
     data: {
+      dataLimite: DateTime.fromJSDate(newDataLimite)
+        .set({
+          hour: 11,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
+        })
+        .toJSDate(),
+      ativo: { set: true },
       AlertaAluno: {
-        disconnect: aluno.AlertaAluno?.map((a) => ({ id: a.id })),
+        updateMany: {
+          where: { id: { in: aluno.AlertaAluno?.map((a) => a.id) } },
+          data: {
+            ativo: { set: true },
+            dataEnvioEmail: { set: null },
+            enviado: { set: false },
+            resolvido: { set: false },
+          },
+        },
       },
     },
   });
 
-  //to do
+  return updatedAluno;
 };
