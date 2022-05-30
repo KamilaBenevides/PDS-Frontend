@@ -63,6 +63,7 @@ export type Alerta = {
   diasIntervalo: Scalars['Int'];
   id: Scalars['Int'];
   nome: Scalars['String'];
+  tipo: AlertaType;
 };
 
 
@@ -77,12 +78,12 @@ export type AlertaAlertaAlunoArgs = {
 
 export type AlertaAluno = {
   __typename?: 'AlertaAluno';
-  Alerta: Alerta;
+  alerta: Alerta;
   alertaId: Scalars['Int'];
   aluno: Aluno;
   alunoId: Scalars['Int'];
   ativo: Scalars['Boolean'];
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: Maybe<Scalars['DateTime']>;
   enviado: Scalars['Boolean'];
   id: Scalars['Int'];
   resolvido: Scalars['Boolean'];
@@ -124,10 +125,10 @@ export type AlertaAlunoCountOrderByAggregateInput = {
 };
 
 export type AlertaAlunoCreateInput = {
-  Alerta: AlertaCreateNestedOneWithoutAlertaAlunoInput;
+  alerta: AlertaCreateNestedOneWithoutAlertaAlunoInput;
   aluno: AlunoCreateNestedOneWithoutAlertaAlunoInput;
   ativo?: InputMaybe<Scalars['Boolean']>;
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: InputMaybe<Scalars['DateTime']>;
   enviado?: InputMaybe<Scalars['Boolean']>;
   resolvido?: InputMaybe<Scalars['Boolean']>;
 };
@@ -135,7 +136,7 @@ export type AlertaAlunoCreateInput = {
 export type AlertaAlunoCreateManyAlertaInput = {
   alunoId: Scalars['Int'];
   ativo?: InputMaybe<Scalars['Boolean']>;
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: InputMaybe<Scalars['DateTime']>;
   enviado?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['Int']>;
   resolvido?: InputMaybe<Scalars['Boolean']>;
@@ -149,7 +150,7 @@ export type AlertaAlunoCreateManyAlertaInputEnvelope = {
 export type AlertaAlunoCreateManyAlunoInput = {
   alertaId: Scalars['Int'];
   ativo?: InputMaybe<Scalars['Boolean']>;
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: InputMaybe<Scalars['DateTime']>;
   enviado?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['Int']>;
   resolvido?: InputMaybe<Scalars['Boolean']>;
@@ -164,7 +165,7 @@ export type AlertaAlunoCreateManyInput = {
   alertaId: Scalars['Int'];
   alunoId: Scalars['Int'];
   ativo?: InputMaybe<Scalars['Boolean']>;
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: InputMaybe<Scalars['DateTime']>;
   enviado?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['Int']>;
   resolvido?: InputMaybe<Scalars['Boolean']>;
@@ -197,15 +198,15 @@ export type AlertaAlunoCreateOrConnectWithoutAlunoInput = {
 export type AlertaAlunoCreateWithoutAlertaInput = {
   aluno: AlunoCreateNestedOneWithoutAlertaAlunoInput;
   ativo?: InputMaybe<Scalars['Boolean']>;
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: InputMaybe<Scalars['DateTime']>;
   enviado?: InputMaybe<Scalars['Boolean']>;
   resolvido?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type AlertaAlunoCreateWithoutAlunoInput = {
-  Alerta: AlertaCreateNestedOneWithoutAlertaAlunoInput;
+  alerta: AlertaCreateNestedOneWithoutAlertaAlunoInput;
   ativo?: InputMaybe<Scalars['Boolean']>;
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: InputMaybe<Scalars['DateTime']>;
   enviado?: InputMaybe<Scalars['Boolean']>;
   resolvido?: InputMaybe<Scalars['Boolean']>;
 };
@@ -220,7 +221,7 @@ export type AlertaAlunoGroupBy = {
   alertaId: Scalars['Int'];
   alunoId: Scalars['Int'];
   ativo: Scalars['Boolean'];
-  dataEnvioEmail: Scalars['DateTime'];
+  dataEnvioEmail?: Maybe<Scalars['DateTime']>;
   enviado: Scalars['Boolean'];
   id: Scalars['Int'];
   resolvido: Scalars['Boolean'];
@@ -294,7 +295,7 @@ export type AlertaAlunoOrderByWithAggregationInput = {
 };
 
 export type AlertaAlunoOrderByWithRelationInput = {
-  Alerta?: InputMaybe<AlertaOrderByWithRelationInput>;
+  alerta?: InputMaybe<AlertaOrderByWithRelationInput>;
   alertaId?: InputMaybe<SortOrder>;
   aluno?: InputMaybe<AlunoOrderByWithRelationInput>;
   alunoId?: InputMaybe<SortOrder>;
@@ -322,7 +323,7 @@ export type AlertaAlunoScalarWhereInput = {
   alertaId?: InputMaybe<IntFilter>;
   alunoId?: InputMaybe<IntFilter>;
   ativo?: InputMaybe<BoolFilter>;
-  dataEnvioEmail?: InputMaybe<DateTimeFilter>;
+  dataEnvioEmail?: InputMaybe<DateTimeNullableFilter>;
   enviado?: InputMaybe<BoolFilter>;
   id?: InputMaybe<IntFilter>;
   resolvido?: InputMaybe<BoolFilter>;
@@ -335,7 +336,7 @@ export type AlertaAlunoScalarWhereWithAggregatesInput = {
   alertaId?: InputMaybe<IntWithAggregatesFilter>;
   alunoId?: InputMaybe<IntWithAggregatesFilter>;
   ativo?: InputMaybe<BoolWithAggregatesFilter>;
-  dataEnvioEmail?: InputMaybe<DateTimeWithAggregatesFilter>;
+  dataEnvioEmail?: InputMaybe<DateTimeNullableWithAggregatesFilter>;
   enviado?: InputMaybe<BoolWithAggregatesFilter>;
   id?: InputMaybe<IntWithAggregatesFilter>;
   resolvido?: InputMaybe<BoolWithAggregatesFilter>;
@@ -355,17 +356,17 @@ export type AlertaAlunoSumOrderByAggregateInput = {
 };
 
 export type AlertaAlunoUpdateInput = {
-  Alerta?: InputMaybe<AlertaUpdateOneRequiredWithoutAlertaAlunoInput>;
+  alerta?: InputMaybe<AlertaUpdateOneRequiredWithoutAlertaAlunoInput>;
   aluno?: InputMaybe<AlunoUpdateOneRequiredWithoutAlertaAlunoInput>;
   ativo?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  dataEnvioEmail?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  dataEnvioEmail?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   enviado?: InputMaybe<BoolFieldUpdateOperationsInput>;
   resolvido?: InputMaybe<BoolFieldUpdateOperationsInput>;
 };
 
 export type AlertaAlunoUpdateManyMutationInput = {
   ativo?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  dataEnvioEmail?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  dataEnvioEmail?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   enviado?: InputMaybe<BoolFieldUpdateOperationsInput>;
   resolvido?: InputMaybe<BoolFieldUpdateOperationsInput>;
 };
@@ -421,15 +422,15 @@ export type AlertaAlunoUpdateWithWhereUniqueWithoutAlunoInput = {
 export type AlertaAlunoUpdateWithoutAlertaInput = {
   aluno?: InputMaybe<AlunoUpdateOneRequiredWithoutAlertaAlunoInput>;
   ativo?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  dataEnvioEmail?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  dataEnvioEmail?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   enviado?: InputMaybe<BoolFieldUpdateOperationsInput>;
   resolvido?: InputMaybe<BoolFieldUpdateOperationsInput>;
 };
 
 export type AlertaAlunoUpdateWithoutAlunoInput = {
-  Alerta?: InputMaybe<AlertaUpdateOneRequiredWithoutAlertaAlunoInput>;
+  alerta?: InputMaybe<AlertaUpdateOneRequiredWithoutAlertaAlunoInput>;
   ativo?: InputMaybe<BoolFieldUpdateOperationsInput>;
-  dataEnvioEmail?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  dataEnvioEmail?: InputMaybe<NullableDateTimeFieldUpdateOperationsInput>;
   enviado?: InputMaybe<BoolFieldUpdateOperationsInput>;
   resolvido?: InputMaybe<BoolFieldUpdateOperationsInput>;
 };
@@ -448,14 +449,14 @@ export type AlertaAlunoUpsertWithWhereUniqueWithoutAlunoInput = {
 
 export type AlertaAlunoWhereInput = {
   AND?: InputMaybe<Array<AlertaAlunoWhereInput>>;
-  Alerta?: InputMaybe<AlertaRelationFilter>;
   NOT?: InputMaybe<Array<AlertaAlunoWhereInput>>;
   OR?: InputMaybe<Array<AlertaAlunoWhereInput>>;
+  alerta?: InputMaybe<AlertaRelationFilter>;
   alertaId?: InputMaybe<IntFilter>;
   aluno?: InputMaybe<AlunoRelationFilter>;
   alunoId?: InputMaybe<IntFilter>;
   ativo?: InputMaybe<BoolFilter>;
-  dataEnvioEmail?: InputMaybe<DateTimeFilter>;
+  dataEnvioEmail?: InputMaybe<DateTimeNullableFilter>;
   enviado?: InputMaybe<BoolFilter>;
   id?: InputMaybe<IntFilter>;
   resolvido?: InputMaybe<BoolFilter>;
@@ -488,6 +489,7 @@ export type AlertaCountAggregate = {
   diasIntervalo: Scalars['Int'];
   id: Scalars['Int'];
   nome: Scalars['Int'];
+  tipo: Scalars['Int'];
 };
 
 export type AlertaCountOrderByAggregateInput = {
@@ -495,6 +497,7 @@ export type AlertaCountOrderByAggregateInput = {
   diasIntervalo?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   nome?: InputMaybe<SortOrder>;
+  tipo?: InputMaybe<SortOrder>;
 };
 
 export type AlertaCreateInput = {
@@ -502,6 +505,7 @@ export type AlertaCreateInput = {
   corpoEmail?: InputMaybe<Scalars['String']>;
   diasIntervalo: Scalars['Int'];
   nome: Scalars['String'];
+  tipo: AlertaType;
 };
 
 export type AlertaCreateManyInput = {
@@ -509,6 +513,7 @@ export type AlertaCreateManyInput = {
   diasIntervalo: Scalars['Int'];
   id?: InputMaybe<Scalars['Int']>;
   nome: Scalars['String'];
+  tipo: AlertaType;
 };
 
 export type AlertaCreateNestedOneWithoutAlertaAlunoInput = {
@@ -526,6 +531,7 @@ export type AlertaCreateWithoutAlertaAlunoInput = {
   corpoEmail?: InputMaybe<Scalars['String']>;
   diasIntervalo: Scalars['Int'];
   nome: Scalars['String'];
+  tipo: AlertaType;
 };
 
 export type AlertaGroupBy = {
@@ -539,6 +545,7 @@ export type AlertaGroupBy = {
   diasIntervalo: Scalars['Int'];
   id: Scalars['Int'];
   nome: Scalars['String'];
+  tipo: AlertaType;
 };
 
 export type AlertaMaxAggregate = {
@@ -547,6 +554,7 @@ export type AlertaMaxAggregate = {
   diasIntervalo?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   nome?: Maybe<Scalars['String']>;
+  tipo?: Maybe<AlertaType>;
 };
 
 export type AlertaMaxOrderByAggregateInput = {
@@ -554,6 +562,7 @@ export type AlertaMaxOrderByAggregateInput = {
   diasIntervalo?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   nome?: InputMaybe<SortOrder>;
+  tipo?: InputMaybe<SortOrder>;
 };
 
 export type AlertaMinAggregate = {
@@ -562,6 +571,7 @@ export type AlertaMinAggregate = {
   diasIntervalo?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   nome?: Maybe<Scalars['String']>;
+  tipo?: Maybe<AlertaType>;
 };
 
 export type AlertaMinOrderByAggregateInput = {
@@ -569,6 +579,7 @@ export type AlertaMinOrderByAggregateInput = {
   diasIntervalo?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   nome?: InputMaybe<SortOrder>;
+  tipo?: InputMaybe<SortOrder>;
 };
 
 export type AlertaOrderByWithAggregationInput = {
@@ -581,6 +592,7 @@ export type AlertaOrderByWithAggregationInput = {
   diasIntervalo?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   nome?: InputMaybe<SortOrder>;
+  tipo?: InputMaybe<SortOrder>;
 };
 
 export type AlertaOrderByWithRelationInput = {
@@ -589,6 +601,7 @@ export type AlertaOrderByWithRelationInput = {
   diasIntervalo?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   nome?: InputMaybe<SortOrder>;
+  tipo?: InputMaybe<SortOrder>;
 };
 
 export type AlertaRelationFilter = {
@@ -600,7 +613,8 @@ export enum AlertaScalarFieldEnum {
   CorpoEmail = 'corpoEmail',
   DiasIntervalo = 'diasIntervalo',
   Id = 'id',
-  Nome = 'nome'
+  Nome = 'nome',
+  Tipo = 'tipo'
 }
 
 export type AlertaScalarWhereWithAggregatesInput = {
@@ -611,6 +625,7 @@ export type AlertaScalarWhereWithAggregatesInput = {
   diasIntervalo?: InputMaybe<IntWithAggregatesFilter>;
   id?: InputMaybe<IntWithAggregatesFilter>;
   nome?: InputMaybe<StringWithAggregatesFilter>;
+  tipo?: InputMaybe<EnumAlertaTypeWithAggregatesFilter>;
 };
 
 export type AlertaSumAggregate = {
@@ -624,17 +639,27 @@ export type AlertaSumOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
 };
 
+export enum AlertaType {
+  AgendamentoDefesa = 'AGENDAMENTO_DEFESA',
+  AgendamentoQualificacao = 'AGENDAMENTO_QUALIFICACAO',
+  Defesa = 'DEFESA',
+  Proficiencia = 'PROFICIENCIA',
+  Qualificacao = 'QUALIFICACAO'
+}
+
 export type AlertaUpdateInput = {
   AlertaAluno?: InputMaybe<AlertaAlunoUpdateManyWithoutAlertaInput>;
   corpoEmail?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   diasIntervalo?: InputMaybe<IntFieldUpdateOperationsInput>;
   nome?: InputMaybe<StringFieldUpdateOperationsInput>;
+  tipo?: InputMaybe<EnumAlertaTypeFieldUpdateOperationsInput>;
 };
 
 export type AlertaUpdateManyMutationInput = {
   corpoEmail?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   diasIntervalo?: InputMaybe<IntFieldUpdateOperationsInput>;
   nome?: InputMaybe<StringFieldUpdateOperationsInput>;
+  tipo?: InputMaybe<EnumAlertaTypeFieldUpdateOperationsInput>;
 };
 
 export type AlertaUpdateOneRequiredWithoutAlertaAlunoInput = {
@@ -649,6 +674,7 @@ export type AlertaUpdateWithoutAlertaAlunoInput = {
   corpoEmail?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   diasIntervalo?: InputMaybe<IntFieldUpdateOperationsInput>;
   nome?: InputMaybe<StringFieldUpdateOperationsInput>;
+  tipo?: InputMaybe<EnumAlertaTypeFieldUpdateOperationsInput>;
 };
 
 export type AlertaUpsertWithoutAlertaAlunoInput = {
@@ -665,10 +691,12 @@ export type AlertaWhereInput = {
   diasIntervalo?: InputMaybe<IntFilter>;
   id?: InputMaybe<IntFilter>;
   nome?: InputMaybe<StringFilter>;
+  tipo?: InputMaybe<EnumAlertaTypeFilter>;
 };
 
 export type AlertaWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
+  tipo?: InputMaybe<AlertaType>;
 };
 
 export type Aluno = {
@@ -686,8 +714,8 @@ export type Aluno = {
   id: Scalars['Int'];
   matricula: Scalars['String'];
   nomeCompleto: Scalars['String'];
-  orientador: Docente;
-  orientadorId: Scalars['Int'];
+  orientador?: Maybe<Docente>;
+  orientadorId?: Maybe<Scalars['Int']>;
 };
 
 
@@ -759,7 +787,7 @@ export type AlunoCreateInput = {
   emailPessoal?: InputMaybe<Scalars['String']>;
   matricula: Scalars['String'];
   nomeCompleto: Scalars['String'];
-  orientador: DocenteCreateNestedOneWithoutAlunoOrientadoInput;
+  orientador?: InputMaybe<DocenteCreateNestedOneWithoutAlunoOrientadoInput>;
 };
 
 export type AlunoCreateManyCoorientadorInput = {
@@ -772,7 +800,7 @@ export type AlunoCreateManyCoorientadorInput = {
   id?: InputMaybe<Scalars['Int']>;
   matricula: Scalars['String'];
   nomeCompleto: Scalars['String'];
-  orientadorId: Scalars['Int'];
+  orientadorId?: InputMaybe<Scalars['Int']>;
 };
 
 export type AlunoCreateManyCoorientadorInputEnvelope = {
@@ -791,7 +819,7 @@ export type AlunoCreateManyInput = {
   id?: InputMaybe<Scalars['Int']>;
   matricula: Scalars['String'];
   nomeCompleto: Scalars['String'];
-  orientadorId: Scalars['Int'];
+  orientadorId?: InputMaybe<Scalars['Int']>;
 };
 
 export type AlunoCreateManyOrientadorInput = {
@@ -857,7 +885,7 @@ export type AlunoCreateWithoutAlertaAlunoInput = {
   emailPessoal?: InputMaybe<Scalars['String']>;
   matricula: Scalars['String'];
   nomeCompleto: Scalars['String'];
-  orientador: DocenteCreateNestedOneWithoutAlunoOrientadoInput;
+  orientador?: InputMaybe<DocenteCreateNestedOneWithoutAlunoOrientadoInput>;
 };
 
 export type AlunoCreateWithoutCoorientadorInput = {
@@ -870,7 +898,7 @@ export type AlunoCreateWithoutCoorientadorInput = {
   emailPessoal?: InputMaybe<Scalars['String']>;
   matricula: Scalars['String'];
   nomeCompleto: Scalars['String'];
-  orientador: DocenteCreateNestedOneWithoutAlunoOrientadoInput;
+  orientador?: InputMaybe<DocenteCreateNestedOneWithoutAlunoOrientadoInput>;
 };
 
 export type AlunoCreateWithoutOrientadorInput = {
@@ -903,7 +931,7 @@ export type AlunoGroupBy = {
   id: Scalars['Int'];
   matricula: Scalars['String'];
   nomeCompleto: Scalars['String'];
-  orientadorId: Scalars['Int'];
+  orientadorId?: Maybe<Scalars['Int']>;
 };
 
 export type AlunoListRelationFilter = {
@@ -1043,7 +1071,7 @@ export type AlunoScalarWhereInput = {
   id?: InputMaybe<IntFilter>;
   matricula?: InputMaybe<StringFilter>;
   nomeCompleto?: InputMaybe<StringFilter>;
-  orientadorId?: InputMaybe<IntFilter>;
+  orientadorId?: InputMaybe<IntNullableFilter>;
 };
 
 export type AlunoScalarWhereWithAggregatesInput = {
@@ -1060,7 +1088,7 @@ export type AlunoScalarWhereWithAggregatesInput = {
   id?: InputMaybe<IntWithAggregatesFilter>;
   matricula?: InputMaybe<StringWithAggregatesFilter>;
   nomeCompleto?: InputMaybe<StringWithAggregatesFilter>;
-  orientadorId?: InputMaybe<IntWithAggregatesFilter>;
+  orientadorId?: InputMaybe<IntNullableWithAggregatesFilter>;
 };
 
 export type AlunoSumAggregate = {
@@ -1087,7 +1115,7 @@ export type AlunoUpdateInput = {
   emailPessoal?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   matricula?: InputMaybe<StringFieldUpdateOperationsInput>;
   nomeCompleto?: InputMaybe<StringFieldUpdateOperationsInput>;
-  orientador?: InputMaybe<DocenteUpdateOneRequiredWithoutAlunoOrientadoInput>;
+  orientador?: InputMaybe<DocenteUpdateOneWithoutAlunoOrientadoInput>;
 };
 
 export type AlunoUpdateManyMutationInput = {
@@ -1167,7 +1195,7 @@ export type AlunoUpdateWithoutAlertaAlunoInput = {
   emailPessoal?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   matricula?: InputMaybe<StringFieldUpdateOperationsInput>;
   nomeCompleto?: InputMaybe<StringFieldUpdateOperationsInput>;
-  orientador?: InputMaybe<DocenteUpdateOneRequiredWithoutAlunoOrientadoInput>;
+  orientador?: InputMaybe<DocenteUpdateOneWithoutAlunoOrientadoInput>;
 };
 
 export type AlunoUpdateWithoutCoorientadorInput = {
@@ -1180,7 +1208,7 @@ export type AlunoUpdateWithoutCoorientadorInput = {
   emailPessoal?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   matricula?: InputMaybe<StringFieldUpdateOperationsInput>;
   nomeCompleto?: InputMaybe<StringFieldUpdateOperationsInput>;
-  orientador?: InputMaybe<DocenteUpdateOneRequiredWithoutAlunoOrientadoInput>;
+  orientador?: InputMaybe<DocenteUpdateOneWithoutAlunoOrientadoInput>;
 };
 
 export type AlunoUpdateWithoutOrientadorInput = {
@@ -1230,7 +1258,7 @@ export type AlunoWhereInput = {
   matricula?: InputMaybe<StringFilter>;
   nomeCompleto?: InputMaybe<StringFilter>;
   orientador?: InputMaybe<DocenteRelationFilter>;
-  orientadorId?: InputMaybe<IntFilter>;
+  orientadorId?: InputMaybe<IntNullableFilter>;
 };
 
 export type AlunoWhereUniqueInput = {
@@ -1269,6 +1297,31 @@ export type DateTimeFilter = {
   lt?: InputMaybe<Scalars['DateTime']>;
   lte?: InputMaybe<Scalars['DateTime']>;
   not?: InputMaybe<NestedDateTimeFilter>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
+export type DateTimeNullableFilter = {
+  equals?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  not?: InputMaybe<NestedDateTimeNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
+export type DateTimeNullableWithAggregatesFilter = {
+  _count?: InputMaybe<NestedIntNullableFilter>;
+  _max?: InputMaybe<NestedDateTimeNullableFilter>;
+  _min?: InputMaybe<NestedDateTimeNullableFilter>;
+  equals?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  not?: InputMaybe<NestedDateTimeNullableWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['DateTime']>>;
 };
 
@@ -1490,14 +1543,6 @@ export type DocenteUpdateManyMutationInput = {
   nomeCompleto?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
 
-export type DocenteUpdateOneRequiredWithoutAlunoOrientadoInput = {
-  connect?: InputMaybe<DocenteWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<DocenteCreateOrConnectWithoutAlunoOrientadoInput>;
-  create?: InputMaybe<DocenteCreateWithoutAlunoOrientadoInput>;
-  update?: InputMaybe<DocenteUpdateWithoutAlunoOrientadoInput>;
-  upsert?: InputMaybe<DocenteUpsertWithoutAlunoOrientadoInput>;
-};
-
 export type DocenteUpdateOneWithoutAlunoCoorientadoInput = {
   connect?: InputMaybe<DocenteWhereUniqueInput>;
   connectOrCreate?: InputMaybe<DocenteCreateOrConnectWithoutAlunoCoorientadoInput>;
@@ -1506,6 +1551,16 @@ export type DocenteUpdateOneWithoutAlunoCoorientadoInput = {
   disconnect?: InputMaybe<Scalars['Boolean']>;
   update?: InputMaybe<DocenteUpdateWithoutAlunoCoorientadoInput>;
   upsert?: InputMaybe<DocenteUpsertWithoutAlunoCoorientadoInput>;
+};
+
+export type DocenteUpdateOneWithoutAlunoOrientadoInput = {
+  connect?: InputMaybe<DocenteWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<DocenteCreateOrConnectWithoutAlunoOrientadoInput>;
+  create?: InputMaybe<DocenteCreateWithoutAlunoOrientadoInput>;
+  delete?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  update?: InputMaybe<DocenteUpdateWithoutAlunoOrientadoInput>;
+  upsert?: InputMaybe<DocenteUpsertWithoutAlunoOrientadoInput>;
 };
 
 export type DocenteUpdateWithoutAlunoCoorientadoInput = {
@@ -1543,6 +1598,50 @@ export type DocenteWhereInput = {
 
 export type DocenteWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
+};
+
+export type EnumAlertaTypeFieldUpdateOperationsInput = {
+  set?: InputMaybe<AlertaType>;
+};
+
+export type EnumAlertaTypeFilter = {
+  equals?: InputMaybe<AlertaType>;
+  in?: InputMaybe<Array<AlertaType>>;
+  not?: InputMaybe<NestedEnumAlertaTypeFilter>;
+  notIn?: InputMaybe<Array<AlertaType>>;
+};
+
+export type EnumAlertaTypeWithAggregatesFilter = {
+  _count?: InputMaybe<NestedIntFilter>;
+  _max?: InputMaybe<NestedEnumAlertaTypeFilter>;
+  _min?: InputMaybe<NestedEnumAlertaTypeFilter>;
+  equals?: InputMaybe<AlertaType>;
+  in?: InputMaybe<Array<AlertaType>>;
+  not?: InputMaybe<NestedEnumAlertaTypeWithAggregatesFilter>;
+  notIn?: InputMaybe<Array<AlertaType>>;
+};
+
+export type FieldsCreateAluno = {
+  coorientadorId?: InputMaybe<Scalars['Int']>;
+  cpf: Scalars['String'];
+  dataIngresso: Scalars['DateTime'];
+  emailInstitucional?: InputMaybe<Scalars['String']>;
+  emailPessoal?: InputMaybe<Scalars['String']>;
+  matricula: Scalars['String'];
+  nomeCompleto: Scalars['String'];
+  orientadorId?: InputMaybe<Scalars['Int']>;
+};
+
+export type FieldsUpdateAluno = {
+  ativo?: InputMaybe<Scalars['Boolean']>;
+  coorientadorId?: InputMaybe<Scalars['Int']>;
+  cpf?: InputMaybe<Scalars['String']>;
+  dataIngresso?: InputMaybe<Scalars['DateTime']>;
+  emailInstitucional?: InputMaybe<Scalars['String']>;
+  emailPessoal?: InputMaybe<Scalars['String']>;
+  matricula?: InputMaybe<Scalars['String']>;
+  nomeCompleto?: InputMaybe<Scalars['String']>;
+  orientadorId?: InputMaybe<Scalars['Int']>;
 };
 
 export type IntFieldUpdateOperationsInput = {
@@ -1617,6 +1716,11 @@ export type Mutation = {
   createManyAlertaAluno: AffectedRowsOutput;
   createManyAluno: AffectedRowsOutput;
   createManyDocente: AffectedRowsOutput;
+  customCreateAluno: Aluno;
+  customDeleteAluno?: Maybe<Scalars['Boolean']>;
+  customNewDataLimite: Aluno;
+  customSetAlunoAtivo: Aluno;
+  customUpdateAluno: Aluno;
   deleteAlerta?: Maybe<Alerta>;
   deleteAlertaAluno?: Maybe<AlertaAluno>;
   deleteAluno?: Maybe<Aluno>;
@@ -1625,6 +1729,7 @@ export type Mutation = {
   deleteManyAlertaAluno: AffectedRowsOutput;
   deleteManyAluno: AffectedRowsOutput;
   deleteManyDocente: AffectedRowsOutput;
+  sendAlertaAluno: AlertaAluno;
   updateAlerta?: Maybe<Alerta>;
   updateAlertaAluno?: Maybe<AlertaAluno>;
   updateAluno?: Maybe<Aluno>;
@@ -1684,6 +1789,34 @@ export type MutationCreateManyDocenteArgs = {
 };
 
 
+export type MutationCustomCreateAlunoArgs = {
+  data: FieldsCreateAluno;
+};
+
+
+export type MutationCustomDeleteAlunoArgs = {
+  alunoId: Scalars['Float'];
+};
+
+
+export type MutationCustomNewDataLimiteArgs = {
+  alunoId: Scalars['Float'];
+  dataLimite: Scalars['DateTime'];
+};
+
+
+export type MutationCustomSetAlunoAtivoArgs = {
+  alunoId: Scalars['Float'];
+  ativo: Scalars['Boolean'];
+};
+
+
+export type MutationCustomUpdateAlunoArgs = {
+  alunoId: Scalars['Int'];
+  data: FieldsUpdateAluno;
+};
+
+
 export type MutationDeleteAlertaArgs = {
   where: AlertaWhereUniqueInput;
 };
@@ -1721,6 +1854,11 @@ export type MutationDeleteManyAlunoArgs = {
 
 export type MutationDeleteManyDocenteArgs = {
   where?: InputMaybe<DocenteWhereInput>;
+};
+
+
+export type MutationSendAlertaAlunoArgs = {
+  alertaAlunoId: Scalars['Int'];
 };
 
 
@@ -1823,6 +1961,31 @@ export type NestedDateTimeFilter = {
   notIn?: InputMaybe<Array<Scalars['DateTime']>>;
 };
 
+export type NestedDateTimeNullableFilter = {
+  equals?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  not?: InputMaybe<NestedDateTimeNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
+export type NestedDateTimeNullableWithAggregatesFilter = {
+  _count?: InputMaybe<NestedIntNullableFilter>;
+  _max?: InputMaybe<NestedDateTimeNullableFilter>;
+  _min?: InputMaybe<NestedDateTimeNullableFilter>;
+  equals?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  not?: InputMaybe<NestedDateTimeNullableWithAggregatesFilter>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
 export type NestedDateTimeWithAggregatesFilter = {
   _count?: InputMaybe<NestedIntFilter>;
   _max?: InputMaybe<NestedDateTimeFilter>;
@@ -1835,6 +1998,23 @@ export type NestedDateTimeWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['DateTime']>;
   not?: InputMaybe<NestedDateTimeWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
+export type NestedEnumAlertaTypeFilter = {
+  equals?: InputMaybe<AlertaType>;
+  in?: InputMaybe<Array<AlertaType>>;
+  not?: InputMaybe<NestedEnumAlertaTypeFilter>;
+  notIn?: InputMaybe<Array<AlertaType>>;
+};
+
+export type NestedEnumAlertaTypeWithAggregatesFilter = {
+  _count?: InputMaybe<NestedIntFilter>;
+  _max?: InputMaybe<NestedEnumAlertaTypeFilter>;
+  _min?: InputMaybe<NestedEnumAlertaTypeFilter>;
+  equals?: InputMaybe<AlertaType>;
+  in?: InputMaybe<Array<AlertaType>>;
+  not?: InputMaybe<NestedEnumAlertaTypeWithAggregatesFilter>;
+  notIn?: InputMaybe<Array<AlertaType>>;
 };
 
 export type NestedFloatFilter = {
@@ -1973,6 +2153,10 @@ export type NestedStringWithAggregatesFilter = {
   not?: InputMaybe<NestedStringWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type NullableStringFieldUpdateOperationsInput = {
