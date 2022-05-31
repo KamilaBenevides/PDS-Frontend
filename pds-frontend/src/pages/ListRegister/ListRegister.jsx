@@ -3,7 +3,7 @@ import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
 import { Container, StyledNameText, StyledText, StyledButton, StyledContent, StyledSelect } from './styles';
 import { useEffect, useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import {Col, Row, Typography, Button, Select } from 'antd';
 import moment from 'moment';
 import { useNavigate } from "react-router-dom";
@@ -185,6 +185,17 @@ const handleClickDoc = (item) => {
   navigate('/dashboard/professor/' + item.id);
 }
 
+const [setAtivo] = useMutation(gql`mutation CustomSetAlunoAtivo($ativo: Boolean!, $alunoId: Float!) {
+  customSetAlunoAtivo(ativo: $ativo, alunoId: $alunoId) {
+    id
+  }
+}`)
+
+const handleInactive = (item, active) => {
+  setAtivo({ variables: { alunoId: item.id, ativo: active }})
+  .then(() => queryAlunos.refetch());
+}
+
 const content = item =>
   (<StyledContent>
       <Row gutter={16}>
@@ -206,14 +217,23 @@ const content = item =>
           </Col> : null}
           {item.ativo ?
           <Col span={3}>
-            <StyledButton type="primary" danger 
+            <StyledButton type="primary" onClick={() => handleInactive(item, false)}
               style={{
                 background: '#838EA0',
                   color: '#FFFFFF'
                 }}>
               INATIVAR
             </StyledButton>
-          </Col> : null}
+          </Col> :
+          <Col span={3}>
+            <StyledButton type="primary" onClick={() => handleInactive(item, true)}
+              style={{
+                background: '#838EA0',
+                  color: '#FFFFFF'
+                }}>
+              REATIVAR
+            </StyledButton>
+          </Col>}
           <Col span={3}>
             <StyledButton onClick={() => handleClick(item)}
               style={{

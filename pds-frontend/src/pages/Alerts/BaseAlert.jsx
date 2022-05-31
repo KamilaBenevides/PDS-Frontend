@@ -397,7 +397,7 @@ const collapseContent = item =>
                       background: '#2EC615',
                       color: '#FFFFFF'
                     }}>
-                  REALIZADO
+                  MARCAR COMO RESOLVIDO
                 </StyledButton>
               </Col>
               <Col span={4}>
