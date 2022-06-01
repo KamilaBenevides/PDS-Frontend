@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Container, StyledTimePicker, StyledButton } from './styles';
 import { useFieldArray, useForm } from 'react-hook-form';
 import generateDocuments from './generateDocs';
+import DatePicker from '../components/DatePicker/DatePicker';
+import FormGroupContainer from '../components/FormGroupContainer/FormGroupContainer';
+import Select from '../components/Select/Select';
+import FormList from '../components/FormList/FormList';
+import { useMutation, gql, useQuery } from '@apollo/client';
+import { Form, Radio } from 'antd';
+import moment from 'moment';
+// import moment from 'moment';
 
 const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'outubro', 'novembro', 'dezembro'];
 
@@ -21,6 +30,161 @@ export default function Docs() {
     name: 'examinadoresExternosProg',
   });
 
+  const [discentes, setDiscentes] = useState([]);
+
+  const queryAlunos = useQuery(gql`
+  query GetAlunos {
+      alunos {
+          id
+          nomeCompleto
+          matricula
+          dataIngresso
+          dataLimite
+          cpf
+          emailInstitucional
+          emailPessoal
+          ativo
+          orientadorId
+          coorientadorId
+          orientador {
+            email
+            id
+            nomeCompleto
+          }
+        }
+  }
+`);
+
+  useEffect(() => {
+    let items = queryAlunos.data?.alunos ? queryAlunos.data.alunos : [];
+    setDiscentes(items);
+}, [queryAlunos.data])
+
+
+
+  const [docentes, setDocentes] = useState([]);
+
+  const docqueryResult =  useQuery(gql`
+  query ExampleQuery{
+      docentes {
+        nomeCompleto
+        email
+        id
+      }
+    }
+  `)
+
+  useEffect(() => {
+      let docs = docqueryResult.data?.docentes ? docqueryResult.data.docentes : [];
+      setDocentes(docs.map(e => {
+          return {
+              value: e.id,
+              label: e.nomeCompleto
+          }
+      }))
+  }, [docqueryResult])
+
+  const [form] = Form.useForm();
+
+  const formItems = [
+    {
+      label: "Nome do Aluno",
+      name: "nomeAluno",
+      col: 24,
+      required: true
+    },
+    {
+      label: "Matrícula",
+      name: "matricula",
+      col: 12,
+      required: true
+    },
+    {
+      label: "CPF",
+      name: "cpf",
+      col: 12,
+      required: true
+    },
+    {
+      label: "Título do Trabalho",
+      name: "tituloTrabalho",
+      col: 24,
+      required: true
+    },
+    {
+      label: "Linha de Pesquisa",
+      name: "linhaPesquisa",
+      col: 24,
+      required: true
+    },
+    {
+      label: "Data de Ingresso",
+      name: "dataIngresso",
+      col: 8,
+      required: true,
+      formComponent: <DatePicker/>
+    },
+    {
+      label: "Data de Defesa",
+      name: "dataDefesa",
+      col: 8,
+      required: true,
+      formComponent: <DatePicker/>
+    },
+    {
+      label: "Hora de Defesa",
+      name: "horaDefesa",
+      col: 8,
+      required: true,
+      formComponent: <StyledTimePicker format={'HH:mm'}/>
+    },
+    {
+      label: "Número da Ata",
+      name: "nAta",
+      col: 24,
+      required: true
+    },
+    {
+      label: "Orientador",
+      name: "orientador",
+      col: 24,
+      required: true,
+      formComponent: <Select options={docentes}/>
+    },
+    {
+      label: "Coorientador",
+      name: "coorientador",
+      col: 24,
+      required: true,
+      formComponent: <Select options={docentes}/>
+    },
+    {
+      label: "Sistema de Videoconferência",
+      name: "videoconferencia",
+      col: 24,
+      required: true,
+      formComponent: <Radio.Group>
+      <Radio value="true">Sim</Radio>
+      <Radio value="false">Nao</Radio>
+    </Radio.Group>
+    },
+  ];
+
+  const examinadorFormList = [
+    {
+      id: "0",
+      name: ["nome"],
+      label: "Examinador interno",
+      colSpan: 12,
+    },
+    {
+      id: "1",
+      name: ["unidade"],
+      label: "Unidade",
+      colSpan: 12,
+    }
+  ];
+
   const onSubmit = (data) => {
     data.videoconferencia = data.videoconferencia === 'true' ? true : false;
     data.anoDefesa = new Date(data.dataDefesa).getUTCFullYear();
@@ -38,10 +202,72 @@ export default function Docs() {
   };
 
   console.log(errors);
+
+  const onFinish = (e) => {
+    onSubmit(e);
+  }
+
+  const [discentesOptions, setDiscentesOptions] = useState([]);
+
+  const selectDiscentes = useMemo(() => {
+    setDiscentesOptions(discentes.map(obj => {
+      return {
+        value: obj.id,
+        label: obj.nomeCompleto
+      }
+    }));
+  }, [discentes]);
+
+  const onDiscenteChange = (discenteId) => {
+    const aluno = discentes.find(e => e.id === discenteId);
+    if (aluno) {
+      form.setFieldsValue({
+        nomeAluno: aluno.nomeCompleto,
+        matricula: aluno.matricula,
+        cpf: aluno.cpf,
+        dataIngresso: moment(aluno.dataIngresso),
+        orientador: aluno.orientadorId
+      });
+    }
+  }
+
+  const submitButton = <Form.Item >
+        <StyledButton 
+        type="primary" 
+        onClick={() => {form.submit()}}
+        style={{ float: 'right' }}>
+          Gerar documentos
+        </StyledButton>
+    </Form.Item>
   
   return (
-    <div className="container">
-      <form className='mt-5' onSubmit={handleSubmit(onSubmit)}>
+    <Container className="container">
+      <h2 style={{ textAlign: 'center' }}>Selecione o aluno</h2>
+      <Select options={discentesOptions} style={{ width: '100%' }} onChange={onDiscenteChange}/>
+      <br />
+      <br />
+      <br />
+      <Form form={form} onFinish={e => onFinish(e)}>
+          <FormGroupContainer items={formItems}/>
+          <FormList 
+            listItems={examinadorFormList}
+            addText={"adicionar"}
+            name={"examinadoresInternos"}
+          />
+          <br />
+          <br />
+          <FormList 
+            listItems={examinadorFormList}
+            addText={"adicionar"}
+            name={"examinadoresExternosInst"}
+          />
+          <br />
+          <br />
+          {submitButton}
+      </Form>
+
+
+      {/* <form className='mt-5' onSubmit={handleSubmit(onSubmit)}>
         
         <div className="form-group">
           <label className="form-label">Nome do Aluno</label>
@@ -93,14 +319,6 @@ export default function Docs() {
             <input className='form-control mb-2' type="text" placeholder="Coorientador" {...register("coorientador", {})} />
           </div>
         </div>
-        
-        {/* <label className="form-label">Examinador Interno</label>
-        <input className='form-control mb-2' type="text" placeholder="Examinador Interno" {...register("examinadorInterno", {})} />
-        
-        <label className="form-label">Examinador externo</label>
-        <input className='form-control mb-2' type="text" placeholder="Examinador Externo" {...register("examinadorExterno", {})} />
-        <label className="form-label">Instituição Externa</label>
-        <input className='form-control mb-2' type="text" placeholder="Instituição Externa" {...register("instituicaoExterna", {})} /> */}
         
         <div className="form-group">
           <label className="form-label">Sistema de Videoconferência</label>
@@ -180,7 +398,7 @@ export default function Docs() {
         </div>
 
         <button className='btn btn-primary mt-3' type="submit">Gerar Documentos</button>
-      </form>
-    </div>
+      </form> */}
+    </Container>
   );
 }
