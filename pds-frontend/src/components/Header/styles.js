@@ -16,6 +16,7 @@ export const StyledLogo = styled.div`
     flex-direction: column;
     padding-top: 20px;
     min-height: 150px;
+    cursor: pointer;
 `;
 
 export const StyledText = styled.span`

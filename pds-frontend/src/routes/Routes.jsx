@@ -11,6 +11,7 @@ import EditRegister from '../pages/Register/Edit';
 import ProficiencyAlerts from '../pages/Alerts/Proficiency/Proficiency';
 import QualificationAlerts from '../pages/Alerts/Qualification/Qualification';
 import DefenseAlerts from '../pages/Alerts/Defense/Defense';
+import Dashboard from '../pages/Dashboard/Dashboard';
 
 
 const MainRoutes = () => {
@@ -19,6 +20,7 @@ const MainRoutes = () => {
                 {/* <Route path={path.LOGIN} exact element={<Login/>}/> */}
                 <Route path={path.LOGIN} exact element={<Layout/>}/>
                 <Route path={path.DASHBOARD} exact element={<Layout/>}>
+                    <Route path="" element={<Dashboard/>}/>
                     <Route path={path.REGISTER} element={<Register/>}/>
                     <Route path={path.DOCUMENT_PRODUCTION} element={<DocumentProduction/>}/>
                     <Route path={path.LIST_REGISTER} element={<ListRegister/>}/>
