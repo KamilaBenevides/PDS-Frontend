@@ -16,7 +16,7 @@ export class sendAlertaAlunoResolver {
   ) {
     const alertaAluno = await prisma.alertaAluno.findUnique({
       where: { id: alertaAlunoId },
-      include: { aluno: true, alerta: true }
+      include: { aluno: { include: { orientador: true, coorientador: true } }, alerta: true }
     });
 
     if (!alertaAluno) {
@@ -24,7 +24,7 @@ export class sendAlertaAlunoResolver {
     }
 
     try {
-      await sendMail(alertaAluno.aluno.emailInstitucional!, alertaAluno.alerta.tipo, alertaAluno.alerta.corpoEmail!);
+      await sendMail(alertaAluno);
     } catch (err) {
       console.log(err);
       throw new ApolloError("Erro ao enviar email");
