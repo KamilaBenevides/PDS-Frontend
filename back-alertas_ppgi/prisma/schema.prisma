@@ -68,3 +68,10 @@ model AlertaAluno {
   ativo          Boolean   @default(true)
   dataEnvioEmail DateTime?
 }
+
+model User {
+  id           Int    @id @default(autoincrement())
+  username     String @unique
+  nomeCompleto String
+  passwordHash String
+}
