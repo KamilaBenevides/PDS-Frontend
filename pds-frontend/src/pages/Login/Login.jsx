@@ -1,8 +1,12 @@
 import React from 'react'
 import { gql, useQuery } from "@apollo/client";
-import { StyledForm, Container, FormWrapper, Title, Subtitle, MainButton } from './styles';
+import { Container, 
+  FormWrapper, 
+  Title,
+  Subtitle, 
+  MainButton, 
+  InputForm } from './styles';
 import { Form } from 'antd'
-import Input from '../../components/Input/Input';
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 
 const QUERY_ALUNOS = gql`
@@ -27,6 +31,7 @@ const QUERY_ALUNOS = gql`
 const Login = () => {
 
     const {data, loading, error} = useQuery(QUERY_ALUNOS, {fetchPolicy: "network-only"});
+    const [form] = Form.useForm();
 
     React.useEffect(() => {
         console.table({data, loading, error})
@@ -38,16 +43,25 @@ const Login = () => {
         label: "Usuário",
         name: "username",
         col: 24,
-        required: true
+        required: true,
+        formComponent: <InputForm />
       },
       {
         label: "Senha",
         name: "password",
         col: 24,
-        required: true
+        required: true,
+        formComponent: <InputForm />
       },
     ];
 
+    const onSubmit = () => {
+      form.submit();
+    }
+
+    const onFinish = (e) => {
+      console.log("e", e);
+    }
 
 
     return (
@@ -55,10 +69,10 @@ const Login = () => {
               <FormWrapper>
                 <Title>Alertas PPGI</Title>
                 <Subtitle>Facilitando o SIGAA</Subtitle>
-                <Form>
+                <Form form={form} layout="vertical" onFinish={e => onFinish(e)}>
                   <FormGroupContainer items={loginItems}/>
                 </Form>
-                <MainButton>
+                <MainButton onClick={onSubmit}>
                     Entrar
                 </MainButton>
               </FormWrapper>
