@@ -7,6 +7,9 @@ export const FormWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     padding: 10% 2rem;
+    .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
+        background: none!important;
+    }
 `;
 
 export const Container = styled.div`
@@ -44,9 +47,44 @@ export const MainButton = styled(Button)`
     width: 30%;
     margin-left: auto; 
     margin-right: 0;
+    color: #071D41;
+    :hover{
+        border-color: #FFF !important;
+        box-shadow: 0 0 0.3em #FFF;
+        color: #071D41;
+        background: #DFDEDE;
+        // background: #F0F0F0;
+    }
+    :focus{
+        border-color: #FFF !important;
+        box-shadow: 0 0 0.3em #FFF;
+        color: #071D41;
+        background: #DFDEDE;
+    }
 `;
 
 export const InputForm = styled(Input)`
-    border-radius: 8px;
-    border: 1px solid #CECFD0;
+    border: 1px solid #FFF;
+    border-radius: 4px;
+    height: 50px;
+    background: none;
+    color: #FFF;
+    
+    
+
+
+    .ant-input-suffix {
+        color: #FFF;
+    }
+    ::placeholder {
+        color: #FFF;
+    }
+    &:hover{
+        border-color: #FFF !important;
+        box-shadow: 0 0 0.5em #FFF;
+        background: none;
+    }
+    :focus{
+        border: 4px solid #FFF;
+    }
 `;
