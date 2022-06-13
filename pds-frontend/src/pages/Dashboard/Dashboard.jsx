@@ -121,13 +121,13 @@ const Dashboard = () => {
           <SpecificStats title={"Total"} vencidos={stats.totalVencidos} enviados={stats.totalEnviados} abertos={stats.totalAbertos} detalhes={''} />
         </Col>
         <Col span={8}>
-          <SpecificStats title={"Proficiencia"} vencidos={stats.profVencidos} enviados={stats.profEnviados} abertos={stats.profAbertos} detalhes={path.PROFICIENCY_ALERTS} />
+          <SpecificStats title={"Proficiência"} vencidos={stats.profVencidos} enviados={stats.profEnviados} abertos={stats.profAbertos} detalhes={path.PROFICIENCY_ALERTS} />
         </Col>
         <Col span={8}>
-          <SpecificStats title={"Agendamento de Qualificacao"} vencidos={stats.agQualiVencidos} enviados={stats.agQualiEnviados} abertos={stats.agQualiAbertos} detalhes={path.QUALIFICATION_ALERTS}  />
+          <SpecificStats title={"Agendamento de Qualificação"} vencidos={stats.agQualiVencidos} enviados={stats.agQualiEnviados} abertos={stats.agQualiAbertos} detalhes={path.QUALIFICATION_ALERTS}  />
         </Col>
         <Col span={8}>
-          <SpecificStats title={"Qualificacao"} vencidos={stats.qualiVencidos} enviados={stats.qualiEnviados} abertos={stats.qualiAbertos} detalhes={path.QUALIFICATION_ALERTS} />
+          <SpecificStats title={"Qualificação"} vencidos={stats.qualiVencidos} enviados={stats.qualiEnviados} abertos={stats.qualiAbertos} detalhes={path.QUALIFICATION_ALERTS} />
         </Col>
         <Col span={8}>
           <SpecificStats title={"Agendamento de Defesa"} vencidos={stats.agDefesaVencidos} enviados={stats.agDefesaEnviados} abertos={stats.agDefesaAbertos} detalhes={path.DEFENSE_ALERTS} />
