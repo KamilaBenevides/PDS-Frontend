@@ -74,13 +74,25 @@ const Register = () => {
             label: "E-mail Institucional",
             name: "emailInstitucional",
             col: 24,
-            required: true
+            required: true,
+            rules: [
+                {
+                  type: 'email',
+                  message: 'Insira um e-mail em formato válido',
+                },
+            ]
         },
         {
             label: "E-mail Pessoal",
             name: "emailPessoal",
             col: 24,
-            required: false
+            required: false,
+            rules: [
+                {
+                  type: 'email',
+                  message: 'Insira um e-mail em formato válido',
+                },
+            ]
         },
         {
             label: "Orientador",
@@ -100,7 +112,7 @@ const Register = () => {
             label: "Data de ingresso",
             name: "dataIngresso",
             col: 12,
-            required: false,
+            required: true,
             formComponent: <DatePicker/>
         }
     ];
@@ -128,10 +140,13 @@ const Register = () => {
         }).then(() => {
             setSucesso(true);
             setTimeout(() => navigate('/dashboard/geral'), 3000);
+        }).catch(() => {
+            setErro(true);
         });
     }
 
     const [sucesso, setSucesso] = useState(false);
+    const [erro, setErro] = useState(false);
 
     let alertSucesso = <></>;
     if (sucesso) {
@@ -142,8 +157,14 @@ const Register = () => {
             showIcon
             closable
         />
-    } else {
-        alertSucesso = <></>
+    } else if (erro) {
+        alertSucesso = <Alert
+            message="Erro!"
+            description="Erro ao cadastrar o discente."
+            type="error"
+            showIcon
+            closable
+        />
     }
 
     return (

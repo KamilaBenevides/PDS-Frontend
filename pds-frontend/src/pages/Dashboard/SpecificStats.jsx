@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Statistic, Card, Row, Col, Button } from 'antd';
 import { useMutation, gql } from '@apollo/client';
 
-const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes }) => {
+const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes, setErro, setSucesso }) => {
     
     const mutation = gql`
     mutation Mutation {
@@ -13,9 +13,11 @@ const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes }) => {
     const [sendAlertasDashboard] = useMutation(mutation);
     const onSend = (e) => {
         sendAlertasDashboard()
-        .then(() => {
-            window.location.reload();
-        });
+        .then(({data}) => {
+            setSucesso(data.sendAlertasDashboard);
+            setErro(!data.sendAlertasDashboard);
+            setTimeout(() => window.location.reload(), 5000);
+        }).catch(() => setErro(true));
     }
 
     const navigate = useNavigate();

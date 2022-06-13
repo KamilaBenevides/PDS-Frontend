@@ -1,6 +1,7 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
+import { Alert } from 'antd';
 import { Container, StyledNameText, StyledText, StyledButton, 
   StyledContent,
   StyledStatusName,
@@ -23,7 +24,32 @@ const BaseAlert = ({alertType}) => {
       }
     }).then(() => {
       queryAlertaAlunos.refetch();
+      setSucesso(true);
+    }).catch(() => {
+      setErro(true);
     });
+  }
+
+  const [sucesso, setSucesso] = useState(false);
+  const [erro, setErro] = useState(false);
+
+  let alertSucesso = <></>;
+  if (sucesso) {
+      alertSucesso = <Alert
+          message="Sucesso"
+          description="E-mail enviado com sucesso."
+          type="success"
+          showIcon
+          closable
+      />
+  } else if (erro) {
+      alertSucesso = <Alert
+          message="Erro!"
+          description="Ocorreu um erro ao enviar o e-mail."
+          type="error"
+          showIcon
+          closable
+      />
   }
 
   const [solveAlert] = useMutation(af.solveAlertMutation);
@@ -462,6 +488,7 @@ const collapseContent = item =>
   
   return <>
     <Container>
+      {alertSucesso}
       {header}
       {state.showVencidos && vencidosItems.length ? 
       <>

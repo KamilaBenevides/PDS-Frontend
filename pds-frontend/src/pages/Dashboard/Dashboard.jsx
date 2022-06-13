@@ -1,13 +1,36 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Alert } from 'antd';
 import MainStats from './MainStats';
 import SpecificStats from './SpecificStats';
 import moment from 'moment';
 import * as path from '../../routes/paths';
 
 const Dashboard = () => {
+
+  const [sucesso, setSucesso] = useState(false);
+  const [erro, setErro] = useState(false);
+
+  let alertSucesso = <></>;
+  if (sucesso) {
+      alertSucesso = <Alert
+          message="Sucesso"
+          description="E-mails enviados com sucesso!"
+          type="success"
+          showIcon
+          closable
+      />
+  } else if (erro) {
+      alertSucesso = <Alert
+          message="Erro!"
+          description="Ocorreu um erro ao enviar os e-mails."
+          type="error"
+          showIcon
+          closable
+      />
+  }
+
   const query = gql`
   query AlertaAlunos($where: AlertaAlunoWhereInput) {
     alertaAlunos(where: $where) {
@@ -116,9 +139,10 @@ const Dashboard = () => {
 
   return (
     <div style={{ padding: '10px' }}>
+      {alertSucesso}
       <Row gutter={[16, 16]}>
         <Col span={8}>
-          <SpecificStats title={"Total"} vencidos={stats.totalVencidos} enviados={stats.totalEnviados} abertos={stats.totalAbertos} detalhes={''} />
+          <SpecificStats title={"Total"} vencidos={stats.totalVencidos} enviados={stats.totalEnviados} abertos={stats.totalAbertos} detalhes={''} setSucesso={setSucesso} setErro={setErro} />
         </Col>
         <Col span={8}>
           <SpecificStats title={"Proficiência"} vencidos={stats.profVencidos} enviados={stats.profEnviados} abertos={stats.profAbertos} detalhes={path.PROFICIENCY_ALERTS} />

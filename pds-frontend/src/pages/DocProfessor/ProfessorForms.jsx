@@ -31,7 +31,13 @@ const ProfessorForms = () => {
             label: "E-mail",
             name: "email",
             col: 24,
-            required: true
+            required: true,
+            rules: [
+                {
+                  type: 'email',
+                  message: 'Insira um e-mail em formato válido',
+                },
+            ]
         },
    ];
 
@@ -52,10 +58,13 @@ const ProfessorForms = () => {
         }).then(() => {
             setSucesso(true);
             setTimeout(() => navigate('/dashboard/geral'), 3000);
+        }).catch(() => {
+            setErro(true);
         });
     }
 
     const [sucesso, setSucesso] = useState(false);
+    const [erro, setErro] = useState(false);
 
     let alertSucesso = <></>;
     if (sucesso) {
@@ -66,8 +75,14 @@ const ProfessorForms = () => {
             showIcon
             closable
         />
-    } else {
-        alertSucesso = <></>
+    } else if (erro) {
+        alertSucesso = <Alert
+            message="Erro!"
+            description="Ocorreu um erro ao cadastrar o docente."
+            type="error"
+            showIcon
+            closable
+        />
     }
 
     return (
