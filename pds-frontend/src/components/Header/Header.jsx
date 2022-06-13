@@ -8,7 +8,7 @@ const Header = () => {
         <StyledHeader >
             <StyledLogo onClick={() => navigate('/dashboard')}>
                 <StyledText >
-                    ALERTAS 
+                    Alertas
                 </StyledText>
                 <StyledText >
                     PPGI
