@@ -165,7 +165,7 @@ export default function Docs() {
       required: true,
       formComponent: <Radio.Group>
       <Radio value="true">Sim</Radio>
-      <Radio value="false">Nao</Radio>
+      <Radio value="false">Não</Radio>
     </Radio.Group>
     },
   ];
@@ -174,7 +174,7 @@ export default function Docs() {
     {
       id: "0",
       name: ["nome"],
-      label: "Examinador interno",
+      label: "Examinador Interno",
       colSpan: 12,
     },
   ];
@@ -183,7 +183,7 @@ export default function Docs() {
     {
       id: "0",
       name: ["nome"],
-      label: "Examinador externo ao programa",
+      label: "Examinador Externo ao Programa",
       colSpan: 12,
     },
     {
@@ -198,13 +198,13 @@ export default function Docs() {
     {
       id: "0",
       name: ["nome"],
-      label: "Examinador externo a instituicao",
+      label: "Examinador Externo à Instituição",
       colSpan: 12,
     },
     {
       id: "1",
       name: ["instituicao"],
-      label: "Instituicao",
+      label: "Instituição",
       colSpan: 12,
     }
   ];
@@ -225,6 +225,9 @@ export default function Docs() {
     data.orientador = docentes.find(d => d.value == data.orientador).label;
     if (data.coorientador) data.coorientador = docentes.find(d => d.value == data.coorientador).label;
     else data.coorientador = "";
+    data.examinadoresInternos = data.examinadoresInternos.filter(e => e.nome != undefined && e.nome != "");
+    data.examinadoresExternosProg = data.examinadoresExternosProg.filter(e => e.nome != undefined && e.nome != "" && e.unidade != undefined && e.unidade != "");
+    data.examinadoresExternosInst = data.examinadoresExternosInst.filter(e => e.nome != undefined && e.nome != "");
     console.log(data);
     generateDocuments(data);
   };
@@ -279,21 +282,21 @@ export default function Docs() {
           <FormGroupContainer items={formItems}/>
           <FormList 
             listItems={examinadorInternoFormList}
-            addText={"adicionar"}
+            addText={"Adicionar examinador interno"}
             name={"examinadoresInternos"}
           />
           <br />
           <br />
           <FormList 
             listItems={examinadorExternoProgFormList}
-            addText={"adicionar"}
+            addText={"Adicionar examinador externo"}
             name={"examinadoresExternosProg"}
           />
           <br />
           <br />
           <FormList 
             listItems={examinadorExternoInstFormList}
-            addText={"adicionar"}
+            addText={"Adicionar examinador externo"}
             name={"examinadoresExternosInst"}
           />
           <br />
