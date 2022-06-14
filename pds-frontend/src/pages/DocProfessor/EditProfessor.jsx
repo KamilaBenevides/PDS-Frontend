@@ -52,7 +52,13 @@ const EditProfessor = () => {
             label: "E-mail",
             name: "email",
             col: 24,
-            required: true
+            required: true,
+            rules: [
+                {
+                  type: 'email',
+                  message: 'Insira um e-mail em formato válido',
+                },
+            ]
         },
    ];
 
@@ -75,10 +81,13 @@ const EditProfessor = () => {
         }).then(() => {
             setSucesso(true);
             setTimeout(() => navigate('/dashboard/geral'), 3000);
+        }).catch(() => {
+            setErro(true);
         });
     }
 
     const [sucesso, setSucesso] = useState(false);
+    const [erro, setErro] = useState(false);
 
     let alertSucesso = <></>;
     if (sucesso) {
@@ -89,8 +98,14 @@ const EditProfessor = () => {
             showIcon
             closable
         />
-    } else {
-        alertSucesso = <></>
+    } else if (erro) {
+        alertSucesso = <Alert
+            message="Erro!"
+            description="Ocorreu um erro ao editar o discente."
+            type="error"
+            showIcon
+            closable
+        />
     }
 
     return (

@@ -1,12 +1,14 @@
 import { StyledHeader, StyledText, StyledLogo } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 
 const Header = () => {
+    const navigate = useNavigate();
     return (
         <StyledHeader >
-            <StyledLogo>
+            <StyledLogo onClick={() => navigate('/dashboard')}>
                 <StyledText >
-                    ALERTAS 
+                    Alertas
                 </StyledText>
                 <StyledText >
                     PPGI

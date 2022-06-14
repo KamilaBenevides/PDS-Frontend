@@ -1,5 +1,5 @@
 overwrite: true
-schema: "https://pds-apollo.herokuapp.com/"
+schema: "http://localhost:4000/"
 generates:
   ./src/types.d.ts:
     plugins:
