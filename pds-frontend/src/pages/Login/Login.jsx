@@ -41,7 +41,7 @@ const Login = () => {
     .then(res => {
       console.log("res sucesso", res);
       localStorage.setItem(TOKEN_KEY, res.data.customLogin.token);
-      navigate('/dashboard/geral')
+      navigate('/dashboard');
     }, error => {
       // message.error("Erro ao realizar Login");
       message.error({
