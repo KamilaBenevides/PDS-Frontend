@@ -4,7 +4,8 @@ import { Form, Alert } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useMutation, gql } from '@apollo/client';
-
+import Card from '../../components/Card/Card';
+import SubHeader from '../../components/SubHeader/SubHeader'
 
 const ProfessorForms = () => {
 
@@ -87,11 +88,14 @@ const ProfessorForms = () => {
 
     return (
         <>
+        <SubHeader title={'Novo Docente'}/>
+        <Card>
             <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
                 {alertSucesso}
                 <FormGroupContainer items={formItems}/>
                 {submitButton}
             </StyledForm>
+        </Card>
         </>
     )
 }

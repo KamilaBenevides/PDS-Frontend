@@ -7,6 +7,8 @@ import SpecificStats from './SpecificStats';
 import moment from 'moment';
 import * as path from '../../routes/paths';
 
+import SubHeader from '../../components/SubHeader/SubHeader';
+
 const Dashboard = () => {
 
   const [sucesso, setSucesso] = useState(false);
@@ -138,29 +140,32 @@ const Dashboard = () => {
   }, [data]);
 
   return (
-    <div style={{ padding: '10px' }}>
-      {alertSucesso}
-      <Row gutter={[16, 16]}>
-        <Col span={8}>
-          <SpecificStats title={"Total"} vencidos={stats.totalVencidos} enviados={stats.totalEnviados} abertos={stats.totalAbertos} detalhes={''} setSucesso={setSucesso} setErro={setErro} />
-        </Col>
-        <Col span={8}>
-          <SpecificStats title={"Proficiência"} vencidos={stats.profVencidos} enviados={stats.profEnviados} abertos={stats.profAbertos} detalhes={path.PROFICIENCY_ALERTS} />
-        </Col>
-        <Col span={8}>
-          <SpecificStats title={"Agendamento de Qualificação"} vencidos={stats.agQualiVencidos} enviados={stats.agQualiEnviados} abertos={stats.agQualiAbertos} detalhes={path.QUALIFICATION_ALERTS}  />
-        </Col>
-        <Col span={8}>
-          <SpecificStats title={"Qualificação"} vencidos={stats.qualiVencidos} enviados={stats.qualiEnviados} abertos={stats.qualiAbertos} detalhes={path.QUALIFICATION_ALERTS} />
-        </Col>
-        <Col span={8}>
-          <SpecificStats title={"Agendamento de Defesa"} vencidos={stats.agDefesaVencidos} enviados={stats.agDefesaEnviados} abertos={stats.agDefesaAbertos} detalhes={path.DEFENSE_ALERTS} />
-        </Col>
-        <Col span={8}>
-          <SpecificStats title={"Defesa"} vencidos={stats.defesaVencidos} enviados={stats.defesaEnviados} abertos={stats.defesaAbertos} detalhes={path.DEFENSE_ALERTS} />
-        </Col>
-      </Row>
-    </div>
+    <>
+      <SubHeader title={'Painel de Controle'}/>
+      <div style={{ padding: '10px' }}>
+        {alertSucesso}
+        <Row gutter={[16, 16]}>
+          <Col span={8}>
+            <SpecificStats title={"Total"} vencidos={stats.totalVencidos} enviados={stats.totalEnviados} abertos={stats.totalAbertos} detalhes={''} setSucesso={setSucesso} setErro={setErro} />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Proficiência"} vencidos={stats.profVencidos} enviados={stats.profEnviados} abertos={stats.profAbertos} detalhes={path.PROFICIENCY_ALERTS} />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Agendamento de Qualificação"} vencidos={stats.agQualiVencidos} enviados={stats.agQualiEnviados} abertos={stats.agQualiAbertos} detalhes={path.QUALIFICATION_ALERTS}  />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Qualificação"} vencidos={stats.qualiVencidos} enviados={stats.qualiEnviados} abertos={stats.qualiAbertos} detalhes={path.QUALIFICATION_ALERTS} />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Agendamento de Defesa"} vencidos={stats.agDefesaVencidos} enviados={stats.agDefesaEnviados} abertos={stats.agDefesaAbertos} detalhes={path.DEFENSE_ALERTS} />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Defesa"} vencidos={stats.defesaVencidos} enviados={stats.defesaEnviados} abertos={stats.defesaAbertos} detalhes={path.DEFENSE_ALERTS} />
+          </Col>
+        </Row>
+      </div>
+    </>
   )};
 
 export default Dashboard;

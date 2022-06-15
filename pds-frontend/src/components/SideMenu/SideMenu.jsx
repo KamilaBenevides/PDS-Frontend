@@ -33,12 +33,11 @@ const SideMenu = () => {
     
     
     const menuItens = [
-        // removendo provisoriamente para professores nao reclamarem de tela "vazia"
-        // {
-        //     key: '0',
-        //     label: 'Meu Perfil',
-        //     path: path.DASHBOARD
-        // },
+        {
+            key: '0',
+            label: 'Painel de Controle',
+            path: path.DASHBOARD
+        },
         {
             key: '1',
             label: 'Cadastros',

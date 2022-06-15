@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, gql } from '@apollo/client';
 import moment from 'moment';
+import Card from '../../components/Card/Card';
+import SubHeader from '../../components/SubHeader/SubHeader';
 
 
 const EditRegister = () => {
@@ -223,11 +225,14 @@ const EditRegister = () => {
 
     return (
         <>
-            <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
-                {alertSucesso}
-                <FormGroupContainer items={formItems}/>
-                {submitButton}
-            </StyledForm>
+            <SubHeader title={'Editar Docente'}/>
+            <Card>
+                <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
+                    {alertSucesso}
+                    <FormGroupContainer items={formItems}/>
+                    {submitButton}
+                </StyledForm>
+            </Card>
         </>
     )
 }

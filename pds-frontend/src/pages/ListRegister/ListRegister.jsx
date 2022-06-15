@@ -7,6 +7,7 @@ import { useQuery, useMutation, gql } from '@apollo/client';
 import {Col, Row, Typography, Button, Select } from 'antd';
 import moment from 'moment';
 import { useNavigate } from "react-router-dom";
+import SubHeader from '../../components/SubHeader/SubHeader';
 
 const {Text} = Typography;
 
@@ -247,20 +248,19 @@ const content = item =>
   </StyledContent>)
     
     return <>
+        <SubHeader title={'Visualizar Cadastrados'}/>
         <Container>
             {header}
             <br>
             </br>
             {showDiscentes ? 
             <>
-              {/* <h4>Discentes</h4> */}
               <Collapse items={items} header={discentesHeader} content={content} />
             </> : null}
             <br>
             </br>
             {showDocs ? 
             <>
-              {/* <h4>Docentes</h4> */}
               <Collapse items={itemsDoc} header={docentesHeader} content={docContent} />
             </> : null}
 

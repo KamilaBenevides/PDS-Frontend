@@ -22,6 +22,17 @@ export const StyledTimePicker = styled(TimePicker)`
     
 `;
 
+export const Text = styled.p`
+    letter-spacing: 0px;
+    font-size: 14px;
+    color: #071D41;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 0 0 0;
+    font-weight: 600; 
+`; 
+
 export const StyledButton = styled(Button)`
 
 `;
