@@ -6,6 +6,7 @@ import MainStats from './MainStats';
 import SpecificStats from './SpecificStats';
 import moment from 'moment';
 import * as path from '../../routes/paths';
+import * as af from '../Alerts/AlertFilters';
 
 const Dashboard = () => {
 
@@ -86,24 +87,9 @@ const Dashboard = () => {
   });
 
   const totals = (aa) => {
-    let vencidos = aa.filter(a => {
-      let limiteFinal = moment(a.aluno.dataLimite);
-      let inicioAlerta = limiteFinal.subtract(a.alerta.diasIntervalo, 'days');
-      let hoje = moment();
-      return (inicioAlerta <= hoje) && (inicioAlerta.add(30, 'days') <= hoje);
-    });
-    let enviados = aa.filter(a => {
-        let limiteFinal = moment(a.aluno.dataLimite);
-        let inicioAlerta = limiteFinal.subtract(a.alerta.diasIntervalo, 'days');
-        let hoje = moment();
-        return a.enviado && !(inicioAlerta.add(30, 'days') <= hoje);
-    });
-    let abertos = aa.filter(a => {
-        let limiteFinal = moment(a.aluno.dataLimite);
-        let inicioAlerta = limiteFinal.subtract(a.alerta.diasIntervalo, 'days');
-        let hoje = moment();
-        return (inicioAlerta <= hoje) && !a.enviado && !(inicioAlerta.add(30, 'days') <= hoje);
-    });
+    let vencidos = af.filterVencidos(aa);
+    let enviados = af.filterEnviados(aa);
+    let abertos = af.filterAbertos(aa);
     return { vencidos: vencidos.length, enviados: enviados.length, abertos: abertos.length };
   }
 
@@ -151,13 +137,13 @@ const Dashboard = () => {
           <SpecificStats title={"Agendamento de Qualificação"} vencidos={stats.agQualiVencidos} enviados={stats.agQualiEnviados} abertos={stats.agQualiAbertos} detalhes={path.QUALIFICATION_ALERTS}  />
         </Col>
         <Col span={8}>
-          <SpecificStats title={"Qualificação"} vencidos={stats.qualiVencidos} enviados={stats.qualiEnviados} abertos={stats.qualiAbertos} detalhes={path.QUALIFICATION_ALERTS} />
+          <SpecificStats title={"Qualificação"} vencidos={stats.qualiVencidos} enviados={stats.qualiEnviados} abertos={stats.qualiAbertos} detalhes={path.QUALIFICATION_ALERTS + '?alert=QUALIFICACAO'} />
         </Col>
         <Col span={8}>
           <SpecificStats title={"Agendamento de Defesa"} vencidos={stats.agDefesaVencidos} enviados={stats.agDefesaEnviados} abertos={stats.agDefesaAbertos} detalhes={path.DEFENSE_ALERTS} />
         </Col>
         <Col span={8}>
-          <SpecificStats title={"Defesa"} vencidos={stats.defesaVencidos} enviados={stats.defesaEnviados} abertos={stats.defesaAbertos} detalhes={path.DEFENSE_ALERTS} />
+          <SpecificStats title={"Defesa"} vencidos={stats.defesaVencidos} enviados={stats.defesaEnviados} abertos={stats.defesaAbertos} detalhes={path.DEFENSE_ALERTS + '?alert=DEFESA'} />
         </Col>
       </Row>
     </div>
