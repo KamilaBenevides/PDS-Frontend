@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Container, StyledTimePicker, StyledButton } from './styles';
+import { Container, StyledTimePicker, StyledButton, Text } from './styles';
 import { useFieldArray, useForm } from 'react-hook-form';
 import generateDocuments from './generateDocs';
 import DatePicker from '../components/DatePicker/DatePicker';
@@ -7,8 +7,10 @@ import FormGroupContainer from '../components/FormGroupContainer/FormGroupContai
 import Select from '../components/Select/Select';
 import FormList from '../components/FormList/FormList';
 import { useMutation, gql, useQuery } from '@apollo/client';
-import { Form, Radio } from 'antd';
+import { Form, Radio, Divider } from 'antd';
 import moment from 'moment';
+import SubHeader from '../components/SubHeader/SubHeader';
+import Card from '../components/Card/Card';
 // import moment from 'moment';
 
 const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'outubro', 'novembro', 'dezembro'];
@@ -271,37 +273,40 @@ export default function Docs() {
         </StyledButton>
     </Form.Item>
   
-  return (
-    <Container className="container">
-      <h2 style={{ textAlign: 'center' }}>Selecione o aluno</h2>
-      <Select options={discentesOptions} style={{ width: '100%' }} onChange={onDiscenteChange}/>
-      <br />
-      <br />
-      <br />
-      <Form form={form} onFinish={e => onFinish(e)}>
-          <FormGroupContainer items={formItems}/>
-          <FormList 
-            listItems={examinadorInternoFormList}
-            addText={"Adicionar examinador interno"}
-            name={"examinadoresInternos"}
-          />
-          <br />
-          <br />
-          <FormList 
-            listItems={examinadorExternoProgFormList}
-            addText={"Adicionar examinador externo"}
-            name={"examinadoresExternosProg"}
-          />
-          <br />
-          <br />
-          <FormList 
-            listItems={examinadorExternoInstFormList}
-            addText={"Adicionar examinador externo"}
-            name={"examinadoresExternosInst"}
-          />
-          <br />
-          {submitButton}
-      </Form>
-    </Container>
-  );
+  return <>
+    <SubHeader title={'Geração de Documentos'}/>
+    <Card >
+      <Container className="container">
+        {/* <h2 style={{ textAlign: 'center' }}>Selecionar Aluno</h2> */}
+        <Text>Aluno</Text>
+        <Select placeholder={'Selecione'} options={discentesOptions} style={{ width: '100%' }} onChange={onDiscenteChange}/>
+        <Divider />
+        
+        <Form form={form} onFinish={e => onFinish(e)}>
+            <FormGroupContainer items={formItems}/>
+            <FormList 
+              listItems={examinadorInternoFormList}
+              addText={"Adicionar examinador interno"}
+              name={"examinadoresInternos"}
+            />
+            <br />
+            <br />
+            <FormList 
+              listItems={examinadorExternoProgFormList}
+              addText={"Adicionar examinador externo"}
+              name={"examinadoresExternosProg"}
+            />
+            <br />
+            <br />
+            <FormList 
+              listItems={examinadorExternoInstFormList}
+              addText={"Adicionar examinador externo"}
+              name={"examinadoresExternosInst"}
+            />
+            <br />
+            {submitButton}
+        </Form>
+      </Container>
+    </Card>
+  </>
 }

@@ -6,6 +6,8 @@ import { Form, Alert } from 'antd';
 import { useMutation, gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import SubHeader from '../../components/SubHeader/SubHeader';
+import Card from '../../components/Card/Card';
 
 const Register = () => {
 
@@ -169,11 +171,14 @@ const Register = () => {
 
     return (
         <>
-            <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
-                {alertSucesso}
-                <FormGroupContainer items={formItems}/>
-                {submitButton}
-            </StyledForm>
+            <SubHeader title={'Novo Discente'}/>
+            <Card>
+                <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
+                    {alertSucesso}
+                    <FormGroupContainer items={formItems}/>
+                    {submitButton}
+                </StyledForm>
+            </Card>
         </>
     )
 }

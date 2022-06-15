@@ -1,12 +1,22 @@
 import BaseAlert from "../BaseAlert";
 import { useState } from 'react';
 import { Radio, Row } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 const DefenseAlerts = () => {
-    const [selected, setSelected] = useState("AGENDAMENTO_DEFESA");
+    
+    let initialSelected = "AGENDAMENTO_DEFESA";
+    const [params, setParams] = useSearchParams();
+    console.log(params.get('alert'));
+
+    if (params.has('alert') && params.get('alert') === 'DEFESA') {
+        initialSelected = "DEFESA";
+    }
+    const [selected, setSelected] = useState(initialSelected);
 
     const handleChange = (e) => {
         setSelected(e.target.value);
+        setParams({['alert']: e.target.value});
     }
 
     return <>

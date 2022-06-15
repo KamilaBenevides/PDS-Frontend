@@ -66,7 +66,7 @@ export class sendAlertaAlunoResolver {
     const errors: AlertaAluno[] = [];
 
     getAlertas.forEach(async (currentAlertaAluno) => {
-      if (DateTime.fromJSDate(currentAlertaAluno.aluno.dataLimite).minus({days: currentAlertaAluno.alerta.diasIntervalo}) <= today) {
+      if (DateTime.fromJSDate(currentAlertaAluno.aluno.dataLimite).minus({months: currentAlertaAluno.alerta.diasIntervalo / 30}) <= today) {
         try {
           await sendMail(currentAlertaAluno);
           const updatedCurrent = await prisma.alertaAluno.update({

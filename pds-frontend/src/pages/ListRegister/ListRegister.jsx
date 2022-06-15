@@ -4,11 +4,12 @@ import client from '../../api/apollo';
 import { Container, StyledNameText, StyledText, StyledButton, StyledContent, StyledSelect } from './styles';
 import { useEffect, useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
-import {Col, Row, Typography, Button, Select } from 'antd';
+import {Col, Row, Typography, Button, Select, Table, Space} from 'antd';
 import moment from 'moment';
 import { useNavigate } from "react-router-dom";
+import SubHeader from '../../components/SubHeader/SubHeader';
 
-const {Text} = Typography;
+const {Text, Title} = Typography;
 
 const ListRegister = () => {
 
@@ -191,6 +192,126 @@ const [setAtivo] = useMutation(gql`mutation CustomSetAlunoAtivo($ativo: Boolean!
   }
 }`)
 
+const columns = [
+  {
+    title: 'Nome Completo',
+    dataIndex: 'nomeCompleto',
+    key: 'nomeCompleto',
+    sorter: (a, b) => a.nomeCompleto.localeCompare(b.nomeCompleto),
+    defaultSortOrder: 'ascend'
+  },
+  {
+    title: 'Matrícula',
+    dataIndex: 'matricula',
+    key: 'matricula',
+  },
+  {
+    title: 'E-mail Inst.',
+    dataIndex: 'emailInstitucional',
+    key: 'emailInstitucional',
+  },
+  {
+    title: 'E-mail Pes.',
+    dataIndex: 'emailPessoal',
+    key: 'emailPessoal',
+  },
+  {
+    title: 'Ingresso',
+    dataIndex: 'dataIngresso',
+    key: 'dataIngresso',
+    render: (_, {dataIngresso}) => (
+      <>{dataFormater(dataIngresso)}</>
+    )
+  },
+  {
+    title: 'Prazo Máx.',
+    dataIndex: 'dataLimite',
+    key: 'dataLimite',
+    render: (_, {dataLimite}) => (
+      <>{dataFormater(dataLimite)}</>
+    )
+  },
+  {
+    title: 'Orientador',
+    dataIndex: 'orientador',
+    key: 'orientador',
+    render: (_, {orientador}) => (
+      <>{orientador.nomeCompleto}</>
+    )
+  },
+  {
+    title: 'Coorientador',
+    dataIndex: 'coorientador',
+    key: 'coorientador',
+    render: (_, {coorientador}) => (
+      <>{coorientador?.nomeCompleto}</>
+    )
+  },
+  {
+    title: 'Status',
+    dataIndex: 'ativo',
+    key: 'ativo',
+    render: (_, {ativo}) => (
+      <>
+        {ativo ? <Text type="success">Ativo</Text> :
+        <Text type="secondary">Inativo</Text>}
+      </>
+    ),
+    filters: [
+      {
+        text: 'Ativos',
+        value: true,
+      },
+      {
+        text: 'Inativos',
+        value: false,
+      },
+    ],
+    onFilter: (value, record) => record.ativo === value,
+  },
+  {
+    title: 'Ações',
+    key: 'action',
+    render: (_, item) => (
+      <Space size="small">
+        <a onClick={() => handleClick(item)}>Editar</a>
+        {item.ativo ?
+          <a onClick={() => handleInactive(item, false)}>Inativar</a>
+          :
+          <a onClick={() => handleInactive(item, true)}>Ativar</a>
+        }
+        {/* <a onClick={() => handleClick(item)}>Prorrogar</a> */}
+        {/* <a onClick={() => handleClick(item)}>Deletar</a> */}
+      </Space>
+    )
+  },
+];
+
+const columnsDoc = [
+  {
+    title: 'Nome Completo',
+    dataIndex: 'nomeCompleto',
+    key: 'nomeCompleto',
+    sorter: (a, b) => a.nomeCompleto.localeCompare(b.nomeCompleto),
+    defaultSortOrder: 'ascend'
+  },
+  {
+    title: 'E-mail',
+    dataIndex: 'email',
+    key: 'email',
+  },
+  {
+    title: 'Ações',
+    key: 'action',
+    render: (_, item) => (
+      <Space size="small">
+        <a onClick={() => handleClickDoc(item)}>Editar</a>
+        {/* <a onClick={() => handleClick(item)}>Deletar</a> */}
+      </Space>
+    )
+  },
+];
+
 const handleInactive = (item, active) => {
   setAtivo({ variables: { alunoId: item.id, ativo: active }})
   .then(() => queryAlunos.refetch());
@@ -247,21 +368,21 @@ const content = item =>
   </StyledContent>)
     
     return <>
+        <SubHeader title={'Visualizar Cadastrados'}/>
         <Container>
             {header}
-            <br>
-            </br>
+            <br />
             {showDiscentes ? 
             <>
-              {/* <h4>Discentes</h4> */}
-              <Collapse items={items} header={discentesHeader} content={content} />
+              <Title level={4}>Discentes</Title>
+              <Table columns={columns} dataSource={items} />
             </> : null}
             <br>
             </br>
             {showDocs ? 
             <>
-              {/* <h4>Docentes</h4> */}
-              <Collapse items={itemsDoc} header={docentesHeader} content={docContent} />
+              <Title level={4}>Docentes</Title>
+              <Table columns={columnsDoc} dataSource={itemsDoc} />
             </> : null}
 
 

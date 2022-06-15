@@ -4,6 +4,8 @@ import { Form, Alert } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, gql } from '@apollo/client';
+import Card from '../../components/Card/Card';
+import SubHeader from '../../components/SubHeader/SubHeader';
 
 
 const EditProfessor = () => {
@@ -110,11 +112,14 @@ const EditProfessor = () => {
 
     return (
         <>
-            <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
-                {alertSucesso}
-                <FormGroupContainer items={formItems}/>
-                {submitButton}
-            </StyledForm>
+            <SubHeader title={'Editar Docente'}/>
+            <Card>
+                <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
+                    {alertSucesso}
+                    <FormGroupContainer items={formItems}/>
+                    {submitButton}
+                </StyledForm>
+            </Card>
         </>
     )
 }

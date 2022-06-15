@@ -10,8 +10,8 @@ import { useEffect, useState, useReducer } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
 import * as af from './AlertFilters.js';
-import { Col, Row, Typography } from 'antd';
-const {Text} = Typography;
+import { Col, Row, Typography, Table, Space } from 'antd';
+const {Text, Title} = Typography;
 
 const BaseAlert = ({alertType}) => {
 
@@ -272,12 +272,14 @@ const BaseAlert = ({alertType}) => {
       showVencidos: true
   }
   
+  const [filter, setFilter] = useState('Todos');
   const [state, dispatch] = useReducer(reducer, init);
 
   function reducer(state, action) {
     switch (action.type) {
       case 'vencidos':
         console.log("state ", state);
+        setFilter('Vencido');
         return {
           showAbertos: false,
           showEnviados: false,
@@ -376,6 +378,135 @@ const BaseAlert = ({alertType}) => {
     }
   }
 
+  const columns = [
+    {
+      title: 'Nome',
+      dataIndex: 'nomeCompleto',
+      key: 'nomeCompleto',
+      render: (_, {aluno}) => (
+        <>{aluno.nomeCompleto}</>
+      ),
+      sorter: (a, b) => a.aluno.nomeCompleto.localeCompare(b.aluno.nomeCompleto),
+      defaultSortOrder: 'ascend'
+    },
+    // {
+    //   title: 'Matrícula',
+    //   dataIndex: 'aluno.matricula',
+    //   key: 'aluno.matricula',
+    //   render: (_, {aluno}) => (
+    //     <>{aluno.matricula}</>
+    //   ),
+    // },
+    {
+      title: 'Ingresso',
+      dataIndex: 'ingresso',
+      key: 'ingresso',
+      render: (_, {aluno}) => (
+        <>{dataFormater(aluno.dataIngresso)}</>
+      ),
+    },
+    {
+      title: 'E-mail Inst.',
+      dataIndex: 'emailInstitucional',
+      key: 'emailInstitucional',
+      render: (_, {aluno}) => (
+        <>{aluno.emailInstitucional}</>
+      ),
+    },
+    {
+      title: 'Abertura',
+      dataIndex: 'aberto',
+      key: 'aberto',
+      render: (_, item) => (
+        <>{dataFormater(af.getInicioAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo))}</>
+      )
+    },
+    {
+      title: 'Vencimento',
+      dataIndex: 'vencimento',
+      key: 'vencimento',
+      render: (_, item) => (
+        <>{dataFormater(af.getVencimentoAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo))}</>
+      ),
+      sorter: (a, b) => af.getVencimentoAlerta(a.aluno.dataLimite, a.alerta.diasIntervalo)
+                          .isAfter(af.getVencimentoAlerta(b.aluno.dataLimite, b.alerta.diasIntervalo)),
+      defaultSortOrder: 'ascend'
+    },
+    {
+      title: 'Orientador',
+      dataIndex: 'orientador',
+      key: 'orientador',
+      render: (_, {aluno}) => (
+        <>{aluno.orientador.nomeCompleto}</>
+      )
+    },
+    // {
+    //   title: 'Coorientador',
+    //   dataIndex: 'coorientador',
+    //   key: 'coorientador',
+    //   render: (_, {coorientador}) => (
+    //     <>{coorientador?.nomeCompleto}</>
+    //   )
+    // },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (_, {status}) => (
+        <Text type={getStatusType(status)}>{status}</Text>
+      ),
+      filters: [
+        {
+          text: 'Vencidos',
+          value: 'Vencido',
+        },
+        {
+          text: 'Enviados',
+          value: 'Enviado',
+        },
+        {
+          text: 'Abertos',
+          value: 'Em Aberto',
+        },
+        {
+          text: 'Não Iniciados',
+          value: 'Não Iniciado',
+        },
+        {
+          text: 'Resolvidos',
+          value: 'Resolvido',
+        },
+        {
+          text: 'Inativos',
+          value: 'Inativo',
+        },
+      ],
+      onFilter: (value, record) => record.status === value,
+    },
+    {
+      title: 'Data de Envio',
+      dataIndex: 'dataEnvioEmail',
+      key: 'dataEnvioEmail',
+      render: (_, {dataEnvioEmail}) => (
+        <>{dataEnvioEmail ? dataFormater(dataEnvioEmail) : "Não enviado"}</>
+      )
+    },
+    {
+      title: 'Ações',
+      key: 'action',
+      render: (_, item) => (
+        <Space size="middle">
+          <a onClick={() => handleSend(item.id)}>Alertar</a>
+          {!item.resolvido ?
+            <a style={{color: '#2EC615'}} onClick={() => handleSolve(item.id, true)}>Marcar como Resolvido</a>
+            :
+            <a style={{color: '#AAAAAA'}} onClick={() => handleSolve(item.id, false)}>Desfazer Resolvido</a>
+          }
+        </Space>
+      )
+    },
+  ];
+
   const collapseHeader = (item, status) => 
     <>
       <Col span={20}>
@@ -448,49 +579,14 @@ const collapseContent = item =>
             </Col>}
       </Row>
   </StyledContent>)
-  
-  // const resultadosPesquisa = (<>
-  //     <h4>Resultados</h4>
-  //     <Collapse items={searchResults} header={collapseHeader} content={collapseContent}/>
-  //   </>)
 
-  // const listaPadrao = (<>
-  //   {!vencidos.length ? null : 
-  //   <>
-  //     <h4>Vencidos</h4>
-  //     <Collapse items={vencidos} header={collapseHeader} content={collapseContent}/>
-  //   </>}
-  //   {!enviados.length ? null : 
-  //   <>
-  //     <h4>Enviados</h4>
-  //     <Collapse items={enviados} header={collapseHeader} content={collapseContent}/>
-  //   </>}
-  //   {!abertos.length ? null : 
-  //   <>
-  //     <h4>Abertos</h4>
-  //     <Collapse items={abertos} header={collapseHeader} content={collapseContent}/>
-  //   </>}
-  //   {!naoIniciados.length ? null : 
-  //   <>
-  //     <h4>Não Iniciados</h4>
-  //     <Collapse items={naoIniciados} header={collapseHeader} content={collapseContent}/>
-  //   </>}
-  //   {!resolvidos.length ? null : 
-  //   <>
-  //     <h4>Resolvidos</h4>
-  //     <Collapse items={resolvidos} header={collapseHeader} content={collapseContent}/>
-  //   </>}
-  //   {!inativos.length ? null : 
-  //   <>
-  //     <h4>Inativos</h4>
-  //     <Collapse items={inativos} header={collapseHeader} content={collapseContent}/>
-  //   </>}</>)
-  
   return <>
     <Container>
       {alertSucesso}
       {header}
-      {state.showVencidos && vencidosItems.length ? 
+      <br />
+      <Table columns={columns} pagination={false} dataSource={vencidosItems.concat(enviadosItems, abertosItems, naoIniciadosItems, resolvidosItems, inativosItems)} />
+      {/* {state.showVencidos && vencidosItems.length ? 
       <>
       <br />
         <Collapse items={vencidosItems} header={collapseHeader} content={collapseContent}/>
@@ -519,7 +615,7 @@ const collapseContent = item =>
       <>
       <br />
         <Collapse items={inativosItems} header={collapseHeader} content={collapseContent}/>
-      </>: null}
+      </>: null} */}
     </Container>
   </>
 }
