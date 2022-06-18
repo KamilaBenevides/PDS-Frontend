@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import { Modal } from 'antd';
 
 export const StyledModal = styled(Modal)`
+
+  .ant-row {
+    display: block;
+  }
+
   .ant-modal-content {
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 12px 48px #00000008;

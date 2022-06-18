@@ -1,7 +1,7 @@
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import Select from '../../components/Select/Select';
-import { StyledForm, StyledButton } from '../Register/styles';
+import { StyledForm, StyledButton, DisabledPicker } from '../Register/styles';
 import { Form, Alert } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,13 +9,58 @@ import { useMutation, useQuery, gql } from '@apollo/client';
 import moment from 'moment';
 import Card from '../../components/Card/Card';
 import SubHeader from '../../components/SubHeader/SubHeader';
-
+import ModalForm from '../../components/ModalForm/ModalForm';
 
 const EditRegister = () => {
 
     const { id } = useParams();
-
     const [docentes, setDocentes] = useState([]);
+    const [modalConfig, setModalConfig] = useState({});
+    const [modalForm] = Form.useForm();
+    const onModalSubmit = (values) => {
+        values["dataLimite"] = values["dataLimite"] ? values["dataLimite"].format() : "";
+        updateLimitDate({
+            variables: {
+                dataLimite: values.dataLimite,
+                alunoId: alunoQuery.data.aluno.id
+            }
+        }).then((res) => {
+            setSucesso(true);
+            onCancelModal();
+        }).catch((e) => {
+            let message = e.message ? 
+            e.message : "Erro ao editar data limite"
+            modalForm.setFields([{
+                name: "dataLimite",
+                errors: [message]
+            }])
+        });
+    }
+
+    const onCancelModal = () => {
+        setModalConfig({});
+    }
+
+    const modalItems = [
+        {
+            id: "0",
+            name: "dataLimite",
+            label: "Nova data limite",
+            colSpan: 24,
+            formComponent: <DatePicker/>
+        },
+    ];
+
+    const onDateLimitChange = (e) => {
+        setModalConfig({
+            title: `Alterar Data Limite`,
+            okText: "Salvar",
+            cancelText: "Cancelar",
+            onFinish: onModalSubmit,
+            onCancel: onCancelModal,
+            visible: true,
+        });
+    }
 
     const docQuery = useQuery(gql`
     query ExampleQuery{
@@ -70,8 +115,6 @@ const EditRegister = () => {
         customUpdateAluno(data: $data, alunoId: $alunoId) {
             nomeCompleto
             matricula
-            dataIngresso
-            dataLimite
             cpf
             emailInstitucional
             emailPessoal
@@ -88,6 +131,15 @@ const EditRegister = () => {
       }
     `;
 
+    const ULD = gql`
+    mutation CustomNewDataLimite($dataLimite: DateTime!, $alunoId: Float!) {
+        customNewDataLimite(dataLimite: $dataLimite, alunoId: $alunoId) {
+            dataLimite
+        }
+      }
+    `;
+    const [updateLimitDate] = useMutation(ULD);
+
     const [updateAluno] = useMutation(UA);
     const [form] = Form.useForm();
 
@@ -100,6 +152,7 @@ const EditRegister = () => {
             matricula: doc.matricula,
             cpf: doc.cpf,
             dataIngresso: moment(doc.dataIngresso),
+            dataLimite: moment(doc.dataLimite),
             orientadorId: doc.orientadorId,
             coorientadorId: doc.coorientadorId
         });
@@ -168,6 +221,13 @@ const EditRegister = () => {
             col: 12,
             required: true,
             formComponent: <DatePicker/>
+        },
+        {
+            label: "Data limite",
+            name: "dataLimite",
+            col: 12,
+            required: false,
+            formComponent: <DisabledPicker disabled onClick={onDateLimitChange}/>
         }
     ];
 
@@ -181,6 +241,7 @@ const EditRegister = () => {
 
     const formatValues = e => {
         e["dataIngresso"] = e["dataIngresso"] ? e["dataIngresso"].format() : "";
+        e["dataLimite"] = undefined;
         e["coorientadorId"] = e["coorientadorId"] ? e["coorientadorId"] : null;
         return e;
     }
@@ -225,7 +286,7 @@ const EditRegister = () => {
 
     return (
         <>
-            <SubHeader title={'Editar Docente'}/>
+            <SubHeader title={'Editar Discente'}/>
             <Card>
                 <StyledForm form={form} layout="vertical" onFinish={e => onFinish(e)}>
                     {alertSucesso}
@@ -233,6 +294,11 @@ const EditRegister = () => {
                     {submitButton}
                 </StyledForm>
             </Card>
+            <ModalForm 
+            {...modalConfig}
+            items={modalItems}
+            form={modalForm}
+            ></ModalForm>
         </>
     )
 }

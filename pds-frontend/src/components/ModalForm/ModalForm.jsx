@@ -11,13 +11,10 @@ const ModalForm = ({
   title,
   onFinish,
   items,
-  initialValues,
   form,
-  onOk,
-  isLoading,
+  initialValues,
   modalWidth,
 }) => {
-
     useEffect(() => {
         if (initialValues) {
           form.setFieldsValue(initialValues);
@@ -43,6 +40,9 @@ const ModalForm = ({
           return 570
         }
       }
+    const onOk = () => {
+      form.submit()
+    }
 
     return <StyledModal
             title={title}
@@ -53,12 +53,12 @@ const ModalForm = ({
             onOk={onOk}
             onCancel={cleanValuesCancel}
             width={modalWidthValue()}>
-        <Form
-        form={form}
-        onFinish={onSubmit}>
-            <FormGroupContainer items={items || []}/>
-        </Form>
-    </StyledModal>;
+              <Form
+              form={form}
+              onFinish={onSubmit}>
+                  <FormGroupContainer items={items || []}/>
+              </Form>
+          </StyledModal>;
 }
 
 export default ModalForm;
