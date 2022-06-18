@@ -34,5 +34,25 @@ export const Text = styled.p`
 `; 
 
 export const StyledButton = styled(Button)`
-
+    margin-top: 20px;
+    color: #FFF;
+    background: #071D41;
+    border-color: #071D41;
+    :hover{
+        border-color: #071D41 !important;
+        color: #264474;
+    }
+    :hover{
+        background: #264474;
+        color: #FFF;
+    }
+    :focus{
+        color: #FFFF;
+        background-color: #264474;
+        border-color: #071D41 !important;
+        box-shadow: 0 0 0.3em #071D41;
+    }
+    :active {
+        background: #264474;
+    }
 `;

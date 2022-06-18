@@ -1,5 +1,8 @@
-import { Form, Button, Col, Row } from 'antd';
-import { StyledFormItem, StyledButton, StyledAddButton } from './styles';
+import { Form, Col, Row } from 'antd';
+import {
+   StyledFormItem, 
+   StyledAddButton,
+   RemoveIcon } from './styles';
 import Input from '../Input/Input';
 
 const FormList = ({
@@ -35,12 +38,11 @@ const FormList = ({
                 </Col>
             })}
             </Row>
-        
-
-
 
     return (
-    <Form.List name={name}>
+    <Form.List 
+    name={name}
+    >
         {(fields, { add, remove }) => {
           if (fields.length === 0) {
             add();
@@ -50,27 +52,23 @@ const FormList = ({
             {fields.map((field, index) => {
               return <>
                 <Row>
-                  <Col span={20}>
+                  <Col span={22}>
                     {listField(field, index)}
                   </Col>
-                  <Col span={4}>
-                    <StyledButton
-                        type="link"
-                        onClick={() => remove(field.name)}
-                      >
-                        Remover
-                    </StyledButton>
+                  <Col span={2}>
+                    <RemoveIcon 
+                    onClick={() => remove(field.name)}
+                    style={{float: 'right'}}/>
                   </Col>
                 </Row>
               </>
             }
             )}
             <StyledAddButton
-                type="dashed"
-                onClick={() => add()}
-                style={{ width: '15%' }}
-              >
-                {addText}
+              type="link"
+              onClick={() => add()}
+            >
+                + {addText}
               </StyledAddButton>
           </>)
         }

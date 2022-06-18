@@ -347,14 +347,8 @@ const BaseAlert = ({alertType}) => {
 
   const header = <>
     <Row>
-      <Col span={18}>
+      <Col span={24}>
         <InputSearch placeholder={"Buscar"} onSearch={onSearch} />
-      </Col>
-      <Col span={6}>
-        <StyledSelect 
-          options={filterOptions} 
-          onChange={onFilterSelectChange}
-          defaultValue="todos"/>
       </Col>
     </Row>
   </>
@@ -586,36 +580,6 @@ const collapseContent = item =>
       {header}
       <br />
       <Table columns={columns} pagination={false} dataSource={vencidosItems.concat(enviadosItems, abertosItems, naoIniciadosItems, resolvidosItems, inativosItems)} />
-      {/* {state.showVencidos && vencidosItems.length ? 
-      <>
-      <br />
-        <Collapse items={vencidosItems} header={collapseHeader} content={collapseContent}/>
-      </>: null}
-      {state.showEnviados && enviadosItems.length ? 
-      <>
-      <br />
-        <Collapse items={enviadosItems} header={collapseHeader} content={collapseContent}/>
-      </>: null}
-      {state.showAbertos && naoIniciadosItems.length ? 
-      <>
-      <br />
-        <Collapse items={abertosItems} header={collapseHeader} content={collapseContent}/>
-      </>: null}
-      {state.showNaoIniciados && naoIniciadosItems.length ? 
-      <>
-      <br />
-        <Collapse items={naoIniciadosItems} header={collapseHeader} content={collapseContent}/>
-      </> : null}
-      {state.showResolvidos && resolvidosItems.length ? 
-      <>
-      <br />
-        <Collapse items={resolvidosItems} header={collapseHeader} content={collapseContent}/>
-      </> : null}
-      {state.showInativos && inativosItems.length ? 
-      <>
-      <br />
-        <Collapse items={inativosItems} header={collapseHeader} content={collapseContent}/>
-      </>: null} */}
     </Container>
   </>
 }

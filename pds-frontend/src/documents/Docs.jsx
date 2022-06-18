@@ -177,7 +177,7 @@ export default function Docs() {
       id: "0",
       name: ["nome"],
       label: "Examinador Interno",
-      colSpan: 12,
+      colSpan: 24,
     },
   ];
 
@@ -266,9 +266,8 @@ export default function Docs() {
 
   const submitButton = <Form.Item >
         <StyledButton 
-        type="primary" 
         onClick={() => {form.submit()}}
-        style={{ float: 'right' }}>
+        >
           Gerar documentos
         </StyledButton>
     </Form.Item>
@@ -277,9 +276,16 @@ export default function Docs() {
     <SubHeader title={'Geração de Documentos'}/>
     <Card >
       <Container className="container">
-        {/* <h2 style={{ textAlign: 'center' }}>Selecionar Aluno</h2> */}
         <Text>Aluno</Text>
-        <Select placeholder={'Selecione'} options={discentesOptions} style={{ width: '100%' }} onChange={onDiscenteChange}/>
+        <Select 
+        placeholder={'Selecione'} 
+        options={discentesOptions} 
+        style={{ width: '100%' }} 
+        onChange={onDiscenteChange}
+        showSearch
+        filterOption={(input, option) => 
+          option.label.toLowerCase().includes(input.toLowerCase())}
+        />
         <Divider />
         
         <Form form={form} onFinish={e => onFinish(e)}>
