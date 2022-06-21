@@ -51,7 +51,7 @@ const EditRegister = () => {
         },
     ];
 
-    const onDateLimitChange = (e) => {
+    const onDateLimitChange = () => {
         setModalConfig({
             title: `Alterar Data Limite`,
             okText: "Salvar",
@@ -60,6 +60,9 @@ const EditRegister = () => {
             onCancel: onCancelModal,
             visible: true,
         });
+        modalForm.setFieldsValue({
+            dataLimite: moment(alunoQuery.data.aluno.dataLimite)
+        })
     }
 
     const docQuery = useQuery(gql`
