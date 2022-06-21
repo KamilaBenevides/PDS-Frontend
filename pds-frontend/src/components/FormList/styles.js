@@ -1,8 +1,11 @@
 import { Form, FormItemProps, Button } from "antd";
 import styled from "styled-components";
+import {
+  DeleteFilled,
+} from '@ant-design/icons';
 
 export const StyledFormItem = styled(Form.Item)`
-  margin-bottom: "16px"; 
+  margin-bottom: 16px; 
   .ant-form-item-label {
     padding: 0;
   }
@@ -15,29 +18,25 @@ export const StyledFormItem = styled(Form.Item)`
   }
 `;
 
+export const RemoveIcon = styled(DeleteFilled)`
+  position: relative;
+  top: 24px;
+  margin: 0 18px;
+  color: #071D41;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+`;
+
 export const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
 export const StyledAddButton = styled(Button)`
-    color: #FFFF;
-    background: #071D41;
-    border-color: #071D41;
-    :hover{
-        border-color: #071D41 !important;
-    }
-    :hover{
-        background: #264474;
-        color: #FFF;
-    }
-    :focus{
-        color: #FFFF;
-        background-color: #264474;
-        border-color: #071D41 !important;
-        box-shadow: 0 0 0.3em #071D41;
-    }
-    :active {
-        color: #FFFF;
-        background: #264474;
-    }
+
+  text-align: left;
+  font: normal normal bold 14px/16px Poppins;
+  letter-spacing: 0px;
+  color: #071D41;
+  padding: 4px 0px
 `;

@@ -111,14 +111,8 @@ const ListRegister = () => {
     
     const header = 
       (<Row >
-        <Col span={18}>
+        <Col span={24}>
           <InputSearch placeholder={"Buscar"} onSearch={onSearch}/>
-        </Col>
-        <Col span={6}>
-          <StyledSelect 
-          options={filterOptions} 
-          onChange={onFilterSelectChange}
-          defaultValue="todos"/>
         </Col>
       </Row>)
 
