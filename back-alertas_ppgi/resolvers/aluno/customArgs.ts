@@ -123,3 +123,11 @@ export class SendAlertaAluno {
   })
   alertaAlunoId!: number;
 }
+
+@ArgsType()
+export class SendManyAlertaAluno {
+  @Field((_type) => [Int], {
+    nullable: false,
+  })
+  alertaAlunoIds!: Array<number>;
+}
