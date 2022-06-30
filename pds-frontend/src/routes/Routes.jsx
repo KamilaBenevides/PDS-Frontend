@@ -13,14 +13,20 @@ import QualificationAlerts from '../pages/Alerts/Qualification/Qualification';
 import DefenseAlerts from '../pages/Alerts/Defense/Defense';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Docs from '../documents/Docs';
-
+import AuthProvider from '../pages/Login/AuthProvider';
+import RequireAuth from "../pages/Login/RequireAuth";
 
 const MainRoutes = () => {
     return (
+        <AuthProvider>
             <Routes>
-                {/* <Route path={path.LOGIN} exact element={<Login/>}/> */}
                 <Route path={path.LOGIN} exact element={<Login/>}/>
-                <Route path={path.DASHBOARD} exact element={<Layout/>}>
+                <Route path={path.DASHBOARD} exact 
+                element={
+                    <RequireAuth>
+                        <Layout/>
+                    </RequireAuth>
+                }>
                     <Route path="" element={<Dashboard/>}/>
                     <Route path={path.REGISTER} element={<Register/>}/>
                     <Route path={path.DOCUMENT_PRODUCTION} element={<DocumentProduction/>}/>
@@ -34,6 +40,7 @@ const MainRoutes = () => {
                     <Route path={path.DEFENSE_ALERTS} element={<DefenseAlerts/>}/>
                 </Route>
             </Routes>
+        </AuthProvider>
     );
 }
 

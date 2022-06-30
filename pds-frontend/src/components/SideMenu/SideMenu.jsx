@@ -1,18 +1,15 @@
 import React from 'react';
-import {StyledSideMenu, StyledMenu} from './styles';
+import {StyledSideMenu, StyledMenu, StyledMenuLeave, LeaveIcon} from './styles';
 import { useNavigate } from "react-router-dom";
 import * as path from '../../routes/paths'
-const SideMenu = () => {
+import { useAuth } from '../../pages/Login/AuthProvider';
 
+const SideMenu = () => {
+    const auth = useAuth();
     let navigate = useNavigate();
 
     const handleNavigation = (item) => {
         let key = item.key;
-        // if (key == 9) {
-        //     // provisório até integrar documentos ao app principal
-        //     window.open('https://documentos-ppgi.vercel.app/', '_blank');
-        //     return;
-        // }
         menuItens.forEach(obj => {
             if(obj.key && obj.key === key) {
                 navigate(obj.path);
@@ -26,12 +23,13 @@ const SideMenu = () => {
                     }
                 })
             } 
-                
         })
     }
 
-    
-    
+    const handleLogout = () => {
+        auth.signOut();
+    }
+
     const menuItens = [
         {
             key: '0',
@@ -85,12 +83,22 @@ const SideMenu = () => {
             label: 'Documentos',
             path: path.DOCUMENTS
         },
+
     ];
 
-    console.log("sidemenu");
+    const menuLeave = [
+        {
+            key: '10',
+            label: 'Sair',
+            path: '',
+            icon: <LeaveIcon/>
+        },
+    ]
+
     return (
         <StyledSideMenu width={250}>
             <StyledMenu mode="inline" items={menuItens} onClick={item => handleNavigation(item)}/>
+            <StyledMenuLeave mode="inline" items={menuLeave} onClick={handleLogout}/>
         </StyledSideMenu>
     );
 }
