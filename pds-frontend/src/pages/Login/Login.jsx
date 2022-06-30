@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from "react-router-dom";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { TOKEN_KEY } from '../../api/apollo';
 import { Container, 
   FormWrapper, 
@@ -10,12 +10,10 @@ import { Container,
   InputForm } from './styles';
 import { Form, message } from 'antd'
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
+import { useAuth } from '../Login/AuthProvider';
 
 const Login = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log("local storage", localStorage.getItem(TOKEN_KEY));
-  }, [])
 
   const [form] = Form.useForm();
 
@@ -31,6 +29,7 @@ const Login = () => {
 
   const [customLogin, { data, loading, error }] = useMutation(LOGIN);
 
+  const auth = useAuth();
   const signIn = async (signInData) => {
 
     customLogin({
@@ -39,11 +38,10 @@ const Login = () => {
       }
     })
     .then(res => {
-      console.log("res sucesso", res);
       localStorage.setItem(TOKEN_KEY, res.data.customLogin.token);
+      auth.signIn(res.data.customLogin.token);
       navigate('/dashboard');
     }, error => {
-      // message.error("Erro ao realizar Login");
       message.error({
         content: "Erro ao realizar Login",
         style: { marginTop: "85vh" },

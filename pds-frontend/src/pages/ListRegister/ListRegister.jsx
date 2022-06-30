@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import {Col, Row, Typography, Button, Select, Table, Space} from 'antd';
 import moment from 'moment';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SubHeader from '../../components/SubHeader/SubHeader';
 
 const {Text, Title} = Typography;
@@ -55,6 +55,13 @@ const ListRegister = () => {
   const [showDiscentes, setShowDiscentes] = useState(true);
   const [showDocs, setShowDocs] = useState(true);
 
+  const {state} = useLocation();
+  
+  useEffect(() => {
+    queryAlunos.refetch();
+    queryDocentes.refetch();
+  }, [state])
+
     useEffect(() => {
         let items = queryAlunos.data?.alunos ? queryAlunos.data.alunos : [];
         console.log("items ", items);
@@ -71,14 +78,20 @@ const ListRegister = () => {
 
     const onSearch = value => {
       const currValue = value;
-      const filteredAlunos = discentes.filter(entry =>
-        entry.nomeCompleto.toLowerCase().includes(currValue.toLowerCase())
-      );
+      const filteredAlunos = discentes.filter(entry => {
+        // coloca strings em caixa baixa e remove acentos
+        let record = entry.nomeCompleto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        let term = currValue.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        return record.includes(term);
+      });
       setItems(filteredAlunos);
 
-      const filteredDocs = docs.filter(entry =>
-        entry.nomeCompleto.toLowerCase().includes(currValue.toLowerCase())
-      );
+      const filteredDocs = docs.filter(entry => {
+        // coloca strings em caixa baixa e remove acentos
+        let record = entry.nomeCompleto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        let term = currValue.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        return record.includes(term);
+      });
       setItemsDoc(filteredDocs);
     }
 

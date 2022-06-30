@@ -1,10 +1,19 @@
 import Header from '../Header/Header';
 import SideMenu from '../SideMenu/SideMenu';
 import { StyledLayout, StyledContent, StyledCard } from './styles';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../pages/Login/AuthProvider';
 
 
 const Layout = () => {
+
+    let auth = useAuth();
+    let navigate = useNavigate();
+
+    if (!auth.token) {
+        navigate("/");
+    }
+
     return (<>
         <StyledLayout>
             <Header ></Header>

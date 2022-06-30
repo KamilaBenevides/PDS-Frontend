@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-
+import {
+  ExportOutlined,
+} from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 const { Sider } = Layout;
 
@@ -45,6 +47,15 @@ export const StyledMenu = styled(Menu)`
       .ant-menu-sub{
         background: #071D41;
     }
+`;
+
+export const StyledMenuLeave = styled(StyledMenu)`
+    position: absolute;
+    bottom: 5px;
+`;
+
+export const LeaveIcon = styled(ExportOutlined)`
+    color: #FFF;
 `;
 
 export const StyledText = styled.span`

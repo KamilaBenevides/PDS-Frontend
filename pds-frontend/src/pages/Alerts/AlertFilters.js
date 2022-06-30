@@ -15,6 +15,18 @@ export const solveAlertMutation = gql`
     }
   }`
 
+export const solveManyAlertsMutation = gql`
+  mutation UpdateManyAlertaAluno($data: AlertaAlunoUpdateManyMutationInput!, $where: AlertaAlunoWhereInput) {
+    updateManyAlertaAluno(data: $data, where: $where) {
+      count
+    }
+}`
+
+export const sendManyAlertaAluno = gql`
+mutation SendManyAlertaAluno($alertaAlunoIds: [Int!]!) {
+    sendManyAlertaAluno(alertaAlunoIds: $alertaAlunoIds)
+}`
+
 export const baseQuery = gql`
     query AlertaAlunos($where: AlertaAlunoWhereInput) {
         alertaAlunos(where: $where) {

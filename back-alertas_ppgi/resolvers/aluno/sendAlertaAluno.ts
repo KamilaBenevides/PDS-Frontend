@@ -1,9 +1,9 @@
 import { UserInputError, ApolloError } from "apollo-server";
 import { DateTime } from "luxon";
-import { Args, Ctx, Mutation, Resolver } from "type-graphql";
+import { Args, Ctx, Int, Mutation, Resolver } from "type-graphql";
 import { AlertaAluno } from "../../prisma/generated/type-graphql";
 import { Context } from "../utils/context";
-import { SendAlertaAluno } from "./customArgs";
+import { SendAlertaAluno, SendManyAlertaAluno } from "./customArgs";
 import { sendMail } from "../utils/mail";
 
 @Resolver()
@@ -88,5 +88,42 @@ export class sendAlertaAlunoResolver {
     });
 
     return errors.length ? false : true;
+  }
+
+  @Mutation(() => Int)
+  async sendManyAlertaAluno(
+    @Ctx() { prisma }: Context,
+    @Args() { alertaAlunoIds }: SendManyAlertaAluno
+  ) {
+    const alertaAlunos = await prisma.alertaAluno.findMany({
+      where: { id: { in: alertaAlunoIds } },
+      include: { aluno: { include: { orientador: true, coorientador: true } }, alerta: true }
+    });
+
+    if (!alertaAlunos) {
+      return 0;
+    }
+    
+    const today = new Date();
+    let count = 0;
+    
+    for (const alertaAluno of alertaAlunos) {
+      try {
+        await sendMail(alertaAluno);
+        let updatedAlertaAluno: AlertaAluno = await prisma.alertaAluno.update({
+          where: { id: alertaAluno.id },
+          data: {
+            enviado: true,
+            dataEnvioEmail: today,
+          },
+        });
+        count += 1;
+      } catch (err) {
+        console.log(err);
+        throw new ApolloError("Erro ao enviar email");
+      }
+    }
+
+    return count;
   }
 }

@@ -1,12 +1,13 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
-import { Alert } from 'antd';
+import { Alert, Button } from 'antd';
 import { Container, StyledNameText, StyledText, StyledButton, 
   StyledContent,
   StyledStatusName,
   StyledSelect} from './styles';
 import { useEffect, useState, useReducer } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
 import * as af from './AlertFilters.js';
@@ -21,6 +22,21 @@ const BaseAlert = ({alertType}) => {
     sendAlert({
       variables: {
         alertaAlunoId: aaId
+      }
+    }).then(() => {
+      queryAlertaAlunos.refetch();
+      setSucesso(true);
+    }).catch(() => {
+      setErro(true);
+    });
+  }
+  
+  const [sendManyAlerts] = useMutation(af.sendManyAlertaAluno);
+
+  const handleSendMany = () => {
+    sendManyAlerts({
+      variables: {
+        alertaAlunoIds: selectedRowKeys
       }
     }).then(() => {
       queryAlertaAlunos.refetch();
@@ -66,7 +82,29 @@ const BaseAlert = ({alertType}) => {
             id: aaId
           }
       }}).then(() => {
-          window.location.reload();
+          queryAlertaAlunos.refetch();
+          queryResolvidos.refetch();
+      });
+  }
+
+  const [solveManyAlerts] = useMutation(af.solveManyAlertsMutation);
+
+  const handleSolveMany = () => {
+    solveManyAlerts({
+      variables: {
+          data: {
+            resolvido: {
+              set: true
+            }
+          },
+          where: {
+            id: {
+              in: selectedRowKeys
+            }
+          }
+      }}).then(() => {
+          queryAlertaAlunos.refetch();
+          queryResolvidos.refetch();
       });
   }
 
@@ -142,6 +180,14 @@ const BaseAlert = ({alertType}) => {
   const [resolvidosItems, setResolvidosItems] = useState([])
   const [inativosItems, setInativosItems] = useState([])
 
+  const location = useLocation();
+  
+  useEffect(() => {
+    queryAlertaAlunos.refetch();
+    queryInativos.refetch();
+    queryResolvidos.refetch();
+  }, [location.state])
+
   useEffect(() => {
     let aa = queryAlertaAlunos.data?.alertaAlunos ? queryAlertaAlunos.data.alertaAlunos : [];
     
@@ -209,43 +255,38 @@ const BaseAlert = ({alertType}) => {
     }
   ];
 
+  const compareStrings = (entry, value) => {
+    // coloca strings em caixa baixa e remove acentos
+    let record = entry?.aluno?.nomeCompleto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    let term = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    return record.includes(term);
+  } 
+
   const onSearch = value => {
     console.log("filter value ", value);
     if (state.showVencidos) {
       console.log("vencidos", vencidos);
-      const filteredAlunos = vencidos.filter(entry =>
-        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredAlunos = vencidos.filter(entry => compareStrings(entry, value));
       setVencidosItems(filteredAlunos);
     }
     if (state.showAbertos) {
-      const filteredAlunos = abertos.filter(entry =>
-        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredAlunos = abertos.filter(entry => compareStrings(entry, value));
       setAbertosItems(filteredAlunos);
     }
     if(state.showEnviados) {
-      const filteredAlunos = enviados.filter(entry =>
-        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredAlunos = enviados.filter(entry => compareStrings(entry, value));
       setEnviadosItems(filteredAlunos);
     }
     if (state.showInativos) {
-      const filteredAlunos = inativos.filter(entry =>
-        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredAlunos = inativos.filter(entry => compareStrings(entry, value));
       setInativosItems(filteredAlunos);
     }
     if (state.showNaoIniciados) {
-      const filteredAlunos = naoIniciados.filter(entry =>
-        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredAlunos = naoIniciados.filter(entry => compareStrings(entry, value));
       setNaoIniciadosItems(filteredAlunos);
     }
     if (state.showResolvidos) {
-      const filteredAlunos = resolvidos.filter(entry =>
-        entry?.aluno?.nomeCompleto.toLowerCase().includes(value.toLowerCase())
-      );
+      const filteredAlunos = resolvidos.filter(entry => compareStrings(entry, value));
       setResolvidosItems(filteredAlunos);
     }
   }
@@ -501,6 +542,46 @@ const BaseAlert = ({alertType}) => {
     },
   ];
 
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      {
+        key: 'vencidos',
+        text: 'Selecionar Vencidos',
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            console.log(key)
+            let vencido = vencidosItems.find(i => i.id == key);
+            return vencido ? true : false;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+      {
+        key: 'abertos',
+        text: 'Selecionar Abertos',
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            console.log(key)
+            let aberto = abertosItems.find(i => i.id == key);
+            return aberto ? true : false;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+    ],
+  };
+
   const collapseHeader = (item, status) => 
     <>
       <Col span={20}>
@@ -579,7 +660,14 @@ const collapseContent = item =>
       {alertSucesso}
       {header}
       <br />
-      <Table columns={columns} pagination={false} dataSource={vencidosItems.concat(enviadosItems, abertosItems, naoIniciadosItems, resolvidosItems, inativosItems)} />
+      {selectedRowKeys.length ?
+        <><Space>
+          <Button onClick={() => handleSendMany()}>Enviar alerta para os selecionados</Button>
+          <Button onClick={() => handleSolveMany()}>Marcar selecionados como resolvido</Button>
+        </Space><br/><br/></>
+        : <></>
+      }
+      <Table rowKey="id" rowSelection={rowSelection} columns={columns} pagination={false} dataSource={vencidosItems.concat(enviadosItems, abertosItems, naoIniciadosItems, resolvidosItems, inativosItems)} />
     </Container>
   </>
 }
