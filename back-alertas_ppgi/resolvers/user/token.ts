@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../../prisma/generated/type-graphql";
 import { LoginReturn } from "./customArgs";
 
-const JWT_SECRET = "eueueuha12121213hhhshshsoiqooqppahshasho";
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 type jwtBody = {
   id: number;
