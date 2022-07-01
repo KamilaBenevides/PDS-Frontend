@@ -13,10 +13,10 @@ const isLogged = rule({ cache: "no_cache" })(
 export const permissions = shield(
   {
     Query: {
-      "*": allow,
+      "*": isLogged,
     },
     Mutation: {
-      "*": allow,
+      "*": isLogged,
       customLogin: allow,
     },
   },

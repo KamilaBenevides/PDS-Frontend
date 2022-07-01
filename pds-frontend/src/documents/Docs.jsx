@@ -282,9 +282,6 @@ export default function Docs() {
         options={discentesOptions} 
         style={{ width: '100%' }} 
         onChange={onDiscenteChange}
-        showSearch
-        filterOption={(input, option) => 
-          option.label.toLowerCase().includes(input.toLowerCase())}
         />
         <Divider />
         
