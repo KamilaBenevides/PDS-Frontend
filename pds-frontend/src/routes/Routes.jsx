@@ -15,6 +15,9 @@ import Dashboard from '../pages/Dashboard/Dashboard';
 import Docs from '../documents/Docs';
 import AuthProvider from '../pages/Login/AuthProvider';
 import RequireAuth from "../pages/Login/RequireAuth";
+import Internship from '../pages/Alerts/Internship/Internship';
+import DiplomaApproval from '../pages/Alerts/DiplomaApproval/DiplomaApproval';
+import ArticleSubmission from '../pages/Alerts/ArticleSubmission/ArticleSubmission'
 
 const MainRoutes = () => {
     return (
@@ -38,6 +41,9 @@ const MainRoutes = () => {
                     <Route path={path.PROFICIENCY_ALERTS} element={<ProficiencyAlerts/>}/>
                     <Route path={path.QUALIFICATION_ALERTS} element={<QualificationAlerts/>}/>
                     <Route path={path.DEFENSE_ALERTS} element={<DefenseAlerts/>}/>
+                    <Route path={path.TEACHING_INTERNSHIP} element={<Internship/>}/>
+                    <Route path={path.HOMOLOGACAO_DIPLOMA} element={<DiplomaApproval/>}/>
+                    <Route path={path.SUBMISSAO_ARTIGO} element={<ArticleSubmission/>}/>
                 </Route>
             </Routes>
         </AuthProvider>
