@@ -37,6 +37,9 @@ export const StyledMenu = styled(Menu)`
             opacity: 0;
           }
         }
+        .ant-menu-submenu-arrow{
+          color:#FFF;
+        }
       }
     
       .anticon-caret-down {
