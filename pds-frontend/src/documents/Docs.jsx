@@ -13,7 +13,7 @@ import SubHeader from '../components/SubHeader/SubHeader';
 import Card from '../components/Card/Card';
 // import moment from 'moment';
 
-const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'outubro', 'novembro', 'dezembro'];
+const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
 export default function Docs() {
   // const { register, control, handleSubmit, formState: { errors } } = useForm();
@@ -273,7 +273,7 @@ export default function Docs() {
     </Form.Item>
   
   return <>
-    <SubHeader title={'Geração de Documentos'}/>
+    <SubHeader title={'Geração de Documentos'} textBottom={'Adicione os dados para gerar os documentos de ata, teste, teste, teste'}/>
     <Card >
       <Container className="container">
         <Text>Aluno</Text>
