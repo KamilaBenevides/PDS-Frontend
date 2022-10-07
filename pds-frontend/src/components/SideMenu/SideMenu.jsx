@@ -76,6 +76,21 @@ const SideMenu = () => {
                     label: 'Defesa dissertação',
                     path: path.DEFENSE_ALERTS
                 },
+                {
+                    key: '11',
+                    label: 'Estágio docência',
+                    path: path.TEACHING_INTERNSHIP
+                },
+                {
+                    key: '12',
+                    label: 'Homologação do diploma',
+                    path: path.HOMOLOGACAO_DIPLOMA
+                },
+                {
+                    key: '13',
+                    label: 'Submissão de artigo',
+                    path: path.SUBMISSAO_ARTIGO
+                }
             ]
         },
         {
