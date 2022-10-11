@@ -5,7 +5,6 @@ import { TOKEN_KEY } from '../../api/apollo';
 import { Container, 
   FormWrapper, 
   Title,
-  Subtitle, 
   MainButton, 
   InputForm } from './styles';
 import { Form, message } from 'antd'
@@ -48,7 +47,7 @@ const Login = () => {
       });
       console.log("res error ", error);
     });
-  
+
     
   };
 
@@ -66,7 +65,6 @@ const Login = () => {
       col: 24,
       required: true,
       formComponent: <InputForm
-      placeholder="******"
       type={"password"}/>
     },
   ];
@@ -84,7 +82,7 @@ const Login = () => {
           <Container>
             <FormWrapper>
               <Title>Alertas PPGI</Title>
-              <Subtitle>Facilitando o SIGAA</Subtitle>
+              {/* <Subtitle>Facilitando o SIGAA</Subtitle> */}
               <Form form={form} layout="vertical" onFinish={e => onFinish(e)}>
                 <FormGroupContainer items={loginItems}/>
               </Form>
