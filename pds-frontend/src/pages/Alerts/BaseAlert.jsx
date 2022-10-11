@@ -14,6 +14,34 @@ import * as af from './AlertFilters.js';
 import { Col, Row, Typography, Table, Space } from 'antd';
 const {Text, Title} = Typography;
 
+
+var date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+// This arrangement can be altered based on how we want the date's format to appear.
+let currentDate = `${day}/${month}/${year}`;
+
+function getDifferenceInMonths(date1, date2) {
+  var diffInYs = parseInt(date2.slice(6,10)) - parseInt(date1.slice(6,10));
+  var diffInMs = parseInt(date2.slice(3,5)) - parseInt(date1.slice(3,5));
+  if (diffInMs<0)
+  {
+    diffInYs = diffInYs - 1
+    if ( diffInYs < 0 )
+    {
+      return "Vencido a " + (-1*diffInMs) +" meses"
+    }
+    diffInMs = 12 + diffInMs 
+  }
+  Math.abs(diffInYs)
+  Math.abs(diffInMs)
+  diffInMs = diffInMs + (diffInYs * 12)
+  return "Vence em " + (diffInMs-1) + " meses"
+}
+
 const BaseAlert = ({alertType}) => {
 
   const [sendAlert] = useMutation(af.sendAlertaAlunoMutation);
@@ -461,7 +489,7 @@ const BaseAlert = ({alertType}) => {
       dataIndex: 'vencimento',
       key: 'vencimento',
       render: (_, item) => (
-        <>{dataFormater(af.getVencimentoAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo))}</>
+        <>{getDifferenceInMonths( currentDate ,dataFormater(af.getVencimentoAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo)))}</>
       ),
       sorter: (a, b) => af.getVencimentoAlerta(a.aluno.dataLimite, a.alerta.diasIntervalo)
                           .isAfter(af.getVencimentoAlerta(b.aluno.dataLimite, b.alerta.diasIntervalo)),

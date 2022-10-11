@@ -132,9 +132,6 @@ const Dashboard = () => {
         {alertSucesso}
         <Row gutter={[16, 16]}>
           <Col span={8}>
-            <SpecificStats title={"Total"} vencidos={stats.totalVencidos} enviados={stats.totalEnviados} abertos={stats.totalAbertos} detalhes={''} setSucesso={setSucesso} setErro={setErro} />
-          </Col>
-          <Col span={8}>
             <SpecificStats title={"Proficiência"} vencidos={stats.profVencidos} enviados={stats.profEnviados} abertos={stats.profAbertos} detalhes={path.PROFICIENCY_ALERTS} />
           </Col>
           <Col span={8}>
