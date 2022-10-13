@@ -18,6 +18,7 @@ import RequireAuth from "../pages/Login/RequireAuth";
 import Internship from '../pages/Alerts/Internship/Internship';
 import DiplomaApproval from '../pages/Alerts/DiplomaApproval/DiplomaApproval';
 import ArticleSubmission from '../pages/Alerts/ArticleSubmission/ArticleSubmission'
+import DocsDissertationPropostal from '../documents/DocsDissertationProposal';
 
 const MainRoutes = () => {
     return (
@@ -44,6 +45,7 @@ const MainRoutes = () => {
                     <Route path={path.TEACHING_INTERNSHIP} element={<Internship/>}/>
                     <Route path={path.HOMOLOGACAO_DIPLOMA} element={<DiplomaApproval/>}/>
                     <Route path={path.SUBMISSAO_ARTIGO} element={<ArticleSubmission/>}/>
+                    <Route path={path.DOCUMENTS_DISSERTATION_PROPOSTAL} element={<DocsDissertationPropostal/>}/>
                 </Route>
             </Routes>
         </AuthProvider>

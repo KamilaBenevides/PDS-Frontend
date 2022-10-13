@@ -73,8 +73,8 @@ const SideMenu = () => {
                 },
                 {
                     key: '8',
-                    label: 'Defesa dissertação',
-                    path: path.DEFENSE_ALERTS
+                    label: 'Submissão de artigo',
+                    path: path.SUBMISSAO_ARTIGO
                 },
                 {
                     key: '11',
@@ -83,20 +83,31 @@ const SideMenu = () => {
                 },
                 {
                     key: '12',
-                    label: 'Homologação do diploma',
-                    path: path.HOMOLOGACAO_DIPLOMA
+                    label: 'Defesa dissertação',
+                    path: path.DEFENSE_ALERTS
                 },
                 {
                     key: '13',
-                    label: 'Submissão de artigo',
-                    path: path.SUBMISSAO_ARTIGO
+                    label: 'Homologação do diploma',
+                    path: path.HOMOLOGACAO_DIPLOMA
                 }
             ]
         },
         {
             key: '9',
             label: 'Documentos',
-            path: path.DOCUMENTS
+            children: [
+                {
+                    key: '14',
+                    label: 'Documentos de Defesa',
+                    path: path.DOCUMENTS
+                },
+                {
+                    key: '15',
+                    label: 'Documentos de Proposta',
+                    path: path.DOCUMENTS_DISSERTATION_PROPOSTAL
+                }
+            ]
         },
 
     ];

@@ -62,9 +62,9 @@ export const MainButton = styled(Button)`
         // background: #071D41;
     }
     :focus{
-        border-color: #FFF !important;
+        border-color: #071D41 !important;
         box-shadow: 0 0 0.3em #FFF;
-        color:  #DFDEDE;
+        color:  #071D41;
         background: #DFDEDE;
     }
 `;

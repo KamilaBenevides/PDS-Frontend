@@ -45,3 +45,11 @@ orientador: string
 tituloTrabalho: string
 ​
 videoconferencia: boolean
+
+diaProposta: string/numero
+
+mesProposta: string
+
+anoProposta: string/numero
+
+horaProposta: string (ex: "10:30")
