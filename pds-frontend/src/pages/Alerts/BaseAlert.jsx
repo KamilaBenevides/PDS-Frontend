@@ -51,7 +51,7 @@ const BaseAlert = ({alertType}) => {
   const handleSend = (aaId) => {
     sendAlert({
       variables: {
-        alertaAlunoId: aaId,
+        alertaAlunoId: studentSelectId,
         messageEmail: emailTextDefault
       }
     }).then(() => {
@@ -566,6 +566,7 @@ const BaseAlert = ({alertType}) => {
   const [open, setOpen] = useState(false);
   const [emailTextDefault, setEmailTextDefault] = useState();
   const [studentSelect, setStudentSelect] = useState();
+  const [studentSelectId, setStudentSelectId] = useState();
   
   const handleClickOpen = (StudentLine) => {
     console.log(StudentLine)
@@ -574,6 +575,7 @@ const BaseAlert = ({alertType}) => {
     setEmailTextDefault(emailTextDefault)
     const textTitleAlert = "Tem certeza que deseja enviar alerta para {NOME} ?".replace("{NOME}", StudentLine.aluno.nomeCompleto)
     setStudentSelect(textTitleAlert)
+    setStudentSelectId(StudentLine.id)
   };
   
   console.log(studentSelect)
