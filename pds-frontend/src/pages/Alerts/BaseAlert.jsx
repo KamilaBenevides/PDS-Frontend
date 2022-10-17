@@ -32,7 +32,7 @@ function getDifferenceInMonths(date1, date2) {
     diffInYs = diffInYs - 1
     if ( diffInYs < 0 )
     {
-      return "Vencido a " + (-1*diffInMs) +" meses"
+      return "Atrasado a " + (-1*diffInMs) +" meses"
     }
     diffInMs = 12 + diffInMs 
   }
@@ -194,17 +194,15 @@ const BaseAlert = ({alertType}) => {
   });
 
   const [alertas, setAlertas] = useState([]);
-  const [vencidos, setVencidos] = useState([]);
+  const [Atrasados, setAtrasados] = useState([]);
   const [enviados, setEnviados] = useState([]);
-  const [abertos, setAbertos] = useState([]);
-  const [naoIniciados, setNaoIniciados] = useState([]);
+  const [Pendentes, setPendentes] = useState([]);
   const [resolvidos, setResolvidos] = useState([]);
   const [inativos, setInativos] = useState([]);
 
-  const [vencidosItems, setVencidosItems] = useState([])
+  const [AtrasadosItems, setAtrasadosItems] = useState([])
   const [enviadosItems, setEnviadosItems] = useState([])
-  const [abertosItems, setAbertosItems] = useState([])
-  const [naoIniciadosItems, setNaoIniciadosItems] = useState([])
+  const [PendentesItems, setPendentesItems] = useState([])
   const [resolvidosItems, setResolvidosItems] = useState([])
   const [inativosItems, setInativosItems] = useState([])
 
@@ -219,21 +217,17 @@ const BaseAlert = ({alertType}) => {
   useEffect(() => {
     let aa = queryAlertaAlunos.data?.alertaAlunos ? queryAlertaAlunos.data.alertaAlunos : [];
     
-    let vencidos = af.filterVencidos(aa);
-    setVencidos(vencidos);
-    setVencidosItems(vencidos);
+    let Atrasados = af.filterAtrasados(aa);
+    setAtrasados(Atrasados);
+    setAtrasadosItems(Atrasados);
 
     let enviados = af.filterEnviados(aa);
     setEnviados(enviados);
     setEnviadosItems(enviados);
 
-    let abertos = af.filterAbertos(aa);
-    setAbertos(abertos);
-    setAbertosItems(abertos);
-
-    let naoIniciados = af.filterNaoIniciados(aa);
-    setNaoIniciados(naoIniciados);
-    setNaoIniciadosItems(naoIniciados);
+    let Pendentes = af.filterPendentes(aa);
+    setPendentes(Pendentes);
+    setPendentesItems(Pendentes);
 
     setAlertas(aa);
   }, [queryAlertaAlunos.data]);
@@ -252,37 +246,6 @@ const BaseAlert = ({alertType}) => {
     setInativosItems(aa_status);
   }, [queryInativos.data]);
 
-  const filterOptions = [
-    {
-      label: "Vencidos",
-      value: "vencidos"
-    },
-    {
-      label: "Não iniciados",
-      value: "naoInciados"
-    },
-    {
-      label: "Enviados",
-      value: "enviados"
-    },
-    {
-      label: "Abertos",
-      value: "abertos"
-    },
-    {
-      label: "Resolvidos",
-      value: "resolvidos"
-    },
-    {
-      label: "Inativos",
-      value: "inativos"
-    },
-    {
-      label: "Todos",
-      value: "todos"
-    }
-  ];
-
   const compareStrings = (entry, value) => {
     // coloca strings em caixa baixa e remove acentos
     let record = entry?.aluno?.nomeCompleto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
@@ -292,14 +255,14 @@ const BaseAlert = ({alertType}) => {
 
   const onSearch = value => {
     console.log("filter value ", value);
-    if (state.showVencidos) {
-      console.log("vencidos", vencidos);
-      const filteredAlunos = vencidos.filter(entry => compareStrings(entry, value));
-      setVencidosItems(filteredAlunos);
+    if (state.showAtrasados) {
+      console.log("Atrasados", Atrasados);
+      const filteredAlunos = Atrasados.filter(entry => compareStrings(entry, value));
+      setAtrasadosItems(filteredAlunos);
     }
-    if (state.showAbertos) {
-      const filteredAlunos = abertos.filter(entry => compareStrings(entry, value));
-      setAbertosItems(filteredAlunos);
+    if (state.showPendentes) {
+      const filteredAlunos = Pendentes.filter(entry => compareStrings(entry, value));
+      setPendentesItems(filteredAlunos);
     }
     if(state.showEnviados) {
       const filteredAlunos = enviados.filter(entry => compareStrings(entry, value));
@@ -309,36 +272,19 @@ const BaseAlert = ({alertType}) => {
       const filteredAlunos = inativos.filter(entry => compareStrings(entry, value));
       setInativosItems(filteredAlunos);
     }
-    if (state.showNaoIniciados) {
-      const filteredAlunos = naoIniciados.filter(entry => compareStrings(entry, value));
-      setNaoIniciadosItems(filteredAlunos);
-    }
     if (state.showResolvidos) {
       const filteredAlunos = resolvidos.filter(entry => compareStrings(entry, value));
       setResolvidosItems(filteredAlunos);
     }
   }
 
-  const onFilterSelectChange = value => {
-    dispatch({type: value})
-  }
-
-  const initialState = {
-    showAbertos: false,
-    showEnviados: false,
-    showInativos: false,
-    showNaoIniciados: false,
-    showResolvidos: false,
-    showVencidos: false
-  };
 
   const init = {
-      showAbertos: true,
+      showPendentes: true,
       showEnviados: true,
       showInativos: true,
-      showNaoIniciados: true,
       showResolvidos: true,
-      showVencidos: true
+      showAtrasados: true
   }
   
   const [filter, setFilter] = useState('Todos');
@@ -346,70 +292,63 @@ const BaseAlert = ({alertType}) => {
 
   function reducer(state, action) {
     switch (action.type) {
-      case 'vencidos':
+      case 'Atrasados':
         console.log("state ", state);
-        setFilter('Vencido');
+        setFilter('Atrasado');
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: true,
+          showAtrasados: true,
         };
-      case 'abertos':
+      case 'Pendentes':
         return {
-          showAbertos: true,
+          showPendentes: true,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'enviados':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: true,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'inativos':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: true,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'naoInciados':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: true,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'resolvidos':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: true,
-          showVencidos: false,
+          showAtrasados: false,
         };
       default:
         return {
-          showAbertos: true,
+          showPendentes: true,
           showEnviados: true,
           showInativos: true,
-          showNaoIniciados: true,
           showResolvidos: true,
-          showVencidos: true,
+          showAtrasados: true,
         };
     }
   }
@@ -424,15 +363,13 @@ const BaseAlert = ({alertType}) => {
   
   const getStatusType = status => {
     switch (status) {
-      case "Vencido":
+      case "Atrasado":
         return "danger";
-      case "Em Aberto":
+      case "Pendente":
         return "warning";
       case "Enviado":
         return "warning";
       case "Inativo":
-        return "secondary";
-      case "Não Iniciado":
         return "secondary";
       case "Resolvido":
         return "success";
@@ -478,8 +415,8 @@ const BaseAlert = ({alertType}) => {
     },
     {
       title: 'Abertura',
-      dataIndex: 'aberto',
-      key: 'aberto',
+      dataIndex: 'Pendente',
+      key: 'Pendente',
       render: (_, item) => (
         <>{dataFormater(af.getInicioAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo))}</>
       )
@@ -520,20 +457,16 @@ const BaseAlert = ({alertType}) => {
       ),
       filters: [
         {
-          text: 'Vencidos',
-          value: 'Vencido',
+          text: 'Atrasados',
+          value: 'Atrasado',
         },
         {
           text: 'Enviados',
           value: 'Enviado',
         },
         {
-          text: 'Abertos',
-          value: 'Em Aberto',
-        },
-        {
-          text: 'Não Iniciados',
-          value: 'Não Iniciado',
+          text: 'Pendentes',
+          value: 'Pendente',
         },
         {
           text: 'Resolvidos',
@@ -542,6 +475,10 @@ const BaseAlert = ({alertType}) => {
         {
           text: 'Inativos',
           value: 'Inativo',
+        },
+        {
+          text: 'Homologado',
+          value: 'Homologado',
         },
       ],
       onFilter: (value, record) => record.status === value,
@@ -582,27 +519,27 @@ const BaseAlert = ({alertType}) => {
     onChange: onSelectChange,
     selections: [
       {
-        key: 'vencidos',
-        text: 'Selecionar Vencidos',
+        key: 'Atrasados',
+        text: 'Selecionar Atrasados',
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((key, index) => {
             console.log(key)
-            let vencido = vencidosItems.find(i => i.id == key);
-            return vencido ? true : false;
+            let Atrasado = AtrasadosItems.find(i => i.id == key);
+            return Atrasado ? true : false;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
       },
       {
-        key: 'abertos',
-        text: 'Selecionar Abertos',
+        key: 'Pendentes',
+        text: 'Selecionar Pendentes',
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((key, index) => {
             console.log(key)
-            let aberto = abertosItems.find(i => i.id == key);
-            return aberto ? true : false;
+            let Pendente = PendentesItems.find(i => i.id == key);
+            return Pendente ? true : false;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
@@ -632,10 +569,10 @@ const collapseContent = item =>
               <StyledText><strong>Ingresso do aluno:</strong> {dataFormater(item.aluno.dataIngresso)}</StyledText>
           </Col>
           <Col span={24}>
-              <StyledText><strong>Alerta aberto em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days'))}</StyledText>
+              <StyledText><strong>Alerta Pendente em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days'))}</StyledText>
           </Col>
           <Col span={24}>
-              <StyledText><strong>Alerta vencido em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days').add(30, 'days'))}</StyledText>
+              <StyledText><strong>Alerta Atrasado em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days').add(30, 'days'))}</StyledText>
           </Col>
           {item.dataEnvioEmail ?
             <Col span={24}>
@@ -695,7 +632,7 @@ const collapseContent = item =>
         </Space><br/><br/></>
         : <></>
       }
-      <Table rowKey="id" rowSelection={rowSelection} columns={columns} pagination={false} dataSource={vencidosItems.concat(enviadosItems, abertosItems, naoIniciadosItems, resolvidosItems, inativosItems)} />
+      <Table rowKey="id" rowSelection={rowSelection} columns={columns} pagination={false} dataSource={AtrasadosItems.concat(enviadosItems, PendentesItems, resolvidosItems, inativosItems)} />
     </Container>
   </>
 }

@@ -13,7 +13,7 @@ const Collapse = ({ items, header, content }) => {
     //                 <StyledText><strong>Prazo máximo para agendamento:</strong> {item.dataLimite}</StyledText>
     //             </Col>
     //             <Col span={24}>
-    //                 <StyledText><strong>Status:</strong> em aberto</StyledText>
+    //                 <StyledText><strong>Status:</strong> Pendente</StyledText>
     //             </Col>
     //             <Col span={3}>
     //             <StyledButton type="primary" danger 
@@ -42,7 +42,7 @@ const Collapse = ({ items, header, content }) => {
     //         <StyledNameText>{item.nomeCompleto}</StyledNameText>
     //     </Col>
     //     {!item.matricula ? null: <Col span={4}>
-    //         <StyledStatusName>STATUS: em aberto</StyledStatusName>
+    //         <StyledStatusName>STATUS: Pendente</StyledStatusName>
     //     </Col>}
     // </>
     // }
