@@ -39,7 +39,7 @@ function getDifferenceInMonths(date1, date2) {
   Math.abs(diffInYs)
   Math.abs(diffInMs)
   diffInMs = diffInMs + (diffInYs * 12)
-  return "Vence em " + (diffInMs-1) + " meses"
+  return (diffInMs-1) + " meses"
 }
 
 const BaseAlert = ({alertType}) => {
@@ -475,14 +475,6 @@ const BaseAlert = ({alertType}) => {
       render: (_, {aluno}) => (
         <>{aluno.emailInstitucional}</>
       ),
-    },
-    {
-      title: 'Abertura',
-      dataIndex: 'aberto',
-      key: 'aberto',
-      render: (_, item) => (
-        <>{dataFormater(af.getInicioAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo))}</>
-      )
     },
     {
       title: 'Vencimento',
