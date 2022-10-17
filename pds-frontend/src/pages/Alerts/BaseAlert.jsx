@@ -7,7 +7,7 @@ import { Container, StyledNameText, StyledText, StyledButton,
   StyledStatusName,
   StyledSelect} from './styles';
 import { useEffect, useState, useReducer } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
 import * as af from './AlertFilters.js';
@@ -441,13 +441,18 @@ const BaseAlert = ({alertType}) => {
     }
   }
 
+  const navigate = useNavigate();
+  const EtitAluno = (item) => {
+    navigate('/dashboard/register/' + item.id);
+  }
+
   const columns = [
     {
       title: 'Nome',
       dataIndex: 'nomeCompleto',
       key: 'nomeCompleto',
       render: (_, {aluno}) => (
-        <>{aluno.nomeCompleto}</>
+        <a onClick={() => EtitAluno(aluno)}> { aluno.nomeCompleto} </a>
       ),
       sorter: (a, b) => a.aluno.nomeCompleto.localeCompare(b.aluno.nomeCompleto),
       defaultSortOrder: 'ascend'
