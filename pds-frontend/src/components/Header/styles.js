@@ -16,7 +16,7 @@ export const StyledLogo = styled.div`
     padding-top: 20px;
     height: 120px;
     cursor: pointer;
-    float: left;
+    float: end;
 `;
 
 export const StyledText = styled.span`
