@@ -1,17 +1,19 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
-import { Alert, Button } from 'antd';
+import { Alert, Button, Popconfirm } from 'antd';
 import { Container, StyledNameText, StyledText, StyledButton, 
   StyledContent,
   StyledStatusName,
   StyledSelect} from './styles';
 import { useEffect, useState, useReducer } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import moment from 'moment';
 import * as af from './AlertFilters.js';
-import { Col, Row, Typography, Table, Space } from 'antd';
+import { Col, Row, Typography, Table, Space, Modal } from 'antd';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import TextArea from 'antd/lib/input/TextArea';
 const {Text, Title} = Typography;
 
 
@@ -49,7 +51,8 @@ const BaseAlert = ({alertType}) => {
   const handleSend = (aaId) => {
     sendAlert({
       variables: {
-        alertaAlunoId: aaId
+        alertaAlunoId: studentSelectId,
+        messageEmail: emailTextDefault
       }
     }).then(() => {
       queryAlertaAlunos.refetch();
@@ -136,7 +139,8 @@ const BaseAlert = ({alertType}) => {
       });
   }
 
-  const queryAlertaAlunos = useQuery(af.baseQuery, {
+  const 
+  queryAlertaAlunos = useQuery(af.baseQuery, {
     variables: {
       where: {
         ativo: {
@@ -503,14 +507,6 @@ const BaseAlert = ({alertType}) => {
         <>{aluno.orientador.nomeCompleto}</>
       )
     },
-    // {
-    //   title: 'Coorientador',
-    //   dataIndex: 'coorientador',
-    //   key: 'coorientador',
-    //   render: (_, {coorientador}) => (
-    //     <>{coorientador?.nomeCompleto}</>
-    //   )
-    // },
     {
       title: 'Status',
       dataIndex: 'status',
@@ -558,17 +554,34 @@ const BaseAlert = ({alertType}) => {
       title: 'Ações',
       key: 'action',
       render: (_, item) => (
-        <Space size="middle">
-          <a onClick={() => handleSend(item.id)}>Alertar</a>
-          {!item.resolvido ?
-            <a style={{color: '#2EC615'}} onClick={() => handleSolve(item.id, true)}>Marcar como Resolvido</a>
-            :
-            <a style={{color: '#AAAAAA'}} onClick={() => handleSolve(item.id, false)}>Desfazer Resolvido</a>
-          }
-        </Space>
+        <>
+          
+          <Space size="middle">
+            <a onClick={() => handleClickOpen(item)}>Alertar</a>
+          </Space>
+        </>
       )
     },
   ];
+  const [open, setOpen] = useState(false);
+  const [emailTextDefault, setEmailTextDefault] = useState();
+  const [studentSelect, setStudentSelect] = useState();
+  const [studentSelectId, setStudentSelectId] = useState();
+  
+  const handleClickOpen = (StudentLine) => {
+    console.log(StudentLine)
+    setOpen(true);
+    const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência.".replace("{NOME}", StudentLine.aluno.nomeCompleto).replace("{ALERTA}", StudentLine.alerta.nome)
+    setEmailTextDefault(emailTextDefault)
+    const textTitleAlert = "Tem certeza que deseja enviar alerta para {NOME} ?".replace("{NOME}", StudentLine.aluno.nomeCompleto)
+    setStudentSelect(textTitleAlert)
+    setStudentSelectId(StudentLine.id)
+  };
+  
+  console.log(studentSelect)
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -610,80 +623,31 @@ const BaseAlert = ({alertType}) => {
     ],
   };
 
-  const collapseHeader = (item, status) => 
-    <>
-      <Col span={20}>
-          <StyledNameText>{item.aluno.nomeCompleto}</StyledNameText>
-      </Col>
-      <Col span={4}>
-          <Text type={getStatusType(item.status)}>STATUS: {item.status}</Text>
-      </Col>
-    </>
-  
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
-const collapseContent = item =>
-  (<StyledContent>
-      <Row gutter={16}>
-          <Col span={24}>
-              <StyledText><strong>E-mail:</strong> {item.aluno?.emailInstitucional}</StyledText>
-          </Col>
-          <Col span={24}>
-              <StyledText><strong>Ingresso do aluno:</strong> {dataFormater(item.aluno.dataIngresso)}</StyledText>
-          </Col>
-          <Col span={24}>
-              <StyledText><strong>Alerta aberto em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days'))}</StyledText>
-          </Col>
-          <Col span={24}>
-              <StyledText><strong>Alerta vencido em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days').add(30, 'days'))}</StyledText>
-          </Col>
-          {item.dataEnvioEmail ?
-            <Col span={24}>
-                <StyledText><strong>Data de envio do Email:</strong> {dataFormater(item.dataEnvioEmail)}</StyledText>
-            </Col> : null}
-          <Col span={3}>
-            <StyledButton onClick={() => handleSend(item.id)} type="primary" danger 
-              style={{
-                  color: '#FFFFFF'
-                }}>
-              ALERTAR
-            </StyledButton>
-          </Col>
-          {!item.resolvido ?
-            <>
-              <Col span={4}>
-                <StyledButton onClick={() => handleSolve(item.id, true)}
-                  style={{
-                      background: '#2EC615',
-                      color: '#FFFFFF'
-                    }}>
-                  MARCAR COMO RESOLVIDO
-                </StyledButton>
-              </Col>
-              <Col span={4}>
-                <StyledButton type="text" onClick={() => {}}
-                  style={{
-                      width: "150px",
-                      color: '#071D41'
-                    }}>
-                  Mais opções
-                </StyledButton>
-              </Col>
-            </>
-            :
-            <Col span={4}>
-              <StyledButton onClick={() => handleSolve(item.id, false)}
-                style={{
-                    background: '#AAAAAA',
-                    color: '#FFFFFF'
-                  }}>
-                DESFAZER RESOLVIDO
-              </StyledButton>
-            </Col>}
-      </Row>
-  </StyledContent>)
-
   return <>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        {studentSelect}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText  id="alert-dialog-description">
+          Editar email:
+          <TextArea rows={12} defaultValue={emailTextDefault} onChange={(e) => {setEmailTextDefault(e.currentTarget.value)}} maxLength={600} />
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancelar</Button>
+        <Button onClick={handleSend} autoFocus>
+          Enviar alerta
+        </Button>
+      </DialogActions>
+    </Dialog>
     <Container>
       {alertSucesso}
       {header}
