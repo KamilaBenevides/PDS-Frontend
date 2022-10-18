@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Statistic, Card, Row, Col, Button } from 'antd';
 import { useMutation, gql } from '@apollo/client';
 
-const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes, setErro, setSucesso }) => {
+const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErro, setSucesso }) => {
     
     const mutation = gql`
     mutation Mutation {
@@ -27,8 +27,8 @@ const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes, setErro, 
         <Row gutter={12} justify="space-between" align="middle">
             <Col>
                 <Statistic
-                    title="Vencidos"
-                    value={vencidos}
+                    title="Atrasados"
+                    value={Atrasados}
                     valueStyle={{
                         color: '#cf1322',
                     }}
@@ -45,8 +45,8 @@ const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes, setErro, 
             </Col>
             <Col>
                 <Statistic
-                    title="Abertos"
-                    value={abertos}
+                    title="Pendentes"
+                    value={Pendentes}
                     valueStyle={{
                         color: '#faad14',
                     }}

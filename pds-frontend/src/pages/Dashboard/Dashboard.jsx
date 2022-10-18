@@ -68,31 +68,31 @@ const Dashboard = () => {
   });
 
   const [stats, setStats] = useState({
-    totalVencidos: 0,
+    totalAtrasados: 0,
     totalEnviados: 0,
-    totalAbertos: 0,
-    profVencidos: 0,
+    totalPendentes: 0,
+    profAtrasados: 0,
     profEnviados: 0,
-    profAbertos: 0,
-    agQualiVencidos: 0,
+    profPendentes: 0,
+    agQualiAtrasados: 0,
     agQualiEnviados: 0,
-    agQualiAbertos: 0,
-    qualiVencidos: 0,
+    agQualiPendentes: 0,
+    qualiAtrasados: 0,
     qualiEnviados: 0,
-    qualiAbertos: 0,
-    agDefesaVencidos: 0,
+    qualiPendentes: 0,
+    agDefesaAtrasados: 0,
     agDefesaEnviados: 0,
-    agDefesaAbertos: 0,
-    defesaVencidos: 0,
+    agDefesaPendentes: 0,
+    defesaAtrasados: 0,
     defesaEnviados: 0,
-    defesaAbertos: 0,
+    defesaPendentes: 0,
   });
 
   const totals = (aa) => {
-    let vencidos = af.filterVencidos(aa);
+    let Atrasados = af.filterAtrasados(aa);
     let enviados = af.filterEnviados(aa);
-    let abertos = af.filterAbertos(aa);
-    return { vencidos: vencidos.length, enviados: enviados.length, abertos: abertos.length };
+    let Pendentes = af.filterPendentes(aa);
+    return { Atrasados: Atrasados.length, enviados: enviados.length, Pendentes: Pendentes.length };
   }
 
   useEffect(() => {
@@ -104,24 +104,24 @@ const Dashboard = () => {
     const agDefesa = totals(aa.filter(a => a.alerta.tipo === 'AGENDAMENTO_DEFESA'));
     const defesa = totals(aa.filter(a => a.alerta.tipo === 'DEFESA'));
     setStats({
-      totalVencidos: total.vencidos,
+      totalAtrasados: total.Atrasados,
       totalEnviados: total.enviados,
-      totalAbertos: total.abertos,
-      profVencidos: prof.vencidos,
+      totalPendentes: total.Pendentes,
+      profAtrasados: prof.Atrasados,
       profEnviados: prof.enviados,
-      profAbertos: prof.abertos,
-      agQualiVencidos: agQuali.vencidos,
+      profPendentes: prof.Pendentes,
+      agQualiAtrasados: agQuali.Atrasados,
       agQualiEnviados: agQuali.enviados,
-      agQualiAbertos: agQuali.abertos,
-      qualiVencidos: quali.vencidos,
+      agQualiPendentes: agQuali.Pendentes,
+      qualiAtrasados: quali.Atrasados,
       qualiEnviados: quali.enviados,
-      qualiAbertos: quali.abertos,
-      agDefesaVencidos: agDefesa.vencidos,
+      qualiPendentes: quali.Pendentes,
+      agDefesaAtrasados: agDefesa.Atrasados,
       agDefesaEnviados: agDefesa.enviados,
-      agDefesaAbertos: agDefesa.abertos,
-      defesaVencidos: defesa.vencidos,
+      agDefesaPendentes: agDefesa.Pendentes,
+      defesaAtrasados: defesa.Atrasados,
       defesaEnviados: defesa.enviados,
-      defesaAbertos: defesa.abertos,
+      defesaPendentes: defesa.Pendentes,
     });
   }, [data]);
 
@@ -132,19 +132,19 @@ const Dashboard = () => {
         {alertSucesso}
         <Row gutter={[16, 16]}>
           <Col span={8}>
-            <SpecificStats title={"Proficiência"} vencidos={stats.profVencidos} enviados={stats.profEnviados} abertos={stats.profAbertos} detalhes={path.PROFICIENCY_ALERTS} />
+            <SpecificStats title={"Proficiência"} Atrasados={stats.profAtrasados} enviados={stats.profEnviados} Pendentes={stats.profPendentes} detalhes={path.PROFICIENCY_ALERTS} />
           </Col>
           <Col span={8}>
-            <SpecificStats title={"Agendamento de Qualificação"} vencidos={stats.agQualiVencidos} enviados={stats.agQualiEnviados} abertos={stats.agQualiAbertos} detalhes={path.QUALIFICATION_ALERTS}  />
+            <SpecificStats title={"Agendamento de Qualificação"} Atrasados={stats.agQualiAtrasados} enviados={stats.agQualiEnviados} Pendentes={stats.agQualiPendentes} detalhes={path.QUALIFICATION_ALERTS}  />
           </Col>
           <Col span={8}>
-            <SpecificStats title={"Qualificação"} vencidos={stats.qualiVencidos} enviados={stats.qualiEnviados} abertos={stats.qualiAbertos} detalhes={path.QUALIFICATION_ALERTS + '?alert=QUALIFICACAO'} />
+            <SpecificStats title={"Qualificação"} Atrasados={stats.qualiAtrasados} enviados={stats.qualiEnviados} Pendentes={stats.qualiPendentes} detalhes={path.QUALIFICATION_ALERTS + '?alert=QUALIFICACAO'} />
           </Col>
           <Col span={8}>
-            <SpecificStats title={"Agendamento de Defesa"} vencidos={stats.agDefesaVencidos} enviados={stats.agDefesaEnviados} abertos={stats.agDefesaAbertos} detalhes={path.DEFENSE_ALERTS} />
+            <SpecificStats title={"Agendamento de Defesa"} Atrasados={stats.agDefesaAtrasados} enviados={stats.agDefesaEnviados} Pendentes={stats.agDefesaPendentes} detalhes={path.DEFENSE_ALERTS} />
           </Col>
           <Col span={8}>
-            <SpecificStats title={"Defesa"} vencidos={stats.defesaVencidos} enviados={stats.defesaEnviados} abertos={stats.defesaAbertos} detalhes={path.DEFENSE_ALERTS + '?alert=DEFESA'} />
+            <SpecificStats title={"Defesa"} Atrasados={stats.defesaAtrasados} enviados={stats.defesaEnviados} Pendentes={stats.defesaPendentes} detalhes={path.DEFENSE_ALERTS + '?alert=DEFESA'} />
           </Col>
         </Row>
       </div>
