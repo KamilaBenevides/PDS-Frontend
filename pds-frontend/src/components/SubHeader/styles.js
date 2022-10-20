@@ -5,11 +5,11 @@ export const StyledHeader = styled(Header)`
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   height: 50px;
   max-height: 50px;
   background: #f0f2f5;
-  padding: 50px 0px 10px 0px;
+  padding: 50px 0px 10px 40px;
 `;
 
 export const StyledTitle = styled.p`

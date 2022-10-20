@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Statistic, Card, Row, Col, Button } from 'antd';
 import { useMutation, gql } from '@apollo/client';
+import { RightOutlined } from '@ant-design/icons';
 
 const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErro, setSucesso }) => {
     
@@ -23,7 +24,8 @@ const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErr
     const navigate = useNavigate();
     
     return (
-    <Card title={title}>
+    <Card title={title} extra={<Button onClick={() => navigate(detalhes)} icon={<RightOutlined />}>Ir para página</Button>} >
+        
         <Row gutter={12} justify="space-between" align="middle">
             <Col>
                 <Statistic
@@ -52,11 +54,10 @@ const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErr
                     }}
                 />
             </Col>
-            {detalhes.length ?
-                <Col>
-                    <Button onClick={() => navigate(detalhes)} style={{float: 'right'}}>Ver Detalhes</Button>
-                </Col>
-            :   <Col><Button onClick={() => onSend()}>Enviar E-mails</Button></Col>}
+            {/* <Col>
+                <Button onClick={() => navigate(detalhes)} style={{float: 'right'}}>Ver Detalhes</Button>
+            </Col> */}
+            
         </Row>
     </Card>
     )};

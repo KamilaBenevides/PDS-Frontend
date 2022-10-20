@@ -128,11 +128,11 @@ const Dashboard = () => {
   return (
     <>
       <SubHeader title={'Painel de Controle'}/>
-      <div style={{ padding: '10px' }}>
+      <div style={{ padding: '20px' }}>
         {alertSucesso}
         <Row gutter={[16, 16]}>
           <Col span={8}>
-            <SpecificStats title={"Proficiência"} Atrasados={stats.profAtrasados} enviados={stats.profEnviados} Pendentes={stats.profPendentes} detalhes={path.PROFICIENCY_ALERTS} />
+            <SpecificStats title={"Proficiência de idiomas"} Atrasados={stats.profAtrasados} enviados={stats.profEnviados} Pendentes={stats.profPendentes} detalhes={path.PROFICIENCY_ALERTS} />
           </Col>
           <Col span={8}>
             <SpecificStats title={"Agendamento de Qualificação"} Atrasados={stats.agQualiAtrasados} enviados={stats.agQualiEnviados} Pendentes={stats.agQualiPendentes} detalhes={path.QUALIFICATION_ALERTS}  />
@@ -141,10 +141,10 @@ const Dashboard = () => {
             <SpecificStats title={"Qualificação"} Atrasados={stats.qualiAtrasados} enviados={stats.qualiEnviados} Pendentes={stats.qualiPendentes} detalhes={path.QUALIFICATION_ALERTS + '?alert=QUALIFICACAO'} />
           </Col>
           <Col span={8}>
-            <SpecificStats title={"Agendamento de Defesa"} Atrasados={stats.agDefesaAtrasados} enviados={stats.agDefesaEnviados} Pendentes={stats.agDefesaPendentes} detalhes={path.DEFENSE_ALERTS} />
+            <SpecificStats title={"Agendamento de Defesa de dissertação"} Atrasados={stats.agDefesaAtrasados} enviados={stats.agDefesaEnviados} Pendentes={stats.agDefesaPendentes} detalhes={path.DEFENSE_ALERTS} />
           </Col>
           <Col span={8}>
-            <SpecificStats title={"Defesa"} Atrasados={stats.defesaAtrasados} enviados={stats.defesaEnviados} Pendentes={stats.defesaPendentes} detalhes={path.DEFENSE_ALERTS + '?alert=DEFESA'} />
+            <SpecificStats title={"Defesa da dissertação"} Atrasados={stats.defesaAtrasados} enviados={stats.defesaEnviados} Pendentes={stats.defesaPendentes} detalhes={path.DEFENSE_ALERTS + '?alert=DEFESA'} />
           </Col>
         </Row>
       </div>
