@@ -60,7 +60,7 @@ export const baseQuery = gql`
     }`
 
 export const sendAlertaAlunoMutation = gql`
-    mutation SendAlertaAluno($alertaAlunoId: Int!, $messageEmail: String) {
+    mutation SendAlertaAluno($alertaAlunoId: Int!, $messageEmail: String!) {
         sendAlertaAluno(alertaAlunoId: $alertaAlunoId, messageEmail: $messageEmail) {
             id
             enviado
