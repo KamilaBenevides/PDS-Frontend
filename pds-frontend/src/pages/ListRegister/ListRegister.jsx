@@ -109,18 +109,6 @@ const ListRegister = () => {
     }
   ];
 
-  const onFilterSelectChange = value => {
-      if (value === "discentes") {
-        setShowDiscentes(true);
-        setShowDocs(false);
-      } else if (value === "docentes") {
-        setShowDiscentes(false);
-        setShowDocs(true);
-      } else {
-        setShowDiscentes(true);
-        setShowDocs(true);
-      }
-  }
     
     const header = 
       (<Row >
@@ -139,51 +127,9 @@ const ListRegister = () => {
   }, [])
       
 
-    const docentesHeader = item =>
-        <>
-            <Col span={24}>
-                <StyledNameText>{item.nomeCompleto}</StyledNameText>
-            </Col>
-        </>
-
-    const discentesHeader = item =>
-        <>
-            <Col span={20}>
-                <StyledNameText>{item.nomeCompleto}</StyledNameText>
-            </Col>
-            {item.ativo ?
-              <Col span={4}>
-                <Text type="success">STATUS: ativo</Text>
-              </Col>:
-              <Col span={4}>
-                <Text type="secondary">STATUS: inativo</Text>
-              </Col>
-            }
-        </>
-
-
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
 const navigate = useNavigate();
-
-const docContent = item => (
-  <StyledContent>
-    <Row gutter={16}>
-      <Col span={24}>
-        <StyledText><strong>E-mail:</strong> {item.email}</StyledText>
-      </Col>
-      <Col span={3}>
-        <StyledButton onClick={() => handleClickDoc(item)}
-          style={{
-            background: '#838EA0',
-              color: '#FFFFFF'
-            }}>
-          EDITAR
-        </StyledButton>
-      </Col>
-    </Row>
-  </StyledContent>
-)
 
 const handleClick = (item) => {
   navigate('/dashboard/register/' + item.id);

@@ -230,7 +230,7 @@ export default function Docs() {
     data.examinadoresInternos = data.examinadoresInternos.filter(e => e.nome != undefined && e.nome != "");
     data.examinadoresExternosProg = data.examinadoresExternosProg.filter(e => e.nome != undefined && e.nome != "" && e.unidade != undefined && e.unidade != "");
     data.examinadoresExternosInst = data.examinadoresExternosInst.filter(e => e.nome != undefined && e.nome != "");
-    console.log(data);
+    // console.log(data);
     generateDocuments(data);
   };
 
