@@ -122,6 +122,10 @@ export class SendAlertaAluno {
     nullable: false,
   })
   alertaAlunoId!: number;
+
+  @Field()
+  messageEmail!: string;
+
 }
 
 @ArgsType()

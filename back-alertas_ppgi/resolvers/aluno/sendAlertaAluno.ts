@@ -12,12 +12,13 @@ export class sendAlertaAlunoResolver {
   @Mutation(() => AlertaAluno)
   async sendAlertaAluno(
     @Ctx() { prisma }: Context,
-    @Args() { alertaAlunoId }: SendAlertaAluno
+    @Args() { alertaAlunoId, messageEmail}: SendAlertaAluno
   ) {
     const alertaAluno = await prisma.alertaAluno.findUnique({
       where: { id: alertaAlunoId },
       include: { aluno: { include: { orientador: true, coorientador: true } }, alerta: true }
     });
+
 
     if (!alertaAluno) {
       throw new UserInputError("Não existe um alerta aluno com esse ID.");
