@@ -30,7 +30,7 @@ const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErr
             
             <Col>
                 <Statistic
-                    title="Enviados"
+                    title="Alertas enviados"
                     value={enviados}
                     valueStyle={{
                         color: '#127D00',
@@ -52,7 +52,7 @@ const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErr
             </Col>
             <Col>
                 <Statistic
-                    title="Atrasados"
+                    title="Alunos atrasados"
                     value={Atrasados}
                     valueStyle={{
                         color: '#cf1322',

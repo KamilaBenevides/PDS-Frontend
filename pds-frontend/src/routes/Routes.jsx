@@ -42,7 +42,7 @@ const MainRoutes = () => {
                     <Route path={path.PROFICIENCY_ALERTS} element={<ProficiencyAlerts/>}/>
                     <Route path={path.QUALIFICATION_ALERTS} element={<QualificationAlerts/>}/>
                     <Route path={path.DEFENSE_ALERTS} element={<DefenseAlerts/>}/>
-                    <Route path={path.TEACHING_INTERNSHIP} element={<Internship/>}/>
+                    <Route path={path.ESTAGIO_DOCENCIA} element={<Internship/>}/>
                     <Route path={path.HOMOLOGACAO_DIPLOMA} element={<DiplomaApproval/>}/>
                     <Route path={path.SUBMISSAO_ARTIGO} element={<ArticleSubmission/>}/>
                     <Route path={path.DOCUMENTS_DISSERTATION_PROPOSTAL} element={<DocsDissertationPropostal/>}/>

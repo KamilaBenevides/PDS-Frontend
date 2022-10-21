@@ -56,3 +56,9 @@ export const StyledButton = styled(Button)`
         background: #264474;
     }
 `;
+
+export const AlignHeader = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+`;

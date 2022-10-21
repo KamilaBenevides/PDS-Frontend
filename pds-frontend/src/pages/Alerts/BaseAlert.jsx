@@ -2,10 +2,7 @@ import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
 import { Alert, Button, Popconfirm, Tag } from 'antd';
-import { Container, StyledNameText, StyledText, StyledButton, 
-  StyledContent,
-  StyledStatusName,
-  StyledSelect} from './styles';
+import { Container } from './styles';
 import { useEffect, useState, useReducer } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, gql } from '@apollo/client';
@@ -46,7 +43,6 @@ function getDifferenceInMonths(date1, date2) {
 }
 
 const BaseAlert = ({alertType}) => {
-
   const [sendAlert] = useMutation(af.sendAlertaAlunoMutation);
 
   const handleSend = (aaId) => {
@@ -162,7 +158,7 @@ const BaseAlert = ({alertType}) => {
       }
     }
   });
-
+  
   const queryResolvidos = useQuery(af.baseQuery, {
     variables: {
       where: {
@@ -510,7 +506,6 @@ const BaseAlert = ({alertType}) => {
     setOpen(true);
     if(StudentLine){
       setIsOnlyStudent(true)
-      console.log(StudentLine)
       const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência.".replace("{NOME}", StudentLine.aluno.nomeCompleto).replace("{ALERTA}", StudentLine.alerta.nome)
       setEmailTextDefault(emailTextDefault)
       const textTitleAlert = "Tem certeza que deseja enviar alerta para {NOME} ?".replace("{NOME}", StudentLine.aluno.nomeCompleto)
@@ -518,7 +513,6 @@ const BaseAlert = ({alertType}) => {
       setStudentSelectId(StudentLine.id)
     } else {
       setIsOnlyStudent(false)
-      console.log(selectedRowKeys)
       const textTitleAlert = "Tem certeza que deseja enviar alerta para Alunos selecionados?"
       setStudentSelect(textTitleAlert)
       const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência."
@@ -526,7 +520,6 @@ const BaseAlert = ({alertType}) => {
     }
   };
   
-  console.log(studentSelect)
   const handleClose = () => {
     setOpen(false);
   };
@@ -534,7 +527,6 @@ const BaseAlert = ({alertType}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 

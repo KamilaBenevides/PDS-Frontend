@@ -653,7 +653,11 @@ export enum AlertaType {
   AgendamentoQualificacao = 'AGENDAMENTO_QUALIFICACAO',
   Defesa = 'DEFESA',
   Proficiencia = 'PROFICIENCIA',
-  Qualificacao = 'QUALIFICACAO'
+  Qualificacao = 'QUALIFICACAO',
+  articleSubmission ='SUBMISSAO_ARTIGO',
+  internship ='ESTAGIO_DOCENCIA',
+  diplomaApproval ='HOMOLOGACAO_DIPLOMA'
+
 }
 
 export type AlertaUpdateInput = {

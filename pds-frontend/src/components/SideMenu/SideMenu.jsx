@@ -79,7 +79,7 @@ const SideMenu = () => {
                 {
                     key: '11',
                     label: 'Estágio docência',
-                    path: path.TEACHING_INTERNSHIP
+                    path: path.ESTAGIO_DOCENCIA
                 },
                 {
                     key: '12',

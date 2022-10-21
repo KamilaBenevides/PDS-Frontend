@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Container, StyledTimePicker, StyledButton, Text } from './styles';
+import { Container, StyledTimePicker, StyledButton, Text, AlignHeader } from './styles';
 import { useFieldArray, useForm } from 'react-hook-form';
 import generateDocuments from './generateDocs';
 import DatePicker from '../components/DatePicker/DatePicker';
@@ -272,6 +272,8 @@ export default function Docs() {
         </StyledButton>
     </Form.Item>
   return <>
+  <AlignHeader>
+
     <SubHeader title={'Geração de Documentos'} textBottom={'Adicione os dados para gerar os documentos de Ata de defesa, Declaração de aprovação e folha de aprovação'}/>
     <Card >
       <Container className="container">
@@ -310,5 +312,6 @@ export default function Docs() {
         </Form>
       </Container>
     </Card>
+  </AlignHeader>
   </>
 }

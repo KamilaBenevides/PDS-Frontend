@@ -105,6 +105,9 @@ const Dashboard = () => {
     const quali = totals(aa.filter(a => a.alerta.tipo === 'QUALIFICACAO'));
     const agDefesa = totals(aa.filter(a => a.alerta.tipo === 'AGENDAMENTO_DEFESA'));
     const defesa = totals(aa.filter(a => a.alerta.tipo === 'DEFESA'));
+    const articleSubmission = totals(aa.filter(a => a.alerta.tipo === 'SUBMISSAO_ARTIGO'))
+    const internship = totals(aa.filter(a => a.alerta.tipo === 'ESTAGIO_DOCENCIA'))
+    const diplomaApproval = totals(aa.filter(a => a.alerta.tipo === 'HOMOLOGACAO_DIPLOMA'))
     setStats({
       totalAtrasados: total.Atrasados,
       totalEnviados: total.enviados,
@@ -124,6 +127,15 @@ const Dashboard = () => {
       defesaAtrasados: defesa.Atrasados,
       defesaEnviados: defesa.enviados,
       defesaPendentes: defesa.Pendentes,
+      articleSubmissionAtrasados: articleSubmission.Atrasados,
+      articleSubmissionEnviados: articleSubmission.enviados,
+      articleSubmissionPendentes: articleSubmission.Pendentes,
+      internshipAtrasados: internship.Atrasados,
+      internshipEnviados: internship.enviados,
+      internshipPendentes: internship.Pendentes,
+      diplomaApprovalAtrasados: diplomaApproval.Atrasados,
+      diplomaApprovalEnviados: diplomaApproval.enviados,
+      diplomaApprovalPendentes: diplomaApproval.Pendentes
     });
   }, [data]);
 
@@ -148,6 +160,15 @@ const Dashboard = () => {
           </Col>
           <Col span={8}>
             <SpecificStats title={"Defesa da dissertação"} Atrasados={stats.defesaAtrasados} enviados={stats.defesaEnviados} Pendentes={stats.defesaPendentes} detalhes={path.DEFENSE_ALERTS + '?alert=DEFESA'} />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Submissão de artigos"} Atrasados={stats.articleSubmissionAtrasados} enviados={stats.articleSubmissionEnviados} Pendentes={stats.articleSubmissionPendentes} detalhes={path.SUBMISSAO_ARTIGO + '?alert=SUBMISSAO_ARTIGO'} />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Estágio Docência"} Atrasados={stats.internshipAtrasados} enviados={stats.internshipEnviados} Pendentes={stats.internshipPendentes} detalhes={path.ESTAGIO_DOCENCIA + '?alert=ESTAGIO_DOCENCIA'} />
+          </Col>
+          <Col span={8}>
+            <SpecificStats title={"Homologação de diploma"} Atrasados={stats.diplomaApprovalAtrasados} enviados={stats.diplomaApprovalEnviados} Pendentes={stats.diplomaApprovalPendentes} detalhes={path.HOMOLOGACAO_DIPLOMA + '?alert=HOMOLOGACAO_DIPLOMA'} />
           </Col>
         </Row>
       {/* </div> */}

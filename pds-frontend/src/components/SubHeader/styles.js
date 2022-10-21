@@ -6,7 +6,7 @@ export const StyledHeader = styled(Header)`
   // align-items: center;
   flex-direction: row;
   justify-content: left;
-  max-height: 100vh;
+  // max-height: 100vh;
   background: #f0f2f5;
 `;
 
