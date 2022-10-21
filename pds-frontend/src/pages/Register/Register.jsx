@@ -162,7 +162,7 @@ const Register = () => {
     } else if (erro) {
         alertSucesso = <Alert
             message="Erro!"
-            description="Erro ao cadastrar o discente."
+            description="Erro ao cadastrar o discente. Por Favor, verifique se o CPF é valido, e se E-mail já foi usado antes."
             type="error"
             showIcon
             closable
