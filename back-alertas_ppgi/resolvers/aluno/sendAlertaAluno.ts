@@ -25,7 +25,7 @@ export class sendAlertaAlunoResolver {
     }
 
     try {
-      await sendMail(alertaAluno);
+      await sendMail(alertaAluno, messageEmail);
     } catch (err) {
       console.log(err);
       throw new ApolloError("Erro ao enviar email");
