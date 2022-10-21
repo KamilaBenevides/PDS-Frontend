@@ -2,6 +2,7 @@ import BaseAlert from "../BaseAlert";
 import { useState } from 'react';
 import { Radio, Row } from 'antd';
 import { useSearchParams } from 'react-router-dom';
+import SubHeader from "../../../components/SubHeader/SubHeader";
 
 const QualificationAlerts = () => {
     
@@ -17,10 +18,11 @@ const QualificationAlerts = () => {
 
     const handleChange = (e) => {
         setSelected(e.target.value);
-        setParams({['alert']: e.target.value});
+        setParams({'alert': e.target.value});
     }
 
     return <>
+        <SubHeader title={'Qualificação'} textBottom={'A qualificação tem um prazo de 12 meses para ser realizada'}/>
         <Row justify="center">
             <Radio.Group value={selected} onChange={handleChange} style={{ marginTop: 8, marginBottom: -10 }}>
                 <Radio.Button value="AGENDAMENTO_QUALIFICACAO">AGENDAMENTO</Radio.Button>
