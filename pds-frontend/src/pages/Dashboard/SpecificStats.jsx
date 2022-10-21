@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Statistic, Card, Row, Col, Button } from 'antd';
 import { useMutation, gql } from '@apollo/client';
-import { RightOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 
 const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErro, setSucesso }) => {
     
@@ -24,24 +24,18 @@ const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErr
     const navigate = useNavigate();
     
     return (
-    <Card title={title} extra={<Button onClick={() => navigate(detalhes)} icon={<RightOutlined />}>Ir para página</Button>} >
+    <Card title={title} extra={<Button onClick={() => navigate(detalhes)} icon={<EyeOutlined />}>Ir para página</Button>} >
         
         <Row gutter={12} justify="space-between" align="middle">
-            <Col>
-                <Statistic
-                    title="Atrasados"
-                    value={Atrasados}
-                    valueStyle={{
-                        color: '#cf1322',
-                    }}
-                />
-            </Col>
+            
             <Col>
                 <Statistic
                     title="Enviados"
                     value={enviados}
                     valueStyle={{
-                        color: '#faad14',
+                        color: '#127D00',
+                        fontWeight: '600',
+                        textAlign: 'center'
                     }}
                 />
             </Col>
@@ -50,7 +44,20 @@ const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErr
                     title="Pendentes"
                     value={Pendentes}
                     valueStyle={{
-                        color: '#faad14',
+                        color: '#030083',
+                        fontWeight: '600',
+                        textAlign: 'center'
+                    }}
+                />
+            </Col>
+            <Col>
+                <Statistic
+                    title="Atrasados"
+                    value={Atrasados}
+                    valueStyle={{
+                        color: '#cf1322',
+                        fontWeight: '600',
+                        textAlign: 'center'
                     }}
                 />
             </Col>
