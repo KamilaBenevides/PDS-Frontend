@@ -9,16 +9,14 @@ const SubHeader = ({title, textBottom}) => {
         {text}
       </StyledText>)
     return <>
-        <StyledHeader>
-            <StyledSubHeaderText>
+        <StyledSubHeaderText>
+            <StyledHeader>
                 {titleComp(title)}
-            </StyledSubHeaderText>
-        </StyledHeader>
-        <StyledHeader>
-            <StyledSubHeaderText>
+            </StyledHeader>
+            <StyledHeader>
                 {textComp(textBottom)}
-            </StyledSubHeaderText>
-        </StyledHeader>
+            </StyledHeader>
+        </StyledSubHeaderText>
     </>
 }
 

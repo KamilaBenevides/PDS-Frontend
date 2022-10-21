@@ -8,7 +8,9 @@ import moment from 'moment';
 import * as path from '../../routes/paths';
 import * as af from '../Alerts/AlertFilters';
 
+import { StyleContainer } from '../../components/Layout/styles';
 import SubHeader from '../../components/SubHeader/SubHeader';
+import { TitleHeader } from '../../components/SubHeader/styles';
 
 const Dashboard = () => {
 
@@ -126,9 +128,10 @@ const Dashboard = () => {
   }, [data]);
 
   return (
-    <>
-      <SubHeader title={'Painel de Controle'}/>
-      <div style={{ padding: '20px' }}>
+    <StyleContainer>
+      {/* <SubHeader style={{padding: '0px'}} title='Painel de Controle'/> */}
+      <TitleHeader>Painel de Controle</TitleHeader>
+      {/* <div style={{ padding: '30px' }}> */}
         {alertSucesso}
         <Row gutter={[16, 16]}>
           <Col span={8}>
@@ -147,8 +150,8 @@ const Dashboard = () => {
             <SpecificStats title={"Defesa da dissertação"} Atrasados={stats.defesaAtrasados} enviados={stats.defesaEnviados} Pendentes={stats.defesaPendentes} detalhes={path.DEFENSE_ALERTS + '?alert=DEFESA'} />
           </Col>
         </Row>
-      </div>
-    </>
+      {/* </div> */}
+    </StyleContainer>
   )};
 
 export default Dashboard;
