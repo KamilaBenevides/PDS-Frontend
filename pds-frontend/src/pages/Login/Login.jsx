@@ -11,8 +11,6 @@ import { Container,
 import { Form, message } from 'antd'
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 import { useAuth } from '../Login/AuthProvider';
-import LogoAlertaAzul from '../../img/LogoAlertaAzul';
-import LogoAlerta from '../../img/LogoAlerta';
 import { BellOutlined } from '@ant-design/icons';
 
 
