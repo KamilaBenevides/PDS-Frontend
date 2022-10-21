@@ -90,3 +90,9 @@ export const InputForm = styled(Input)`
         border: 4px solid #DFDEDE;
     }
 `;
+
+export const RowIcon = styled.div`
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+`

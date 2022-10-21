@@ -6,10 +6,15 @@ import { Container,
   FormWrapper, 
   Title,
   MainButton, 
-  InputForm } from './styles';
+  InputForm,
+  RowIcon } from './styles';
 import { Form, message } from 'antd'
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 import { useAuth } from '../Login/AuthProvider';
+import LogoAlertaAzul from '../../img/LogoAlertaAzul';
+import LogoAlerta from '../../img/LogoAlerta';
+import { BellOutlined } from '@ant-design/icons';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -79,10 +84,13 @@ const Login = () => {
 
 
   return (
+    <>
           <Container>
             <FormWrapper>
-              <Title>Alertas PPGI</Title>
-              {/* <Subtitle>Facilitando o SIGAA</Subtitle> */}
+            <RowIcon>
+            <BellOutlined style={{ fontSize: '70px', color: "#071D41", marginRight: "15px "}} />
+            <Title>Alertas PPGI</Title>
+            </RowIcon>
               <Form form={form} layout="vertical" onFinish={e => onFinish(e)}>
                 <FormGroupContainer items={loginItems}/>
               </Form>
@@ -91,6 +99,7 @@ const Login = () => {
               </MainButton>
             </FormWrapper>
           </Container>
+    </>
           
     )
 }
