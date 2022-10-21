@@ -1,7 +1,7 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
-import { Alert, Button, Popconfirm } from 'antd';
+import { Alert, Button, Popconfirm, Tag } from 'antd';
 import { Container, StyledNameText, StyledText, StyledButton, 
   StyledContent,
   StyledStatusName,
@@ -61,6 +61,7 @@ const BaseAlert = ({alertType}) => {
     }).catch(() => {
       setErro(true);
     });
+    handleClose()
   }
   
   const [sendManyAlerts] = useMutation(af.sendManyAlertaAluno);
@@ -76,6 +77,7 @@ const BaseAlert = ({alertType}) => {
     }).catch(() => {
       setErro(true);
     });
+    handleClose()
   }
 
   const [sucesso, setSucesso] = useState(false);
@@ -502,15 +504,26 @@ const BaseAlert = ({alertType}) => {
   const [emailTextDefault, setEmailTextDefault] = useState();
   const [studentSelect, setStudentSelect] = useState();
   const [studentSelectId, setStudentSelectId] = useState();
+  const [isOnlyStudent, setIsOnlyStudent] = useState();
   
   const handleClickOpen = (StudentLine) => {
-    console.log(StudentLine)
     setOpen(true);
-    const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência.".replace("{NOME}", StudentLine.aluno.nomeCompleto).replace("{ALERTA}", StudentLine.alerta.nome)
-    setEmailTextDefault(emailTextDefault)
-    const textTitleAlert = "Tem certeza que deseja enviar alerta para {NOME} ?".replace("{NOME}", StudentLine.aluno.nomeCompleto)
-    setStudentSelect(textTitleAlert)
-    setStudentSelectId(StudentLine.id)
+    if(StudentLine){
+      setIsOnlyStudent(true)
+      console.log(StudentLine)
+      const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência.".replace("{NOME}", StudentLine.aluno.nomeCompleto).replace("{ALERTA}", StudentLine.alerta.nome)
+      setEmailTextDefault(emailTextDefault)
+      const textTitleAlert = "Tem certeza que deseja enviar alerta para {NOME} ?".replace("{NOME}", StudentLine.aluno.nomeCompleto)
+      setStudentSelect(textTitleAlert)
+      setStudentSelectId(StudentLine.id)
+    } else {
+      setIsOnlyStudent(false)
+      console.log(selectedRowKeys)
+      const textTitleAlert = "Tem certeza que deseja enviar alerta para Alunos selecionados?"
+      setStudentSelect(textTitleAlert)
+      const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência."
+      setEmailTextDefault(emailTextDefault)
+    }
   };
   
   console.log(studentSelect)
@@ -571,14 +584,15 @@ const dataFormater = date => moment(date).format("DD/MM/YYYY");
         {studentSelect}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText  id="alert-dialog-description">
+        <DialogContentText id="alert-dialog-description">
           Editar email:
-          <TextArea rows={12} defaultValue={emailTextDefault} onChange={(e) => {setEmailTextDefault(e.currentTarget.value)}} maxLength={600} />
+          <TextArea rows={12} style={{marginTop: '15px', marginBottom: '15px'}} disabled = {!isOnlyStudent} defaultValue={emailTextDefault} onChange={(e) => {setEmailTextDefault(e.currentTarget.value)}} maxLength={600} />
+          {!isOnlyStudent ? <Tag color="orange">Edição desabilitada, para editar email selecione apenas um aluno.</Tag> : <></>}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancelar</Button>
-        <Button onClick={handleSend} autoFocus>
+        <Button onClick={isOnlyStudent ? handleSend : handleSendMany} autoFocus>
           Enviar alerta
         </Button>
       </DialogActions>
@@ -589,7 +603,7 @@ const dataFormater = date => moment(date).format("DD/MM/YYYY");
       <br />
       {selectedRowKeys.length ?
         <><Space>
-          <Button onClick={() => handleSendMany()}>Enviar alerta para os selecionados</Button>
+          <Button onClick={() => handleClickOpen()}>Enviar alerta para os selecionados</Button>
           <Button onClick={() => handleSolveMany()}>Marcar selecionados como resolvido</Button>
         </Space><br/><br/></>
         : <></>

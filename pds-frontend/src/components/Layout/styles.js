@@ -9,5 +9,11 @@ export const StyledLayout = styled(Layout)`
 `;
 
 export const StyledContent = styled(Content)`
-    overflow-y: scroll
+    overflow: auto;
+`;
+
+export const StyleContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
 `;

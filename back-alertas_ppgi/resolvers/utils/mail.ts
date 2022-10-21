@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { env } from 'process';
 import { AlertaAluno } from '../../prisma/generated/type-graphql';
 
-export const sendMail = async (alertaAluno: AlertaAluno) => {
+export const sendMail = async (alertaAluno: AlertaAluno, messageEmail?) => {
     const mailSettings = {
         host: env.SMTP_HOST,
         port: 587,
@@ -13,6 +13,8 @@ export const sendMail = async (alertaAluno: AlertaAluno) => {
         },
     }
 
+    const TextCustonEmail = messageEmail ? messageEmail : "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência.".replace("{NOME}", alertaAluno.aluno?.nomeCompleto!).replace("{ALERTA}", alertaAluno.alerta?.nome!)
+
     const transport = createTransport(mailSettings);
 
     const message = {
@@ -20,7 +22,7 @@ export const sendMail = async (alertaAluno: AlertaAluno) => {
         to: [alertaAluno.aluno!.emailInstitucional!, alertaAluno.aluno!.emailPessoal!],
         cc: [alertaAluno.aluno?.orientador?.email!],
         subject: "[Alerta de Prazos PPGI] " + alertaAluno.alerta?.nome,
-        text: "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência.".replace("{NOME}", alertaAluno.aluno?.nomeCompleto!).replace("{ALERTA}", alertaAluno.alerta?.nome!),
+        text: TextCustonEmail
     };
 
     // transport.sendMail(message).then(() => console.log('enviado')).catch(err => console.log(err));
