@@ -1,11 +1,12 @@
 export const LOGIN = '/';
 
 export const DASHBOARD = '/dashboard';
-export const REGISTER = '/dashboard/register';
+export const REGISTER_STUDENT = '/dashboard/RegisterStudent';
 export const DOCUMENT_PRODUCTION = '/dashboard/DocumentProduction';
 export const DOCUMENTS = '/dashboard/documents';
-export const LIST_REGISTER = '/dashboard/geral'
+export const LIST_REGISTER = '/dashboard/register'
 export const PROFESSOR = '/dashboard/professor';
+export const REGISTER_PROFESSOR = '/dashboard/Registerprofessor';
 export const EDIT_PROFESSOR = '/dashboard/professor/:id';
 export const EDIT_REGISTER = '/dashboard/register/:id';
 export const PROFICIENCY_ALERTS = '/dashboard/proficiency';
