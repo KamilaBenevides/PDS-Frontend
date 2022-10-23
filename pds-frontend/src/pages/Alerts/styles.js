@@ -1,4 +1,4 @@
-import { Button, Select } from 'antd';
+import { Button, Select, Tabs} from 'antd';
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -32,4 +32,10 @@ export const StyledButton = styled(Button)`
 
 export const StyledSelect = styled(Select)`
     width: 100%;
+`;
+
+export const TabsAlign = styled(Tabs)`
+    .ant-tabs-nav-wrap{
+        padding-left: 50px;
+    }
 `;
