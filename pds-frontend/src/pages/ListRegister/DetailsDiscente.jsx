@@ -1,11 +1,92 @@
-import { Card, Checkbox, Col, Row, Timeline } from "antd";
-import React from "react";
+import { Card, Checkbox, Col, Divider, Row, Timeline } from "antd";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { StyledText, Subtext } from "./styles";
+import { useQuery } from "@apollo/client";
+import * as af from "../Alerts/AlertFilters";
+import { StyledNameText, TitleStatus } from "../../components/Collapse/styles";
 
 const DetailsDiscente = ({ studentSelect }) => {
-  
+
+  const data = useQuery(af.AlertsInStudent, {
+    variables: {
+      "where": {
+        "alunoId": {
+          "equals": studentSelect.id
+        },
+        "alertaId": {
+          "in": [1,2,3,4,5,6,7,8]
+        }
+      }
+    }
+  });
+
+  const [status, setStatus] = useState([
+    {
+      check: false,
+      tipo: 'DEFESA',
+      alertaId: 1,
+      name: 'Defesa de dissertação'
+    },
+    {
+      check: false,
+      tipo: 'AGENDAMENTO_DEFESA',
+      alertaId: 2,
+      name: 'Agendamento de defesa'
+    },
+    {
+      check:false,
+      tipo: 'QUALIFICACAO',
+      alertaId: 3,
+      name: 'Qualificação'
+    },
+    {
+      check: false,
+      tipo: 'AGENDAMENTO_QUALIFICACAO',
+      alertaId: 4,
+      name: 'Agendamento de qualificação'
+    },
+    {
+      check: false,
+      tipo: 'PROFICIENCIA',
+      alertaId: 5,
+      name:  'Proficiência de idiomas'
+    },
+    {
+      check: false,
+      tipo: 'HOMOLOGACAO_DIPLOMA',
+      alertaId: 6,
+      name: 'Homologação de diploma'
+    },
+    {
+      check: false,
+      tipo: 'ESTAGIO_DOCENCIA',
+      alertaId: 7,
+      name: 'Estágio Docência'
+    },
+    {
+      check:false,
+      tipo: 'SUBMISSAO_ARTIGO',
+      alertaId: 8,
+      name: 'Submissão de artigo'
+    }
+  ])
+
+  let listAlerts = []
+  useEffect(() => {
+    if(data.data) {
+      listAlerts = JSON.parse(JSON.stringify(status))
+      for(let i = 0 ; i < 8 ; i++) {
+        data.data?.alertaAlunos.forEach(el => {
+          if (listAlerts[i].alertaId === el.alertaId) {
+            listAlerts[i].check = el.resolvido
+          }
+        });
+      }
+    setStatus(listAlerts)
+    }
+  }, [data.data])
 
   return (
     <>
@@ -86,19 +167,19 @@ const DetailsDiscente = ({ studentSelect }) => {
         </Card>
         </Col>
         <Col>
+        <StyledNameText >{studentSelect.ativo ? 'Aluno Ativo' : 'Aluno Inativo'}</StyledNameText>
+        <Divider />
         <Row>
         <Timeline >
           <Subtext>Progresso:</Subtext>
-          <Timeline.Item>Proficiência de idiomas</Timeline.Item>
-          <Timeline.Item>Estágio Docência</Timeline.Item>
-          <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: '16px' }} />} color="red">
-          Submissão de artigos
-          </Timeline.Item>
-          <Timeline.Item>Agendamento de Qualificação</Timeline.Item>
-          <Timeline.Item>Qualificação</Timeline.Item>
-          <Timeline.Item>Agendamento da Desefa de Dissertação</Timeline.Item>
-          <Timeline.Item>Defesa de Dissertação</Timeline.Item>
-          <Timeline.Item>Homologação de diploma</Timeline.Item>
+          <Timeline.Item color={status[0].check ? "green" : "red"}>{status[0].name}</Timeline.Item>
+          <Timeline.Item color={status[1].check ? "green" : "red"}>{status[1].name}</Timeline.Item>
+          <Timeline.Item color={status[2].check ? "green" : "red"}>{status[2].name}</Timeline.Item>
+          <Timeline.Item color={status[3].check ? "green" : "red"}>{status[3].name}</Timeline.Item>
+          <Timeline.Item color={status[4].check ? "green" : "red"}>{status[4].name}</Timeline.Item>
+          <Timeline.Item color={status[5].check ? "green" : "red"}>{status[5].name}</Timeline.Item>
+          <Timeline.Item color={status[6].check ? "green" : "red"}>{status[6].name}</Timeline.Item>
+          <Timeline.Item color={status[7].check ? "green" : "red"}>{status[7].name}</Timeline.Item>
         </Timeline>
         </Row>
         <Row>

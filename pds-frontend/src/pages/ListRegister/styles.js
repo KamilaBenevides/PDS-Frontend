@@ -51,3 +51,7 @@ export const BtnClose = styled.div`
     justify-content: right;
     padding: 10px 0 0 0;
 `;
+export const ButtonSave = styled(Button)`
+    background: green;
+    color: #FFF
+`;

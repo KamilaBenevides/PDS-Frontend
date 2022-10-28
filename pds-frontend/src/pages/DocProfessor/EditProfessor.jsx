@@ -82,7 +82,6 @@ const EditProfessor = () => {
             }
         }).then(() => {
             setSucesso(true);
-            setTimeout(() => navigate('/dashboard/geral'), 3000);
         }).catch(() => {
             setErro(true);
         });
