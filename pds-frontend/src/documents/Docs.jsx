@@ -274,7 +274,7 @@ export default function Docs() {
   return <>
   <AlignHeader>
 
-    <SubHeader title={'Geração de Documentos'} textBottom={'Adicione os dados para gerar os documentos de Ata de defesa, Declaração de aprovação e folha de aprovação'}/>
+    <SubHeader title={'Geração de Documentos'} textBottom={'Adicione os dados para gerar os documentos de Ata de defesa, Declaração de conclusão e folha de aprovação'}/>
     <Card >
       <Container className="container">
         <Text>Aluno</Text>
