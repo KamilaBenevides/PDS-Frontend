@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { StyledText, Subtext } from "./styles";
-import { useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import * as af from "../Alerts/AlertFilters";
 import { StyledNameText, TitleStatus } from "../../components/Collapse/styles";
 
@@ -20,7 +20,7 @@ const DetailsDiscente = ({ studentSelect }) => {
         }
       }
     }
-  });
+  });  
 
   const [status, setStatus] = useState([
     {
@@ -155,15 +155,6 @@ const DetailsDiscente = ({ studentSelect }) => {
           title="Orientador"
         >
           {studentSelect.orientador.nomeCompleto}
-        </Card>
-        <Card
-          style={{
-            marginTop: 16,
-          }}
-          type="inner"
-          title="Co-orientador"
-        >
-          Inner Card content
         </Card>
         </Col>
         <Col>

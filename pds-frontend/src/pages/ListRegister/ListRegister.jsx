@@ -191,14 +191,6 @@ const ListRegister = () => {
       key: "orientador",
       render: (_, { orientador }) => <>{orientador.nomeCompleto}</>,
     },
-    // {
-    //   title: 'Coorientador',
-    //   dataIndex: 'coorientador',
-    //   key: 'coorientador',
-    //   render: (_, {coorientador}) => (
-    //     <>{coorientador?.nomeCompleto}</>
-    //   )
-    // },
     {
       title: "Status",
       dataIndex: "ativo",
