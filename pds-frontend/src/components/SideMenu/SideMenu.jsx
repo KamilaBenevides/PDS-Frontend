@@ -38,23 +38,23 @@ const SideMenu = () => {
         },
         {
             key: '1',
-            label: 'Cadastros',
+            label: 'Perfis',
             children: [
                 {
                     key: '2',
                     label: 'Discentes',
-                    path: path.REGISTER,
+                    path: path.LIST_REGISTER,
                 },
                 {
                     key: '3',
                     label: 'Docentes',
                     path: path.PROFESSOR
                 },
-                {
-                    key: '4',
-                    label: 'Ver todos',
-                    path: path.LIST_REGISTER
-                },
+                // {
+                //     key: '4',
+                //     label: 'Ver todos',
+                //     path: path.LIST_REGISTER
+                // },
             ]
         },
         {

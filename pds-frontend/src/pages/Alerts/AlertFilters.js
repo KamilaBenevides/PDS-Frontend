@@ -16,9 +16,9 @@ export const solveAlertMutation = gql`
   }`
 
 export const solveManyAlertsMutation = gql`
-  mutation UpdateManyAlertaAluno($data: AlertaAlunoUpdateManyMutationInput!, $where: AlertaAlunoWhereInput) {
-    updateManyAlertaAluno(data: $data, where: $where) {
-      count
+    mutation UpdateManyAlertaAluno($data: AlertaAlunoUpdateManyMutationInput!, $where: AlertaAlunoWhereInput) {
+        updateManyAlertaAluno(data: $data, where: $where) {
+        count
     }
 }`
 
@@ -70,6 +70,21 @@ export const sendAlertaAlunoMutation = gql`
             }
         }
     }`
+
+export const AlertsInStudent = gql`
+query AlertaAlunos($where: AlertaAlunoWhereInput) {
+  alertaAlunos(where: $where) {
+    resolvido
+    alertaId
+    alerta {
+      nome
+    }
+    aluno {
+      id
+      nomeCompleto
+    }
+  }
+}`;
 
 export function getInicioAlerta(dataLimiteAluno, diasIntervalo) {
     let limiteFinal = moment(dataLimiteAluno);
