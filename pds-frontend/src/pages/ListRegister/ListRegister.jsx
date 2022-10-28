@@ -42,6 +42,7 @@ import {
 } from "@mui/material";
 import DetailsDiscente from "./DetailsDiscente";
 import ProgressStudent from "./ProgressStudent";
+import * as af from "../Alerts/AlertFilters";
 
 const { Text, Title } = Typography;
 
@@ -309,7 +310,6 @@ const ListRegister = () => {
   };
 
   
-
   const content = (item) => (
     <StyledContent>
       <Row gutter={16}>
@@ -403,10 +403,7 @@ const ListRegister = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleCloseDialog} autoFocus>
-            Salvar progresso
-          </Button>
+          <Button onClick={handleCloseDialog}>Fechar</Button>
         </DialogActions>
       </Dialog>
       <Dialog
