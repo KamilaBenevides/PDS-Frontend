@@ -345,6 +345,14 @@ const BaseAlert = ({alertType}) => {
           showResolvidos: true,
           showAtrasados: false,
         };
+      case 'homologado':
+      return {
+        showPendentes: true,
+        showEnviados: true,
+        showInativos: true,
+        showResolvidos: true,
+        showAtrasados: true,
+      }
       default:
         return {
           showPendentes: true,
