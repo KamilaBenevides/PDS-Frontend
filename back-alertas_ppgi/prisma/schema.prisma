@@ -21,6 +21,7 @@ model Aluno {
   matricula          String        @unique
   dataIngresso       DateTime
   dataLimite         DateTime
+  dataProrrogacao   DateTime
   cpf                String
   emailInstitucional String?       @unique
   emailPessoal       String?       @unique
