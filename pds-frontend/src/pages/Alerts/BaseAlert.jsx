@@ -375,15 +375,17 @@ const BaseAlert = ({alertType}) => {
   const getStatusType = status => {
     switch (status) {
       case "Atrasado":
-        return "danger";
+        return "error";
       case "Pendente":
         return "warning";
       case "Enviado":
-        return "warning";
+        return "processing";
       case "Inativo":
-        return "secondary";
+        return "warning";
       case "Resolvido":
         return "success";
+        case "Homologado":
+          return "purple";
       default:
         break;
     }
@@ -453,7 +455,7 @@ const BaseAlert = ({alertType}) => {
       dataIndex: 'status',
       key: 'status',
       render: (_, {status}) => (
-        <Text type={getStatusType(status)}>{status}</Text>
+        <Tag color={getStatusType(status)} style={{fontSize:"14px"}} >{status}</Tag>
       ),
       filters: [
         {
