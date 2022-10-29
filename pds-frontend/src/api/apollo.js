@@ -9,7 +9,7 @@ export const TOKEN_KEY = "__ppgi_token__";
 export const getAuthenticationToken = () => localStorage.getItem(TOKEN_KEY);
 
 const link = createHttpLink({
-  uri: "https://back-pds.herokuapp.com/",
+  uri: "https://back-pds-ppgi-account.herokuapp.com/",
   // credentials: 'same-origin'
 });
 
