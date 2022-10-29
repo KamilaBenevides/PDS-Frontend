@@ -1,4 +1,4 @@
-import { Button, Select } from 'antd';
+import { Button, Select, Col } from 'antd';
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -32,4 +32,26 @@ export const StyledButton = styled(Button)`
 
 export const StyledSelect = styled(Select)`
     width: 100%;
+`;
+
+export const RowSearch = styled.div`
+    display: flex;
+    margin-bottom: 20px;
+`;
+
+export const ButtonNewRegister = styled(Button)`
+    background: #071D41;
+    color: #FFF
+`;
+export const Subtext = styled.p`
+    font-size: 16px;
+`;
+export const BtnClose = styled.div`
+    display: flex;
+    justify-content: right;
+    padding: 10px 0 0 0;
+`;
+export const ButtonSave = styled(Button)`
+    background: green;
+    color: #FFF
 `;

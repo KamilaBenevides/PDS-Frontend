@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Container, StyledTimePicker, StyledButton, Text, AlignHeader } from './styles';
+import { Container, StyledTimePicker, StyledButton, Text } from './styles';
 import { useFieldArray, useForm } from 'react-hook-form';
-import generateDocuments from './generateDocs';
+import generateDocumentsDissertationPropostal from './generateDocumentsDissertationPropostal';
 import DatePicker from '../components/DatePicker/DatePicker';
 import FormGroupContainer from '../components/FormGroupContainer/FormGroupContainer';
 import Select from '../components/Select/Select';
@@ -11,7 +11,6 @@ import { Form, Radio, Divider } from 'antd';
 import moment from 'moment';
 import SubHeader from '../components/SubHeader/SubHeader';
 import Card from '../components/Card/Card';
-// import moment from 'moment';
 
 const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
@@ -96,26 +95,8 @@ export default function Docs() {
       required: true
     },
     {
-      label: "Matrícula",
-      name: "matricula",
-      col: 12,
-      required: true
-    },
-    {
-      label: "CPF",
-      name: "cpf",
-      col: 12,
-      required: true
-    },
-    {
       label: "Título do Trabalho",
       name: "tituloTrabalho",
-      col: 24,
-      required: true
-    },
-    {
-      label: "Linha de Pesquisa",
-      name: "linhaPesquisa",
       col: 24,
       required: true
     },
@@ -127,15 +108,15 @@ export default function Docs() {
       formComponent: <DatePicker/>
     },
     {
-      label: "Data de Defesa",
-      name: "dataDefesa",
+      label: "Data de Proposta",
+      name: "dataProposta",
       col: 8,
       required: true,
       formComponent: <DatePicker/>
     },
     {
-      label: "Hora de Defesa",
-      name: "horaDefesa",
+      label: "Hora de Proposta",
+      name: "horaProposta",
       col: 8,
       required: true,
       formComponent: <StyledTimePicker format={'HH:mm'}/>
@@ -213,25 +194,21 @@ export default function Docs() {
 
   const onSubmit = (data) => {
     data.videoconferencia = data.videoconferencia === 'true' ? true : false;
-    data.anoDefesa = data.dataDefesa.year();
-    data.diaDefesa = data.dataDefesa.date();
-    data.mesDefesa = meses[data.dataDefesa.month()];
+    data.anoProposta = data.dataProposta.year();
+    data.diaProposta = data.dataProposta.date();
+    data.mesProposta = meses[data.dataProposta.month()];
     data.anoIngresso = data.dataIngresso.year();
     data.diaIngresso = data.dataIngresso.date();
     data.mesIngresso = meses[data.dataIngresso.month()];
-    let hoje = new Date();
-    data.diaDeclaracao = hoje.getUTCDate();
-    data.mesDeclaracao = meses[hoje.getUTCMonth()];
-    data.anoDeclaracao = hoje.getUTCFullYear();
-    data.horaDefesa = data.horaDefesa.format("HH:mm");
+    data.horaProposta = data.horaProposta.format("HH:mm");
     data.orientador = docentes.find(d => d.value == data.orientador).label;
     if (data.coorientador) data.coorientador = docentes.find(d => d.value == data.coorientador).label;
     else data.coorientador = "";
     data.examinadoresInternos = data.examinadoresInternos.filter(e => e.nome != undefined && e.nome != "");
     data.examinadoresExternosProg = data.examinadoresExternosProg.filter(e => e.nome != undefined && e.nome != "" && e.unidade != undefined && e.unidade != "");
     data.examinadoresExternosInst = data.examinadoresExternosInst.filter(e => e.nome != undefined && e.nome != "");
-    // console.log(data);
-    generateDocuments(data);
+    console.log(data);
+    generateDocumentsDissertationPropostal(data);
   };
 
   console.log(docentes)
@@ -268,13 +245,11 @@ export default function Docs() {
         <StyledButton 
         onClick={() => {form.submit()}}
         >
-          Gerar documentos
+          Gerar documento
         </StyledButton>
     </Form.Item>
   return <>
-  <AlignHeader>
-
-    <SubHeader title={'Geração de Documentos'} textBottom={'Adicione os dados para gerar os documentos de Ata de defesa, Declaração de conclusão e folha de aprovação'}/>
+    <SubHeader title={'Geração de Documentos'} textBottom={'Adicione os dados para gerar os documentos proposta de dissertação'}/>
     <Card >
       <Container className="container">
         <Text>Aluno</Text>
@@ -312,6 +287,5 @@ export default function Docs() {
         </Form>
       </Container>
     </Card>
-  </AlignHeader>
   </>
 }

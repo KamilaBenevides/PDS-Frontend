@@ -5,12 +5,14 @@ import { TOKEN_KEY } from '../../api/apollo';
 import { Container, 
   FormWrapper, 
   Title,
-  Subtitle, 
   MainButton, 
-  InputForm } from './styles';
+  InputForm,
+  RowIcon } from './styles';
 import { Form, message } from 'antd'
 import FormGroupContainer from '../../components/FormGroupContainer/FormGroupContainer';
 import { useAuth } from '../Login/AuthProvider';
+import { BellOutlined } from '@ant-design/icons';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -48,7 +50,7 @@ const Login = () => {
       });
       console.log("res error ", error);
     });
-  
+
     
   };
 
@@ -66,7 +68,6 @@ const Login = () => {
       col: 24,
       required: true,
       formComponent: <InputForm
-      placeholder="******"
       type={"password"}/>
     },
   ];
@@ -81,10 +82,13 @@ const Login = () => {
 
 
   return (
+    <>
           <Container>
             <FormWrapper>
-              <Title>Alertas PPGI</Title>
-              <Subtitle>Facilitando o SIGAA</Subtitle>
+            <RowIcon>
+            <BellOutlined style={{ fontSize: '70px', color: "#071D41", marginRight: "15px "}} />
+            <Title>Alertas PPGI</Title>
+            </RowIcon>
               <Form form={form} layout="vertical" onFinish={e => onFinish(e)}>
                 <FormGroupContainer items={loginItems}/>
               </Form>
@@ -93,6 +97,7 @@ const Login = () => {
               </MainButton>
             </FormWrapper>
           </Container>
+    </>
           
     )
 }

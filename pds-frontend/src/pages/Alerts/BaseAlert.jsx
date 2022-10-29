@@ -1,27 +1,55 @@
 import InputSearch from '../../components/InputSearch/InputSearch';
 import Collapse from '../../components/Collapse/Collapse';
 import client from '../../api/apollo';
-import { Alert, Button } from 'antd';
-import { Container, StyledNameText, StyledText, StyledButton, 
-  StyledContent,
-  StyledStatusName,
-  StyledSelect} from './styles';
+import { Alert, Button, Popconfirm, Tag } from 'antd';
+import { Container } from './styles';
 import { useEffect, useState, useReducer } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import moment from 'moment';
 import * as af from './AlertFilters.js';
-import { Col, Row, Typography, Table, Space } from 'antd';
+import { Col, Row, Typography, Table, Space, Modal } from 'antd';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import TextArea from 'antd/lib/input/TextArea';
+import SubHeader from '../../components/SubHeader/SubHeader';
 const {Text, Title} = Typography;
 
-const BaseAlert = ({alertType}) => {
 
+var date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+// This arrangement can be altered based on how we want the date's format to appear.
+let currentDate = `${day}/${month}/${year}`;
+
+function getDifferenceInMonths(date1, date2) {
+  var diffInYs = parseInt(date2.slice(6,10)) - parseInt(date1.slice(6,10));
+  var diffInMs = parseInt(date2.slice(3,5)) - parseInt(date1.slice(3,5));
+  if (diffInMs<0)
+  {
+    diffInYs = diffInYs - 1
+    if ( diffInYs < 0 )
+    {
+      return "Atrasado a " + (-1*diffInMs) +" meses"
+    }
+    diffInMs = 12 + diffInMs 
+  }
+  Math.abs(diffInYs)
+  Math.abs(diffInMs)
+  diffInMs = diffInMs + (diffInYs * 12)
+  return (diffInMs-1) + " meses"
+}
+
+const BaseAlert = ({alertType}) => {
   const [sendAlert] = useMutation(af.sendAlertaAlunoMutation);
 
   const handleSend = (aaId) => {
     sendAlert({
       variables: {
-        alertaAlunoId: aaId
+        alertaAlunoId: studentSelectId,
+        messageEmail: emailTextDefault
       }
     }).then(() => {
       queryAlertaAlunos.refetch();
@@ -29,6 +57,7 @@ const BaseAlert = ({alertType}) => {
     }).catch(() => {
       setErro(true);
     });
+    handleClose()
   }
   
   const [sendManyAlerts] = useMutation(af.sendManyAlertaAluno);
@@ -44,6 +73,7 @@ const BaseAlert = ({alertType}) => {
     }).catch(() => {
       setErro(true);
     });
+    handleClose()
   }
 
   const [sucesso, setSucesso] = useState(false);
@@ -108,7 +138,8 @@ const BaseAlert = ({alertType}) => {
       });
   }
 
-  const queryAlertaAlunos = useQuery(af.baseQuery, {
+  const 
+  queryAlertaAlunos = useQuery(af.baseQuery, {
     variables: {
       where: {
         ativo: {
@@ -127,7 +158,7 @@ const BaseAlert = ({alertType}) => {
       }
     }
   });
-
+  
   const queryResolvidos = useQuery(af.baseQuery, {
     variables: {
       where: {
@@ -166,17 +197,15 @@ const BaseAlert = ({alertType}) => {
   });
 
   const [alertas, setAlertas] = useState([]);
-  const [vencidos, setVencidos] = useState([]);
+  const [Atrasados, setAtrasados] = useState([]);
   const [enviados, setEnviados] = useState([]);
-  const [abertos, setAbertos] = useState([]);
-  const [naoIniciados, setNaoIniciados] = useState([]);
+  const [Pendentes, setPendentes] = useState([]);
   const [resolvidos, setResolvidos] = useState([]);
   const [inativos, setInativos] = useState([]);
 
-  const [vencidosItems, setVencidosItems] = useState([])
+  const [AtrasadosItems, setAtrasadosItems] = useState([])
   const [enviadosItems, setEnviadosItems] = useState([])
-  const [abertosItems, setAbertosItems] = useState([])
-  const [naoIniciadosItems, setNaoIniciadosItems] = useState([])
+  const [PendentesItems, setPendentesItems] = useState([])
   const [resolvidosItems, setResolvidosItems] = useState([])
   const [inativosItems, setInativosItems] = useState([])
 
@@ -191,21 +220,17 @@ const BaseAlert = ({alertType}) => {
   useEffect(() => {
     let aa = queryAlertaAlunos.data?.alertaAlunos ? queryAlertaAlunos.data.alertaAlunos : [];
     
-    let vencidos = af.filterVencidos(aa);
-    setVencidos(vencidos);
-    setVencidosItems(vencidos);
+    let Atrasados = af.filterAtrasados(aa);
+    setAtrasados(Atrasados);
+    setAtrasadosItems(Atrasados);
 
     let enviados = af.filterEnviados(aa);
     setEnviados(enviados);
     setEnviadosItems(enviados);
 
-    let abertos = af.filterAbertos(aa);
-    setAbertos(abertos);
-    setAbertosItems(abertos);
-
-    let naoIniciados = af.filterNaoIniciados(aa);
-    setNaoIniciados(naoIniciados);
-    setNaoIniciadosItems(naoIniciados);
+    let Pendentes = af.filterPendentes(aa);
+    setPendentes(Pendentes);
+    setPendentesItems(Pendentes);
 
     setAlertas(aa);
   }, [queryAlertaAlunos.data]);
@@ -224,37 +249,6 @@ const BaseAlert = ({alertType}) => {
     setInativosItems(aa_status);
   }, [queryInativos.data]);
 
-  const filterOptions = [
-    {
-      label: "Vencidos",
-      value: "vencidos"
-    },
-    {
-      label: "Não iniciados",
-      value: "naoInciados"
-    },
-    {
-      label: "Enviados",
-      value: "enviados"
-    },
-    {
-      label: "Abertos",
-      value: "abertos"
-    },
-    {
-      label: "Resolvidos",
-      value: "resolvidos"
-    },
-    {
-      label: "Inativos",
-      value: "inativos"
-    },
-    {
-      label: "Todos",
-      value: "todos"
-    }
-  ];
-
   const compareStrings = (entry, value) => {
     // coloca strings em caixa baixa e remove acentos
     let record = entry?.aluno?.nomeCompleto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
@@ -264,14 +258,14 @@ const BaseAlert = ({alertType}) => {
 
   const onSearch = value => {
     console.log("filter value ", value);
-    if (state.showVencidos) {
-      console.log("vencidos", vencidos);
-      const filteredAlunos = vencidos.filter(entry => compareStrings(entry, value));
-      setVencidosItems(filteredAlunos);
+    if (state.showAtrasados) {
+      console.log("Atrasados", Atrasados);
+      const filteredAlunos = Atrasados.filter(entry => compareStrings(entry, value));
+      setAtrasadosItems(filteredAlunos);
     }
-    if (state.showAbertos) {
-      const filteredAlunos = abertos.filter(entry => compareStrings(entry, value));
-      setAbertosItems(filteredAlunos);
+    if (state.showPendentes) {
+      const filteredAlunos = Pendentes.filter(entry => compareStrings(entry, value));
+      setPendentesItems(filteredAlunos);
     }
     if(state.showEnviados) {
       const filteredAlunos = enviados.filter(entry => compareStrings(entry, value));
@@ -281,36 +275,19 @@ const BaseAlert = ({alertType}) => {
       const filteredAlunos = inativos.filter(entry => compareStrings(entry, value));
       setInativosItems(filteredAlunos);
     }
-    if (state.showNaoIniciados) {
-      const filteredAlunos = naoIniciados.filter(entry => compareStrings(entry, value));
-      setNaoIniciadosItems(filteredAlunos);
-    }
     if (state.showResolvidos) {
       const filteredAlunos = resolvidos.filter(entry => compareStrings(entry, value));
       setResolvidosItems(filteredAlunos);
     }
   }
 
-  const onFilterSelectChange = value => {
-    dispatch({type: value})
-  }
-
-  const initialState = {
-    showAbertos: false,
-    showEnviados: false,
-    showInativos: false,
-    showNaoIniciados: false,
-    showResolvidos: false,
-    showVencidos: false
-  };
 
   const init = {
-      showAbertos: true,
+      showPendentes: true,
       showEnviados: true,
       showInativos: true,
-      showNaoIniciados: true,
       showResolvidos: true,
-      showVencidos: true
+      showAtrasados: true
   }
   
   const [filter, setFilter] = useState('Todos');
@@ -318,70 +295,71 @@ const BaseAlert = ({alertType}) => {
 
   function reducer(state, action) {
     switch (action.type) {
-      case 'vencidos':
+      case 'Atrasados':
         console.log("state ", state);
-        setFilter('Vencido');
+        setFilter('Atrasado');
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: true,
+          showAtrasados: true,
         };
-      case 'abertos':
+      case 'Pendentes':
         return {
-          showAbertos: true,
+          showPendentes: true,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'enviados':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: true,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'inativos':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: true,
-          showNaoIniciados: false,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'naoInciados':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: true,
           showResolvidos: false,
-          showVencidos: false,
+          showAtrasados: false,
         };
       case 'resolvidos':
         return {
-          showAbertos: false,
+          showPendentes: false,
           showEnviados: false,
           showInativos: false,
-          showNaoIniciados: false,
           showResolvidos: true,
-          showVencidos: false,
+          showAtrasados: false,
         };
+      case 'homologado':
+      return {
+        showPendentes: true,
+        showEnviados: true,
+        showInativos: true,
+        showResolvidos: true,
+        showAtrasados: true,
+      }
       default:
         return {
-          showAbertos: true,
+          showPendentes: true,
           showEnviados: true,
           showInativos: true,
-          showNaoIniciados: true,
           showResolvidos: true,
-          showVencidos: true,
+          showAtrasados: true,
         };
     }
   }
@@ -396,21 +374,26 @@ const BaseAlert = ({alertType}) => {
   
   const getStatusType = status => {
     switch (status) {
-      case "Vencido":
-        return "danger";
-      case "Em Aberto":
+      case "Atrasado":
+        return "error";
+      case "Pendente":
         return "warning";
       case "Enviado":
-        return "warning";
+        return "processing";
       case "Inativo":
-        return "secondary";
-      case "Não Iniciado":
-        return "secondary";
+        return "warning";
       case "Resolvido":
         return "success";
+        case "Homologado":
+          return "purple";
       default:
         break;
     }
+  }
+
+  const navigate = useNavigate();
+  const EtitAluno = (item) => {
+    navigate('/dashboard/register/' + item.id);
   }
 
   const columns = [
@@ -419,7 +402,7 @@ const BaseAlert = ({alertType}) => {
       dataIndex: 'nomeCompleto',
       key: 'nomeCompleto',
       render: (_, {aluno}) => (
-        <>{aluno.nomeCompleto}</>
+        <a onClick={() => EtitAluno(aluno)}> { aluno.nomeCompleto} </a>
       ),
       sorter: (a, b) => a.aluno.nomeCompleto.localeCompare(b.aluno.nomeCompleto),
       defaultSortOrder: 'ascend'
@@ -449,19 +432,11 @@ const BaseAlert = ({alertType}) => {
       ),
     },
     {
-      title: 'Abertura',
-      dataIndex: 'aberto',
-      key: 'aberto',
-      render: (_, item) => (
-        <>{dataFormater(af.getInicioAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo))}</>
-      )
-    },
-    {
       title: 'Vencimento',
       dataIndex: 'vencimento',
       key: 'vencimento',
       render: (_, item) => (
-        <>{dataFormater(af.getVencimentoAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo))}</>
+        <>{getDifferenceInMonths( currentDate ,dataFormater(af.getVencimentoAlerta(item.aluno.dataLimite, item.alerta.diasIntervalo)))}</>
       ),
       sorter: (a, b) => af.getVencimentoAlerta(a.aluno.dataLimite, a.alerta.diasIntervalo)
                           .isAfter(af.getVencimentoAlerta(b.aluno.dataLimite, b.alerta.diasIntervalo)),
@@ -475,37 +450,25 @@ const BaseAlert = ({alertType}) => {
         <>{aluno.orientador.nomeCompleto}</>
       )
     },
-    // {
-    //   title: 'Coorientador',
-    //   dataIndex: 'coorientador',
-    //   key: 'coorientador',
-    //   render: (_, {coorientador}) => (
-    //     <>{coorientador?.nomeCompleto}</>
-    //   )
-    // },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
       render: (_, {status}) => (
-        <Text type={getStatusType(status)}>{status}</Text>
+        <Tag color={getStatusType(status)} style={{fontSize:"14px"}} >{status}</Tag>
       ),
       filters: [
         {
-          text: 'Vencidos',
-          value: 'Vencido',
+          text: 'Atrasados',
+          value: 'Atrasado',
         },
         {
           text: 'Enviados',
           value: 'Enviado',
         },
         {
-          text: 'Abertos',
-          value: 'Em Aberto',
-        },
-        {
-          text: 'Não Iniciados',
-          value: 'Não Iniciado',
+          text: 'Pendentes',
+          value: 'Pendente',
         },
         {
           text: 'Resolvidos',
@@ -514,6 +477,10 @@ const BaseAlert = ({alertType}) => {
         {
           text: 'Inativos',
           value: 'Inativo',
+        },
+        {
+          text: 'Homologado',
+          value: 'Homologado',
         },
       ],
       onFilter: (value, record) => record.status === value,
@@ -530,22 +497,46 @@ const BaseAlert = ({alertType}) => {
       title: 'Ações',
       key: 'action',
       render: (_, item) => (
-        <Space size="middle">
-          <a onClick={() => handleSend(item.id)}>Alertar</a>
-          {!item.resolvido ?
-            <a style={{color: '#2EC615'}} onClick={() => handleSolve(item.id, true)}>Marcar como Resolvido</a>
-            :
-            <a style={{color: '#AAAAAA'}} onClick={() => handleSolve(item.id, false)}>Desfazer Resolvido</a>
-          }
-        </Space>
+        <>
+          
+          <Space size="middle">
+            <a onClick={() => handleClickOpen(item)}>Alertar</a>
+          </Space>
+        </>
       )
     },
   ];
+  const [open, setOpen] = useState(false);
+  const [emailTextDefault, setEmailTextDefault] = useState();
+  const [studentSelect, setStudentSelect] = useState();
+  const [studentSelectId, setStudentSelectId] = useState();
+  const [isOnlyStudent, setIsOnlyStudent] = useState();
+  
+  const handleClickOpen = (StudentLine) => {
+    setOpen(true);
+    if(StudentLine){
+      setIsOnlyStudent(true)
+      const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência.".replace("{NOME}", StudentLine.aluno.nomeCompleto).replace("{ALERTA}", StudentLine.alerta.nome)
+      setEmailTextDefault(emailTextDefault)
+      const textTitleAlert = "Tem certeza que deseja enviar alerta para {NOME} ?".replace("{NOME}", StudentLine.aluno.nomeCompleto)
+      setStudentSelect(textTitleAlert)
+      setStudentSelectId(StudentLine.id)
+    } else {
+      setIsOnlyStudent(false)
+      const textTitleAlert = "Tem certeza que deseja enviar alerta para Alunos selecionados?"
+      setStudentSelect(textTitleAlert)
+      const emailTextDefault = "Olá {NOME},\n\nEste é um email enviado através do sistema de Alertas de Prazos do PPGI.\nIdentificamos que você está próximo do seu prazo (cerca de 30 dias) para a atividade de {ALERTA}.\nPor favor, entre em contato com a secretaria a fim de esclarecer mais detalhes e resolver esta pendência."
+      setEmailTextDefault(emailTextDefault)
+    }
+  };
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -554,27 +545,27 @@ const BaseAlert = ({alertType}) => {
     onChange: onSelectChange,
     selections: [
       {
-        key: 'vencidos',
-        text: 'Selecionar Vencidos',
+        key: 'Atrasados',
+        text: 'Selecionar Atrasados',
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((key, index) => {
             console.log(key)
-            let vencido = vencidosItems.find(i => i.id == key);
-            return vencido ? true : false;
+            let Atrasado = AtrasadosItems.find(i => i.id == key);
+            return Atrasado ? true : false;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
       },
       {
-        key: 'abertos',
-        text: 'Selecionar Abertos',
+        key: 'Pendentes',
+        text: 'Selecionar Pendentes',
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((key, index) => {
             console.log(key)
-            let aberto = abertosItems.find(i => i.id == key);
-            return aberto ? true : false;
+            let Pendente = PendentesItems.find(i => i.id == key);
+            return Pendente ? true : false;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
@@ -582,92 +573,44 @@ const BaseAlert = ({alertType}) => {
     ],
   };
 
-  const collapseHeader = (item, status) => 
-    <>
-      <Col span={20}>
-          <StyledNameText>{item.aluno.nomeCompleto}</StyledNameText>
-      </Col>
-      <Col span={4}>
-          <Text type={getStatusType(item.status)}>STATUS: {item.status}</Text>
-      </Col>
-    </>
-  
 const dataFormater = date => moment(date).format("DD/MM/YYYY");
 
-const collapseContent = item =>
-  (<StyledContent>
-      <Row gutter={16}>
-          <Col span={24}>
-              <StyledText><strong>E-mail:</strong> {item.aluno?.emailInstitucional}</StyledText>
-          </Col>
-          <Col span={24}>
-              <StyledText><strong>Ingresso do aluno:</strong> {dataFormater(item.aluno.dataIngresso)}</StyledText>
-          </Col>
-          <Col span={24}>
-              <StyledText><strong>Alerta aberto em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days'))}</StyledText>
-          </Col>
-          <Col span={24}>
-              <StyledText><strong>Alerta vencido em:</strong> {dataFormater(moment(item.aluno.dataLimite).subtract(item.alerta.diasIntervalo, 'days').add(30, 'days'))}</StyledText>
-          </Col>
-          {item.dataEnvioEmail ?
-            <Col span={24}>
-                <StyledText><strong>Data de envio do Email:</strong> {dataFormater(item.dataEnvioEmail)}</StyledText>
-            </Col> : null}
-          <Col span={3}>
-            <StyledButton onClick={() => handleSend(item.id)} type="primary" danger 
-              style={{
-                  color: '#FFFFFF'
-                }}>
-              ALERTAR
-            </StyledButton>
-          </Col>
-          {!item.resolvido ?
-            <>
-              <Col span={4}>
-                <StyledButton onClick={() => handleSolve(item.id, true)}
-                  style={{
-                      background: '#2EC615',
-                      color: '#FFFFFF'
-                    }}>
-                  MARCAR COMO RESOLVIDO
-                </StyledButton>
-              </Col>
-              <Col span={4}>
-                <StyledButton type="text" onClick={() => {}}
-                  style={{
-                      width: "150px",
-                      color: '#071D41'
-                    }}>
-                  Mais opções
-                </StyledButton>
-              </Col>
-            </>
-            :
-            <Col span={4}>
-              <StyledButton onClick={() => handleSolve(item.id, false)}
-                style={{
-                    background: '#AAAAAA',
-                    color: '#FFFFFF'
-                  }}>
-                DESFAZER RESOLVIDO
-              </StyledButton>
-            </Col>}
-      </Row>
-  </StyledContent>)
-
   return <>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        {studentSelect}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Editar email:
+          <TextArea rows={12} style={{marginTop: '15px', marginBottom: '15px'}} disabled = {!isOnlyStudent} defaultValue={emailTextDefault} onChange={(e) => {setEmailTextDefault(e.currentTarget.value)}} maxLength={600} />
+          {!isOnlyStudent ? <Tag color="orange">Edição desabilitada, para editar email selecione apenas um aluno.</Tag> : <></>}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancelar</Button>
+        <Button onClick={isOnlyStudent ? handleSend : handleSendMany} autoFocus>
+          Enviar alerta
+        </Button>
+      </DialogActions>
+    </Dialog>
     <Container>
       {alertSucesso}
       {header}
       <br />
       {selectedRowKeys.length ?
         <><Space>
-          <Button onClick={() => handleSendMany()}>Enviar alerta para os selecionados</Button>
+          <Button onClick={() => handleClickOpen()}>Enviar alerta para os selecionados</Button>
           <Button onClick={() => handleSolveMany()}>Marcar selecionados como resolvido</Button>
         </Space><br/><br/></>
         : <></>
       }
-      <Table rowKey="id" rowSelection={rowSelection} columns={columns} pagination={false} dataSource={vencidosItems.concat(enviadosItems, abertosItems, naoIniciadosItems, resolvidosItems, inativosItems)} />
+      <Table rowKey="id" rowSelection={rowSelection} columns={columns} pagination={false} dataSource={AtrasadosItems.concat(enviadosItems, PendentesItems, resolvidosItems, inativosItems)} />
     </Container>
   </>
 }

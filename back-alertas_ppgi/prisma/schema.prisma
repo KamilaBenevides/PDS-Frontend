@@ -21,6 +21,7 @@ model Aluno {
   matricula          String        @unique
   dataIngresso       DateTime
   dataLimite         DateTime
+  dataProrrogacao   DateTime
   cpf                String
   emailInstitucional String?       @unique
   emailPessoal       String?       @unique
@@ -46,6 +47,9 @@ enum AlertaType {
   QUALIFICACAO
   AGENDAMENTO_QUALIFICACAO
   PROFICIENCIA
+  HOMOLOGACAO_DIPLOMA
+  ESTAGIO_DOCENCIA
+  SUBMISSAO_ARTIGO
 }
 
 model Alerta {

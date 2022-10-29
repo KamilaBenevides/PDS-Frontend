@@ -2,8 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Statistic, Card, Row, Col, Button } from 'antd';
 import { useMutation, gql } from '@apollo/client';
+import { EyeOutlined } from '@ant-design/icons';
 
-const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes, setErro, setSucesso }) => {
+const SpecificStats = ({ title, Atrasados, enviados, Pendentes, detalhes, setErro, setSucesso }) => {
     
     const mutation = gql`
     mutation Mutation {
@@ -23,40 +24,47 @@ const SpecificStats = ({ title, vencidos, enviados, abertos, detalhes, setErro, 
     const navigate = useNavigate();
     
     return (
-    <Card title={title}>
+    <Card title={title} extra={<Button onClick={() => navigate(detalhes)} icon={<EyeOutlined />}>Ir para página</Button>} >
+        
         <Row gutter={12} justify="space-between" align="middle">
+            
             <Col>
                 <Statistic
-                    title="Vencidos"
-                    value={vencidos}
-                    valueStyle={{
-                        color: '#cf1322',
-                    }}
-                />
-            </Col>
-            <Col>
-                <Statistic
-                    title="Enviados"
+                    title="Alertas enviados"
                     value={enviados}
                     valueStyle={{
-                        color: '#faad14',
+                        color: '#127D00',
+                        fontWeight: '600',
+                        textAlign: 'center'
                     }}
                 />
             </Col>
             <Col>
                 <Statistic
-                    title="Abertos"
-                    value={abertos}
+                    title="Pendentes"
+                    value={Pendentes}
                     valueStyle={{
-                        color: '#faad14',
+                        color: '#030083',
+                        fontWeight: '600',
+                        textAlign: 'center'
                     }}
                 />
             </Col>
-            {detalhes.length ?
-                <Col>
-                    <Button onClick={() => navigate(detalhes)} style={{float: 'right'}}>Ver Detalhes</Button>
-                </Col>
-            :   <Col><Button onClick={() => onSend()}>Enviar E-mails</Button></Col>}
+            <Col>
+                <Statistic
+                    title="Alunos atrasados"
+                    value={Atrasados}
+                    valueStyle={{
+                        color: '#cf1322',
+                        fontWeight: '600',
+                        textAlign: 'center'
+                    }}
+                />
+            </Col>
+            {/* <Col>
+                <Button onClick={() => navigate(detalhes)} style={{float: 'right'}}>Ver Detalhes</Button>
+            </Col> */}
+            
         </Row>
     </Card>
     )};

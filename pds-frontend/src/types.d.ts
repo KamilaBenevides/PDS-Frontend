@@ -55,6 +55,15 @@ export type AggregateDocente = {
   _sum?: Maybe<DocenteSumAggregate>;
 };
 
+export type AggregateUser = {
+  __typename?: 'AggregateUser';
+  _avg?: Maybe<UserAvgAggregate>;
+  _count?: Maybe<UserCountAggregate>;
+  _max?: Maybe<UserMaxAggregate>;
+  _min?: Maybe<UserMinAggregate>;
+  _sum?: Maybe<UserSumAggregate>;
+};
+
 export type Alerta = {
   __typename?: 'Alerta';
   AlertaAluno: Array<AlertaAluno>;
@@ -644,7 +653,11 @@ export enum AlertaType {
   AgendamentoQualificacao = 'AGENDAMENTO_QUALIFICACAO',
   Defesa = 'DEFESA',
   Proficiencia = 'PROFICIENCIA',
-  Qualificacao = 'QUALIFICACAO'
+  Qualificacao = 'QUALIFICACAO',
+  articleSubmission ='SUBMISSAO_ARTIGO',
+  internship ='ESTAGIO_DOCENCIA',
+  diplomaApproval ='HOMOLOGACAO_DIPLOMA'
+
 }
 
 export type AlertaUpdateInput = {
@@ -1632,6 +1645,17 @@ export type FieldsCreateAluno = {
   orientadorId?: InputMaybe<Scalars['Int']>;
 };
 
+export type FieldsCreateUser = {
+  nomeCompleto: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type FieldsLogin = {
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
 export type FieldsUpdateAluno = {
   ativo?: InputMaybe<Scalars['Boolean']>;
   coorientadorId?: InputMaybe<Scalars['Int']>;
@@ -1706,6 +1730,13 @@ export type IntWithAggregatesFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
+export type Login = {
+  __typename?: 'Login';
+  expiresIn: Scalars['String'];
+  id: Scalars['Int'];
+  token: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAlerta: Alerta;
@@ -1716,8 +1747,12 @@ export type Mutation = {
   createManyAlertaAluno: AffectedRowsOutput;
   createManyAluno: AffectedRowsOutput;
   createManyDocente: AffectedRowsOutput;
+  createManyUser: AffectedRowsOutput;
+  createUser: User;
   customCreateAluno: Aluno;
+  customCreateUser: Scalars['Boolean'];
   customDeleteAluno?: Maybe<Scalars['Boolean']>;
+  customLogin: Login;
   customNewDataLimite: Aluno;
   customSetAlunoAtivo: Aluno;
   customUpdateAluno: Aluno;
@@ -1729,7 +1764,11 @@ export type Mutation = {
   deleteManyAlertaAluno: AffectedRowsOutput;
   deleteManyAluno: AffectedRowsOutput;
   deleteManyDocente: AffectedRowsOutput;
+  deleteManyUser: AffectedRowsOutput;
+  deleteUser?: Maybe<User>;
   sendAlertaAluno: AlertaAluno;
+  sendAlertasDashboard: Scalars['Boolean'];
+  sendManyAlertaAluno: Scalars['Int'];
   updateAlerta?: Maybe<Alerta>;
   updateAlertaAluno?: Maybe<AlertaAluno>;
   updateAluno?: Maybe<Aluno>;
@@ -1738,10 +1777,13 @@ export type Mutation = {
   updateManyAlertaAluno: AffectedRowsOutput;
   updateManyAluno: AffectedRowsOutput;
   updateManyDocente: AffectedRowsOutput;
+  updateManyUser: AffectedRowsOutput;
+  updateUser?: Maybe<User>;
   upsertAlerta: Alerta;
   upsertAlertaAluno: AlertaAluno;
   upsertAluno: Aluno;
   upsertDocente: Docente;
+  upsertUser: User;
 };
 
 
@@ -1789,13 +1831,34 @@ export type MutationCreateManyDocenteArgs = {
 };
 
 
+export type MutationCreateManyUserArgs = {
+  data: Array<UserCreateManyInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreateUserArgs = {
+  data: UserCreateInput;
+};
+
+
 export type MutationCustomCreateAlunoArgs = {
   data: FieldsCreateAluno;
 };
 
 
+export type MutationCustomCreateUserArgs = {
+  data: FieldsCreateUser;
+};
+
+
 export type MutationCustomDeleteAlunoArgs = {
   alunoId: Scalars['Float'];
+};
+
+
+export type MutationCustomLoginArgs = {
+  data: FieldsLogin;
 };
 
 
@@ -1857,8 +1920,24 @@ export type MutationDeleteManyDocenteArgs = {
 };
 
 
+export type MutationDeleteManyUserArgs = {
+  where?: InputMaybe<UserWhereInput>;
+};
+
+
+export type MutationDeleteUserArgs = {
+  where: UserWhereUniqueInput;
+};
+
+
 export type MutationSendAlertaAlunoArgs = {
   alertaAlunoId: Scalars['Int'];
+  messageEmail: Scalars['String'];
+};
+
+
+export type MutationSendManyAlertaAlunoArgs = {
+  alertaAlunoIds: Array<Scalars['Int']>;
 };
 
 
@@ -1910,6 +1989,18 @@ export type MutationUpdateManyDocenteArgs = {
 };
 
 
+export type MutationUpdateManyUserArgs = {
+  data: UserUpdateManyMutationInput;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+
+export type MutationUpdateUserArgs = {
+  data: UserUpdateInput;
+  where: UserWhereUniqueInput;
+};
+
+
 export type MutationUpsertAlertaArgs = {
   create: AlertaCreateInput;
   update: AlertaUpdateInput;
@@ -1935,6 +2026,13 @@ export type MutationUpsertDocenteArgs = {
   create: DocenteCreateInput;
   update: DocenteUpdateInput;
   where: DocenteWhereUniqueInput;
+};
+
+
+export type MutationUpsertUserArgs = {
+  create: UserCreateInput;
+  update: UserUpdateInput;
+  where: UserWhereUniqueInput;
 };
 
 export type NestedBoolFilter = {
@@ -2169,6 +2267,7 @@ export type Query = {
   aggregateAlertaAluno: AggregateAlertaAluno;
   aggregateAluno: AggregateAluno;
   aggregateDocente: AggregateDocente;
+  aggregateUser: AggregateUser;
   alerta?: Maybe<Alerta>;
   alertaAluno?: Maybe<AlertaAluno>;
   alertaAlunos: Array<AlertaAluno>;
@@ -2181,10 +2280,14 @@ export type Query = {
   findFirstAlertaAluno?: Maybe<AlertaAluno>;
   findFirstAluno?: Maybe<Aluno>;
   findFirstDocente?: Maybe<Docente>;
+  findFirstUser?: Maybe<User>;
   groupByAlerta: Array<AlertaGroupBy>;
   groupByAlertaAluno: Array<AlertaAlunoGroupBy>;
   groupByAluno: Array<AlunoGroupBy>;
   groupByDocente: Array<DocenteGroupBy>;
+  groupByUser: Array<UserGroupBy>;
+  user?: Maybe<User>;
+  users: Array<User>;
 };
 
 
@@ -2221,6 +2324,15 @@ export type QueryAggregateDocenteArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<DocenteWhereInput>;
+};
+
+
+export type QueryAggregateUserArgs = {
+  cursor?: InputMaybe<UserWhereUniqueInput>;
+  orderBy?: InputMaybe<Array<UserOrderByWithRelationInput>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 
@@ -2324,6 +2436,16 @@ export type QueryFindFirstDocenteArgs = {
 };
 
 
+export type QueryFindFirstUserArgs = {
+  cursor?: InputMaybe<UserWhereUniqueInput>;
+  distinct?: InputMaybe<Array<UserScalarFieldEnum>>;
+  orderBy?: InputMaybe<Array<UserOrderByWithRelationInput>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+
 export type QueryGroupByAlertaArgs = {
   by: Array<AlertaScalarFieldEnum>;
   having?: InputMaybe<AlertaScalarWhereWithAggregatesInput>;
@@ -2361,6 +2483,31 @@ export type QueryGroupByDocenteArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<DocenteWhereInput>;
+};
+
+
+export type QueryGroupByUserArgs = {
+  by: Array<UserScalarFieldEnum>;
+  having?: InputMaybe<UserScalarWhereWithAggregatesInput>;
+  orderBy?: InputMaybe<Array<UserOrderByWithAggregationInput>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+
+export type QueryUserArgs = {
+  where: UserWhereUniqueInput;
+};
+
+
+export type QueryUsersArgs = {
+  cursor?: InputMaybe<UserWhereUniqueInput>;
+  distinct?: InputMaybe<Array<UserScalarFieldEnum>>;
+  orderBy?: InputMaybe<Array<UserOrderByWithRelationInput>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 export enum QueryMode {
@@ -2441,4 +2588,165 @@ export type StringWithAggregatesFilter = {
   not?: InputMaybe<NestedStringWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Int'];
+  nomeCompleto: Scalars['String'];
+  passwordHash: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UserAvgAggregate = {
+  __typename?: 'UserAvgAggregate';
+  id?: Maybe<Scalars['Float']>;
+};
+
+export type UserAvgOrderByAggregateInput = {
+  id?: InputMaybe<SortOrder>;
+};
+
+export type UserCountAggregate = {
+  __typename?: 'UserCountAggregate';
+  _all: Scalars['Int'];
+  id: Scalars['Int'];
+  nomeCompleto: Scalars['Int'];
+  passwordHash: Scalars['Int'];
+  username: Scalars['Int'];
+};
+
+export type UserCountOrderByAggregateInput = {
+  id?: InputMaybe<SortOrder>;
+  nomeCompleto?: InputMaybe<SortOrder>;
+  passwordHash?: InputMaybe<SortOrder>;
+  username?: InputMaybe<SortOrder>;
+};
+
+export type UserCreateInput = {
+  nomeCompleto: Scalars['String'];
+  passwordHash: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UserCreateManyInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  nomeCompleto: Scalars['String'];
+  passwordHash: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UserGroupBy = {
+  __typename?: 'UserGroupBy';
+  _avg?: Maybe<UserAvgAggregate>;
+  _count?: Maybe<UserCountAggregate>;
+  _max?: Maybe<UserMaxAggregate>;
+  _min?: Maybe<UserMinAggregate>;
+  _sum?: Maybe<UserSumAggregate>;
+  id: Scalars['Int'];
+  nomeCompleto: Scalars['String'];
+  passwordHash: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UserMaxAggregate = {
+  __typename?: 'UserMaxAggregate';
+  id?: Maybe<Scalars['Int']>;
+  nomeCompleto?: Maybe<Scalars['String']>;
+  passwordHash?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+};
+
+export type UserMaxOrderByAggregateInput = {
+  id?: InputMaybe<SortOrder>;
+  nomeCompleto?: InputMaybe<SortOrder>;
+  passwordHash?: InputMaybe<SortOrder>;
+  username?: InputMaybe<SortOrder>;
+};
+
+export type UserMinAggregate = {
+  __typename?: 'UserMinAggregate';
+  id?: Maybe<Scalars['Int']>;
+  nomeCompleto?: Maybe<Scalars['String']>;
+  passwordHash?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+};
+
+export type UserMinOrderByAggregateInput = {
+  id?: InputMaybe<SortOrder>;
+  nomeCompleto?: InputMaybe<SortOrder>;
+  passwordHash?: InputMaybe<SortOrder>;
+  username?: InputMaybe<SortOrder>;
+};
+
+export type UserOrderByWithAggregationInput = {
+  _avg?: InputMaybe<UserAvgOrderByAggregateInput>;
+  _count?: InputMaybe<UserCountOrderByAggregateInput>;
+  _max?: InputMaybe<UserMaxOrderByAggregateInput>;
+  _min?: InputMaybe<UserMinOrderByAggregateInput>;
+  _sum?: InputMaybe<UserSumOrderByAggregateInput>;
+  id?: InputMaybe<SortOrder>;
+  nomeCompleto?: InputMaybe<SortOrder>;
+  passwordHash?: InputMaybe<SortOrder>;
+  username?: InputMaybe<SortOrder>;
+};
+
+export type UserOrderByWithRelationInput = {
+  id?: InputMaybe<SortOrder>;
+  nomeCompleto?: InputMaybe<SortOrder>;
+  passwordHash?: InputMaybe<SortOrder>;
+  username?: InputMaybe<SortOrder>;
+};
+
+export enum UserScalarFieldEnum {
+  Id = 'id',
+  NomeCompleto = 'nomeCompleto',
+  PasswordHash = 'passwordHash',
+  Username = 'username'
+}
+
+export type UserScalarWhereWithAggregatesInput = {
+  AND?: InputMaybe<Array<UserScalarWhereWithAggregatesInput>>;
+  NOT?: InputMaybe<Array<UserScalarWhereWithAggregatesInput>>;
+  OR?: InputMaybe<Array<UserScalarWhereWithAggregatesInput>>;
+  id?: InputMaybe<IntWithAggregatesFilter>;
+  nomeCompleto?: InputMaybe<StringWithAggregatesFilter>;
+  passwordHash?: InputMaybe<StringWithAggregatesFilter>;
+  username?: InputMaybe<StringWithAggregatesFilter>;
+};
+
+export type UserSumAggregate = {
+  __typename?: 'UserSumAggregate';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type UserSumOrderByAggregateInput = {
+  id?: InputMaybe<SortOrder>;
+};
+
+export type UserUpdateInput = {
+  nomeCompleto?: InputMaybe<StringFieldUpdateOperationsInput>;
+  passwordHash?: InputMaybe<StringFieldUpdateOperationsInput>;
+  username?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type UserUpdateManyMutationInput = {
+  nomeCompleto?: InputMaybe<StringFieldUpdateOperationsInput>;
+  passwordHash?: InputMaybe<StringFieldUpdateOperationsInput>;
+  username?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type UserWhereInput = {
+  AND?: InputMaybe<Array<UserWhereInput>>;
+  NOT?: InputMaybe<Array<UserWhereInput>>;
+  OR?: InputMaybe<Array<UserWhereInput>>;
+  id?: InputMaybe<IntFilter>;
+  nomeCompleto?: InputMaybe<StringFilter>;
+  passwordHash?: InputMaybe<StringFilter>;
+  username?: InputMaybe<StringFilter>;
+};
+
+export type UserWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  username?: InputMaybe<Scalars['String']>;
 };

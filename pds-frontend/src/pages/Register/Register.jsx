@@ -141,7 +141,7 @@ const Register = () => {
               }
         }).then(() => {
             setSucesso(true);
-            setTimeout(() => navigate('/dashboard/geral'), 3000);
+            setTimeout(() => navigate('/dashboard/register'), 3000);
         }).catch(() => {
             setErro(true);
         });
@@ -162,7 +162,7 @@ const Register = () => {
     } else if (erro) {
         alertSucesso = <Alert
             message="Erro!"
-            description="Erro ao cadastrar o discente."
+            description="Erro ao cadastrar o discente. Por Favor, verifique se o CPF é valido, e se E-mail já foi usado antes."
             type="error"
             showIcon
             closable

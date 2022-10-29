@@ -30,12 +30,14 @@ export const StyledMenu = styled(Menu)`
         .ant-menu-item-selected {
           background:  #264474;
           span {
-            font-weight: 600;
             color: #ffffff;
           }
           ::after {
             opacity: 0;
           }
+        }
+        .ant-menu-submenu-arrow{
+          color:#FFF;
         }
       }
     

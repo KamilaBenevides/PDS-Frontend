@@ -38,23 +38,23 @@ const SideMenu = () => {
         },
         {
             key: '1',
-            label: 'Cadastros',
+            label: 'Perfis',
             children: [
                 {
                     key: '2',
                     label: 'Discentes',
-                    path: path.REGISTER,
+                    path: path.LIST_REGISTER,
                 },
                 {
                     key: '3',
                     label: 'Docentes',
                     path: path.PROFESSOR
                 },
-                {
-                    key: '4',
-                    label: 'Ver todos',
-                    path: path.LIST_REGISTER
-                },
+                // {
+                //     key: '4',
+                //     label: 'Ver todos',
+                //     path: path.LIST_REGISTER
+                // },
             ]
         },
         {
@@ -73,15 +73,41 @@ const SideMenu = () => {
                 },
                 {
                     key: '8',
+                    label: 'Submissão de artigo',
+                    path: path.SUBMISSAO_ARTIGO
+                },
+                {
+                    key: '11',
+                    label: 'Estágio docência',
+                    path: path.ESTAGIO_DOCENCIA
+                },
+                {
+                    key: '12',
                     label: 'Defesa dissertação',
                     path: path.DEFENSE_ALERTS
                 },
+                {
+                    key: '13',
+                    label: 'Homologação do diploma',
+                    path: path.HOMOLOGACAO_DIPLOMA
+                }
             ]
         },
         {
             key: '9',
             label: 'Documentos',
-            path: path.DOCUMENTS
+            children: [
+                {
+                    key: '14',
+                    label: 'Documentos de Defesa',
+                    path: path.DOCUMENTS
+                },
+                {
+                    key: '15',
+                    label: 'Documentos de Proposta',
+                    path: path.DOCUMENTS_DISSERTATION_PROPOSTAL
+                }
+            ]
         },
 
     ];

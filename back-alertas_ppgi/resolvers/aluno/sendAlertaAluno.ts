@@ -12,8 +12,9 @@ export class sendAlertaAlunoResolver {
   @Mutation(() => AlertaAluno)
   async sendAlertaAluno(
     @Ctx() { prisma }: Context,
-    @Args() { alertaAlunoId }: SendAlertaAluno
+    @Args() { alertaAlunoId, messageEmail }: SendAlertaAluno
   ) {
+    console.log(messageEmail)
     const alertaAluno = await prisma.alertaAluno.findUnique({
       where: { id: alertaAlunoId },
       include: { aluno: { include: { orientador: true, coorientador: true } }, alerta: true }
@@ -24,7 +25,7 @@ export class sendAlertaAlunoResolver {
     }
 
     try {
-      await sendMail(alertaAluno);
+      await sendMail(alertaAluno, messageEmail);
     } catch (err) {
       console.log(err);
       throw new ApolloError("Erro ao enviar email");
