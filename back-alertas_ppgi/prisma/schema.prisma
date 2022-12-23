@@ -21,8 +21,9 @@ model Aluno {
   matricula          String        @unique
   dataIngresso       DateTime
   dataLimite         DateTime
-  dataProrrogacao   DateTime
   cpf                String
+  dataProrrogacao    DateTime?     @default("2023-12-31T12:00:00Z")
+  prorrogado         Boolean?      @default(false)
   emailInstitucional String?       @unique
   emailPessoal       String?       @unique
   ativo              Boolean       @default(true)
