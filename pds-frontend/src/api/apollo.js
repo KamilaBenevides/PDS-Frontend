@@ -9,7 +9,7 @@ export const TOKEN_KEY = "__ppgi_token__";
 export const getAuthenticationToken = () => localStorage.getItem(TOKEN_KEY);
 
 const link = createHttpLink({
-  uri: "http://localhost:4000/",
+  uri: "https://back-alertas-ppgi.herokuapp.com",
   // credentials: 'same-origin'
 });
 
